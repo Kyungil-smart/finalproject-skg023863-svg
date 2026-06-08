@@ -120,7 +120,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""P2 Move"",
                     ""type"": ""Value"",
                     ""id"": ""43d688fe-be01-4d08-b007-bf20829a7fb9"",
                     ""expectedControlType"": ""Vector2"",
@@ -214,7 +214,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""P2 Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -225,7 +225,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""P2 Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -236,7 +236,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""P2 Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -247,7 +247,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""P2 Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -258,7 +258,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""P2 Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -289,7 +289,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         m_PlayerAction_P1Attack = m_PlayerAction.FindAction("P1 Attack", throwIfNotFound: true);
         m_PlayerAction_P1Move = m_PlayerAction.FindAction("P1 Move", throwIfNotFound: true);
         m_PlayerAction_P2Attack = m_PlayerAction.FindAction("P2 Attack", throwIfNotFound: true);
-        m_PlayerAction_Newaction = m_PlayerAction.FindAction("New action", throwIfNotFound: true);
+        m_PlayerAction_P2Move = m_PlayerAction.FindAction("P2 Move", throwIfNotFound: true);
     }
 
     ~@MyGameInputAction()
@@ -373,7 +373,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_P1Attack;
     private readonly InputAction m_PlayerAction_P1Move;
     private readonly InputAction m_PlayerAction_P2Attack;
-    private readonly InputAction m_PlayerAction_Newaction;
+    private readonly InputAction m_PlayerAction_P2Move;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerAction".
     /// </summary>
@@ -398,9 +398,9 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @P2Attack => m_Wrapper.m_PlayerAction_P2Attack;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerAction/Newaction".
+        /// Provides access to the underlying input action "PlayerAction/P2Move".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_PlayerAction_Newaction;
+        public InputAction @P2Move => m_Wrapper.m_PlayerAction_P2Move;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -436,9 +436,9 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
             @P2Attack.started += instance.OnP2Attack;
             @P2Attack.performed += instance.OnP2Attack;
             @P2Attack.canceled += instance.OnP2Attack;
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @P2Move.started += instance.OnP2Move;
+            @P2Move.performed += instance.OnP2Move;
+            @P2Move.canceled += instance.OnP2Move;
         }
 
         /// <summary>
@@ -459,9 +459,9 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
             @P2Attack.started -= instance.OnP2Attack;
             @P2Attack.performed -= instance.OnP2Attack;
             @P2Attack.canceled -= instance.OnP2Attack;
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @P2Move.started -= instance.OnP2Move;
+            @P2Move.performed -= instance.OnP2Move;
+            @P2Move.canceled -= instance.OnP2Move;
         }
 
         /// <summary>
@@ -537,11 +537,11 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnP2Attack(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "P2 Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnP2Move(InputAction.CallbackContext context);
     }
 }
