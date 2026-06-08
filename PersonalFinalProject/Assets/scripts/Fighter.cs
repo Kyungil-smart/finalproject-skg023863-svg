@@ -8,6 +8,7 @@ namespace MyGame
         Idle,
         Forward,
         Backward,
+        NAttack,
     }
     
     // 
@@ -20,6 +21,11 @@ namespace MyGame
         private bool _isFaceRight = true;
         public bool IsFaceRight => _isFaceRight;
         
+        private InputData _currentInput;
+
+        private int _currentActionFrame;
+        public int CurrentActionFrame => _currentActionFrame;
+        
         private FighterData _fighterData;
 
         public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
@@ -27,36 +33,13 @@ namespace MyGame
             _fighterData = fighterData;
             _position = position;
             _isFaceRight = isFaceRight;
+            
+            SetCurrentAction(FighterActionID.Idle);
         }
 
         public void UpdateInput(InputData input)
         {
-            bool isForward;
-            bool isBackward;
-
-            if (_isFaceRight)
-            {
-                isForward = input.MoveX > 0;
-                isBackward = input.MoveX < 0;
-            }
-            else
-            {
-                isForward = input.MoveX < 0;
-                isBackward = input.MoveX > 0;
-            }
-
-            if (isForward)
-            {
-                CurrentActionID = FighterActionID.Forward;
-            }
-            else if (isBackward)
-            {
-                CurrentActionID = FighterActionID.Backward;
-            }
-            else
-            {
-                CurrentActionID = FighterActionID.Idle;
-            }
+            _currentInput = input;
         }
         
         public void UpdateMovement()
@@ -73,6 +56,80 @@ namespace MyGame
                     _position.x -= _fighterData.backwardSpeed * faceDir * Time.fixedDeltaTime;
                     break;
             }
+        }
+        
+        public void IncrementActionFrame()
+        {
+            _currentActionFrame++;
+        }
+        private void RequestAction(FighterActionID actionID)
+        {
+            if(CurrentActionID == actionID)
+                return;
+
+            SetCurrentAction(actionID);
+        }
+
+        public void UpdateAction()
+        {
+            Debug.Log(
+                $"{CurrentActionID} / {CurrentActionFrame}");
+            
+            if(CurrentActionID == FighterActionID.NAttack)
+            {
+                if(CurrentActionFrame >= 24)
+                {
+                    RequestAction(FighterActionID.Idle);
+                }
+
+                return;
+            }
+
+            if(_currentInput.Attack)
+            {
+                RequestAction(FighterActionID.NAttack);
+                return;
+            }
+
+            bool isForward;
+            bool isBackward;
+
+            if (_isFaceRight)
+            {
+                isForward = _currentInput.MoveX > 0;
+                isBackward = _currentInput.MoveX < 0;
+            }
+            else
+            {
+                isForward = _currentInput.MoveX < 0;
+                isBackward = _currentInput.MoveX > 0;
+            }
+
+            if (isForward)
+            {
+                RequestAction(FighterActionID.Forward);
+            }
+            else if (isBackward)
+            {
+                RequestAction(FighterActionID.Backward);
+            }
+            else
+            {
+                RequestAction(FighterActionID.Idle);
+            }
+        }
+        
+        private void SetCurrentAction(FighterActionID actionID)
+        {
+            Debug.Log($"SetCurrentAction : {actionID}");
+            
+            CurrentActionID = actionID;
+            _currentActionFrame = 0;
+        }
+
+        public void UpdateFacingDirection(Fighter opponent)
+        {
+            _isFaceRight = _position.x < opponent.Position.x;
         }
     }
 }
