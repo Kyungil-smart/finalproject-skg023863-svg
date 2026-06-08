@@ -3,11 +3,12 @@ using UnityEngine.InputSystem;
 
 namespace MyGame
 {
+    // 게임 내의 입력 담당
     public class InputController : MonoBehaviour
     {
-        private MyGameInputAction _inputAction;
-        private InputData _player1InputData;
-        private InputData _player2InputData;
+        private MyGameInputAction _inputAction; // New InputSystem
+        private InputData _player1InputData; // 입력에 따른 1p의 입력정보
+        private InputData _player2InputData; // 입력에 따른 2p의 입력정보
         
         public InputData Player1InputData => _player1InputData;
         public InputData Player2InputData => _player2InputData;
@@ -27,22 +28,26 @@ namespace MyGame
             DisableInit();
         }
 
+        // 1p의 공격 입력
         void OnPlayer1Attack(InputAction.CallbackContext ctx)
         {
             _player1InputData.Attack = ctx.ReadValueAsButton();
         }
 
+        // 1p의 이동 입력
         void OnPlayer1Move(InputAction.CallbackContext ctx)
         {
             Vector2 inputVector = ctx.ReadValue<Vector2>();
             _player1InputData.MoveX = inputVector.x;
         }
         
+        // 2p의 공격 입력
         void OnPlayer2Attack(InputAction.CallbackContext ctx)
         {
             _player2InputData.Attack = ctx.ReadValueAsButton();
         }
 
+        // 2p의 이동 입력
         void OnPlayer2Move(InputAction.CallbackContext ctx)
         {
             Vector2 inputVector = ctx.ReadValue<Vector2>();
