@@ -544,6 +544,8 @@ MonoBehaviour:
   _inputController: {fileID: 456933332}
   _player1: {fileID: 120097409}
   _player2: {fileID: 0}
+  _fighterDataList:
+  - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
 --- !u!4 &1031735735
 Transform:
   m_ObjectHideFlags: 0
