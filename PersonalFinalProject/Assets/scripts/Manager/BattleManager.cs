@@ -17,12 +17,15 @@ public class BattleManager : MonoBehaviour
     void Awake()
     {
         _fighter1View = _player1.GetComponent<FighterView>();
+        _fighter2View = _player2.GetComponent<FighterView>();
         
         _fighter1 = new Fighter();
         _fighter2 = new Fighter();
         
         _fighter1View.Initialize(_fighter1);
-        _fighter1.BattleSetup(_fighterDataList[0], new Vector2(0, 0));
+        _fighter2View.Initialize(_fighter2);
+        _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
+        _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
     }
 
     private void FixedUpdate()

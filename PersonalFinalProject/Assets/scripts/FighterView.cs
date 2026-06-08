@@ -5,9 +5,15 @@ namespace MyGame
     // 게임 화면에서 플레이어의 애니메이션 등을 출력하는 역할
     public class FighterView : MonoBehaviour
     {
-        [SerializeField] private Animator _animator;
-
+        private Animator _animator;
+        private SpriteRenderer _spriteRenderer;
         private Fighter _fighter;
+        
+        void Awake()
+        {
+            _animator = GetComponent<Animator>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
     
         public void Initialize(Fighter fighter)
         {
@@ -35,6 +41,7 @@ namespace MyGame
                 return;
 
             transform.position = _fighter.Position;
+            _spriteRenderer.flipX = !_fighter.IsFaceRight;
         }
     }
 
