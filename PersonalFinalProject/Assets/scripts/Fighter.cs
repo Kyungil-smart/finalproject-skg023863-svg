@@ -16,22 +16,40 @@ namespace MyGame
         private Vector2 _position;
         public Vector2 Position => _position;
         public FighterActionID CurrentActionID { get; private set; } // 현재 액션
+
+        private bool _isFaceRight = true;
+        public bool IsFaceRight => _isFaceRight;
         
         private FighterData _fighterData;
 
-        public void BattleSetup(FighterData fighterData, Vector2 position)
+        public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
         {
             _fighterData = fighterData;
             _position = position;
+            _isFaceRight = isFaceRight;
         }
 
         public void UpdateInput(InputData input)
         {
-            if (input.MoveX > 0)
+            bool isForward;
+            bool isBackward;
+
+            if (_isFaceRight)
+            {
+                isForward = input.MoveX > 0;
+                isBackward = input.MoveX < 0;
+            }
+            else
+            {
+                isForward = input.MoveX < 0;
+                isBackward = input.MoveX > 0;
+            }
+
+            if (isForward)
             {
                 CurrentActionID = FighterActionID.Forward;
             }
-            else if (input.MoveX < 0)
+            else if (isBackward)
             {
                 CurrentActionID = FighterActionID.Backward;
             }
@@ -43,14 +61,16 @@ namespace MyGame
         
         public void UpdateMovement()
         {
+            float faceDir = _isFaceRight ? 1f : -1f;
+            
             switch(CurrentActionID)
             {
                 case FighterActionID.Forward:
-                    _position.x += _fighterData.forwardSpeed * Time.fixedDeltaTime;
+                    _position.x += _fighterData.forwardSpeed * faceDir * Time.fixedDeltaTime;
                     break;
 
                 case FighterActionID.Backward:
-                    _position.x -= _fighterData.backwardSpeed * Time.fixedDeltaTime;
+                    _position.x -= _fighterData.backwardSpeed * faceDir * Time.fixedDeltaTime;
                     break;
             }
         }
