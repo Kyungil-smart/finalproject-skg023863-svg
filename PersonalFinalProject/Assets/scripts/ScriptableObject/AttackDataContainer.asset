@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 944cf8611fea04341b60d02e80ced508, type: 3}
-  m_Name: FighterData01
-  m_EditorClassIdentifier: Assembly-CSharp::FighterData
-  forwardSpeed: 4.5
-  backwardSpeed: 3.8
+  m_Script: {fileID: 11500000, guid: 375ffbf486ddb9648a01895be3b970f1, type: 3}
+  m_Name: AttackDataContainer
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.AttackDataContainer
+  attackDataList:
+  - attackID: 1
+    hitStopFrame: 10
