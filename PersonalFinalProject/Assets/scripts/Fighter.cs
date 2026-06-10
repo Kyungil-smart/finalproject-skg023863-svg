@@ -2,6 +2,42 @@ using UnityEngine;
 
 namespace MyGame
 {
+    public class BoxBase
+    {
+        public Rect rect;
+        
+        public float xMin { get { return rect.x - rect.width / 2; }}
+        public float xMax { get { return rect.x + rect.width / 2; }}
+        public float yMin { get { return rect.y; }}
+        public float yMax { get { return rect.y + rect.height; }}
+
+        public bool BoxOverlap(BoxBase opponentBox)
+        {
+            // c = corner
+            bool c1 = xMin <= opponentBox.xMax;
+            bool c2 = xMax >= opponentBox.xMin;
+            bool c3 = yMin <= opponentBox.yMax;
+            bool c4 = yMax >= opponentBox.yMin;
+            
+            return c1 && c2 && c3 && c4;
+        }
+    }
+
+    public class HitBox : BoxBase
+    {
+        public int attackID;
+    }
+
+    public class HurtBox : BoxBase
+    {
+        
+    }
+
+    public class PushBox : BoxBase
+    {
+        
+    }
+    
     // 캐릭터들의 행동을 열거형으로 정리
     public enum FighterActionID
     {
@@ -9,9 +45,10 @@ namespace MyGame
         Forward,
         Backward,
         NAttack,
+        Damaged,
     }
     
-    // 
+    // 대전에서 사용할 캐릭터(Fighter)의 로직
     public class Fighter
     {
         private Vector2 _position;
@@ -72,12 +109,9 @@ namespace MyGame
 
         public void UpdateAction()
         {
-            Debug.Log(
-                $"{CurrentActionID} / {CurrentActionFrame}");
-            
             if(CurrentActionID == FighterActionID.NAttack)
             {
-                if(CurrentActionFrame >= 24)
+                if(CurrentActionFrame >= 22)
                 {
                     RequestAction(FighterActionID.Idle);
                 }
@@ -121,8 +155,6 @@ namespace MyGame
         
         private void SetCurrentAction(FighterActionID actionID)
         {
-            Debug.Log($"SetCurrentAction : {actionID}");
-            
             CurrentActionID = actionID;
             _currentActionFrame = 0;
         }

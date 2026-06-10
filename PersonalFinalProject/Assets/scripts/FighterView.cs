@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MyGame
@@ -25,7 +26,7 @@ namespace MyGame
             PlayAnimation();
             UpdateFighterPosition();
         }
-
+        
         void PlayAnimation()
         {
             if (_fighter == null)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MyGame;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace MyGame
         private Fighter _fighter1;
         private Fighter _fighter2;
 
+        public List<Fighter> fighters = new();
+
         private FighterView _fighter1View;
         private FighterView _fighter2View;
 
@@ -23,7 +26,10 @@ namespace MyGame
         
             _fighter1 = new Fighter();
             _fighter2 = new Fighter();
-        
+            
+            fighters.Add(_fighter1);
+            fighters.Add(_fighter2);
+            
             _fighter1View.Initialize(_fighter1);
             _fighter2View.Initialize(_fighter2);
             _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
@@ -35,17 +41,15 @@ namespace MyGame
             _fighter1.UpdateInput(_inputController.Player1InputData);
             _fighter2.UpdateInput(_inputController.Player2InputData);
             
-            _fighter1.IncrementActionFrame();
-            _fighter2.IncrementActionFrame();
+            fighters.ForEach(f => f.IncrementActionFrame());
             
             _fighter1.UpdateFacingDirection(_fighter2);
             _fighter2.UpdateFacingDirection(_fighter1);
             
-            _fighter1.UpdateAction();
-            _fighter2.UpdateAction();
-        
-            _fighter1.UpdateMovement();
-            _fighter2.UpdateMovement();
+            fighters.ForEach(f => f.UpdateAction());
+            fighters.ForEach(f => f.UpdateMovement());
         }
+
+        
     }
 }
