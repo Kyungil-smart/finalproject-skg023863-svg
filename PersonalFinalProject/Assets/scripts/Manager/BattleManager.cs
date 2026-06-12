@@ -30,6 +30,8 @@ namespace MyGame
             fighters.Add(_fighter1);
             fighters.Add(_fighter2);
             
+            _fighterDataList[0].DictionaryInit();
+            
             _fighter1View.Initialize(_fighter1);
             _fighter2View.Initialize(_fighter2);
             _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
@@ -48,8 +50,51 @@ namespace MyGame
             
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
-        }
+            fighters.ForEach(f => f.UpdateBoxes());
 
+            CheckHitAndHurtBox();
+        }
         
+        private void CheckHitAndHurtBox()
+        {
+            foreach (Fighter attacker in fighters)
+            {
+                bool isHit = false;
+                int hitAttackID = -1;
+                
+                foreach (Fighter defender in fighters)
+                {
+                    if (attacker == defender) continue;
+
+                    foreach (HitBox hitBox in attacker.HitBoxes)
+                    {
+                        if (!attacker.CanAttackMore(hitBox.attackID)) continue;
+                        
+                        foreach (HurtBox hurtBox in defender.HurtBoxes)
+                        {
+                            if (hitBox.BoxOverlap(hurtBox))
+                            {
+                                Debug.Log("충돌!");
+                                
+                                isHit = true;
+                                hitAttackID = hitBox.attackID;
+                            }
+                        }
+                        
+                        if (isHit) break;
+                    }
+                    
+                    if (isHit)
+                    {
+                        attacker.SuccessfulAttack();
+                        defender.DamagedToAttacker();
+                        attacker.SetHitStopFrame(hitAttackID);
+                        defender.SetHitStopFrame(hitAttackID);
+                    }
+                }
+            }
+            
+        }
     }
+    
 }

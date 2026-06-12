@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1425223837402722898}
   - component: {fileID: 2173055383363894502}
   - component: {fileID: 3640163471930576132}
+  - component: {fileID: 950005588889027416}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -68,7 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 137a5db4be9145c4b95edc342e7250b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.FighterView
-  _animator: {fileID: 1425223837402722898}
 --- !u!212 &3640163471930576132
 SpriteRenderer:
   serializedVersion: 2
@@ -128,3 +128,15 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &950005588889027416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5013169725059220183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228a0569023368344bba634109637c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.DrawBox
