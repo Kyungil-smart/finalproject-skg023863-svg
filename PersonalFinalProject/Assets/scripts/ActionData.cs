@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace MyGame
 {
@@ -53,5 +54,34 @@ namespace MyGame
         public HurtBoxData[] hurtboxDatas;
         public PushBoxData[] pushBoxDatas;
         public bool alwayscancelable; // 언제든지 캔슬할 수 있는 액션인지
+
+        public List<HitBoxData> GetHitBoxData(int frame)
+        {
+            List<HitBoxData> hitbox = new List<HitBoxData>(); 
+            foreach (var hitboxData in hitboxDatas)
+            {
+                if (frame >= hitboxData.startEndFrame.x && frame <= hitboxData.startEndFrame.y)
+                {
+                    hitbox.Add(hitboxData);
+                }
+            }
+
+            return hitbox;
+        }
+
+        public List<HurtBoxData> GetHurtBoxData(int frame)
+        {
+            List<HurtBoxData> hurtbox = new List<HurtBoxData>();
+            foreach (var hurtboxData in hurtboxDatas)
+            {
+                if (frame >= hurtboxData.startEndFrame.x && frame <= hurtboxData.startEndFrame.y)
+                {
+                    hurtbox.Add(hurtboxData);
+                }
+            }
+            
+            return hurtbox;
+        }
     }
+    
 }

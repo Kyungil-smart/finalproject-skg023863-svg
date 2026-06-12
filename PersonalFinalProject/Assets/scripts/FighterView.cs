@@ -9,6 +9,7 @@ namespace MyGame
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
         private Fighter _fighter;
+        public Fighter Fighter => _fighter;
         
         void Awake()
         {
@@ -33,7 +34,8 @@ namespace MyGame
                 return;
 
             // Fighter의 CurrentActionID에 따라 출력할 애니메이션을 변경
-            _animator.SetInteger("ActionID", (int)_fighter.CurrentActionID);
+            Debug.Log($"현재 액션 : {_fighter.CurrentActionID}");
+            _animator.SetInteger("ActionID", _fighter.CurrentActionID);
         }
 
         void UpdateFighterPosition()

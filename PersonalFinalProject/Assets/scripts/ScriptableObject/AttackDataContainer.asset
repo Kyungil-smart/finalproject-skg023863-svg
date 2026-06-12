@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.AttackDataContainer
   attackDataList:
   - attackID: 1
+    hitCount: 1
     hitStopFrame: 10
