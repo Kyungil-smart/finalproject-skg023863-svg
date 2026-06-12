@@ -74,6 +74,10 @@ namespace MyGame
         
         private int _currentActionFrame; // 현재 액션의 핸재 프레임 
         public int CurrentActionFrame => _currentActionFrame;
+        
+        public bool isActionEnd { get { return _currentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount; } }
+        
+        public int startFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
 
         private int _currentHitStopFrame; // 현재 공격의 남아있는 히트 스탑 프레임 수, 프레임 마다 -- 됨
 
@@ -131,6 +135,14 @@ namespace MyGame
             }
             
             _currentActionFrame++;
+
+            if (isActionEnd)
+            {
+                if (_fighterData.ActionDatas[CurrentActionID].isLoop)
+                {
+                    SetCurrentAction(CurrentActionID, startFrame);
+                }
+            }
         }
         private void RequestAction(int actionID)
         {
@@ -185,11 +197,11 @@ namespace MyGame
             }
         }
         
-        private void SetCurrentAction(int actionID)
+        private void SetCurrentAction(int actionID, int startFrame = 0)
         {
             CurrentActionID = actionID;
             // Debug.Log($"현재 액션 : {(FighterActionID)CurrentActionID}");
-            _currentActionFrame = 0;
+            _currentActionFrame = startFrame;
             _currentActionhitCount = 0;
         }
 
@@ -215,18 +227,14 @@ namespace MyGame
 
         public void SetHitStopFrame(int hitStopFrame)
         {
-            Debug.Log("히트 스톱 설정 됨");
             _currentHitStopFrame = hitStopFrame;
         }
 
         public void DamagedToAttacker()
         {
-            Debug.Log("데미지 받음!");
             SetCurrentAction((int)FighterActionID.Damaged);
         }
         
-        
-
         public void UpdateBoxes()
         {
             _hitBoxes.Clear();
@@ -245,7 +253,10 @@ namespace MyGame
                          .GetHurtBoxData(CurrentActionFrame))
             {
                 HurtBox hurtBox = new HurtBox();
-                hurtBox.rect = MoveBoxes(hurtBoxData.rect, _position);
+                Rect rect = new Rect();
+                rect = hurtBoxData.useBaseRect ? _fighterData.baseHurtBox : hurtBoxData.rect;
+                hurtBox.rect = MoveBoxes(rect, _position);
+                // hurtBox.rect = MoveBoxes(hurtBoxData.rect, _position);
                 _hurtBoxes.Add(hurtBox);
             }
         }
