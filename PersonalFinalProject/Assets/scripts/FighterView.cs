@@ -34,7 +34,7 @@ namespace MyGame
                 return;
 
             // Fighter의 CurrentActionID에 따라 출력할 애니메이션을 변경
-            Debug.Log($"현재 액션 : {_fighter.CurrentActionID}");
+            // Debug.Log($"현재 액션 : {_fighter.CurrentActionID}");
             _animator.SetInteger("ActionID", _fighter.CurrentActionID);
         }
 

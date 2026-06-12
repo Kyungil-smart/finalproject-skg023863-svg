@@ -74,8 +74,6 @@ namespace MyGame
                         {
                             if (hitBox.BoxOverlap(hurtBox))
                             {
-                                Debug.Log("충돌!");
-                                
                                 isHit = true;
                                 hitAttackID = hitBox.attackID;
                             }
