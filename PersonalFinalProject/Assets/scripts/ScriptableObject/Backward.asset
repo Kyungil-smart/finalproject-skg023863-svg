@@ -24,8 +24,8 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 1
-      height: 1.2
+      width: 2
+      height: 2
     useBaseRect: 1
   pushBoxDatas:
   - startEndFrame: {x: 0, y: 23}
