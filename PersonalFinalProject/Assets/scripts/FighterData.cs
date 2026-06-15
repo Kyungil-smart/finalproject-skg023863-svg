@@ -23,9 +23,6 @@ namespace MyGame
 
         public void DictionaryInit()
         {
-            _actionDatas = new Dictionary<int, ActionData>();
-            _attackDatas = new Dictionary<int, AttackData>();
-
             if (_actionDataContainer == null)
             {
                 Debug.LogError("No ActionDatacontainer");

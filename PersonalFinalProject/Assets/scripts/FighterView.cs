@@ -22,7 +22,15 @@ namespace MyGame
             _fighter = fighter;    
         }
 
-        void Update()
+        // void Update()
+        // {
+        //     if (gameObject.name == "Player2") return;
+        //     Debug.Log((FighterActionID)_fighter.CurrentActionID);
+        //     PlayAnimation();
+        //     UpdateFighterPosition();
+        // }
+
+        void FixedUpdate()
         {
             PlayAnimation();
             UpdateFighterPosition();
@@ -30,12 +38,29 @@ namespace MyGame
         
         void PlayAnimation()
         {
-            if (_fighter == null)
-                return;
-
+            if (_fighter == null) return;
+            
             // Fighter의 CurrentActionID에 따라 출력할 애니메이션을 변경
             // Debug.Log($"현재 액션 : {_fighter.CurrentActionID}");
-            _animator.SetInteger("ActionID", _fighter.CurrentActionID);
+            // if (_fighter.isHitStopEnd)
+            //     _animator.speed = 1;
+            // else
+            //     _animator.speed = 0;
+            
+            
+            _animator.speed = 0;
+            string actionName =
+                ((FighterActionID)_fighter.CurrentActionID)
+                .ToString();
+            
+            float currentFrame = (float)_fighter.CurrentActionFrame;
+            
+            float fullFrame =
+                (float)_fighter.FighterData.ActionDatas[_fighter.CurrentActionID].frameCount - 1f;
+            
+            float normalizedTime = currentFrame / fullFrame;
+            
+            _animator.Play(actionName, 0, normalizedTime);
         }
 
         void UpdateFighterPosition()
