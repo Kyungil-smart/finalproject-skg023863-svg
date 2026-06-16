@@ -84,8 +84,8 @@ namespace MyGame
                     
                     if (isHit)
                     {
-                        attacker.SuccessfulAttack();
-                        defender.DamagedToAttacker();
+                        attacker.SuccessfullAttack();
+                        defender.DamagedFromAttacker();
                         attacker.SetHitStopFrame(hitAttackID);
                         defender.SetHitStopFrame(hitAttackID);
                     }

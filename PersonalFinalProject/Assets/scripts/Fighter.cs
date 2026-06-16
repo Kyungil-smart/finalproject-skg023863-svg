@@ -48,6 +48,7 @@ namespace MyGame
         Backward,
         NAttack,
         Damaged,
+        CrouchGuard,
     }
 
     public enum DamageResult
@@ -77,7 +78,7 @@ namespace MyGame
         
         public bool isActionEnd { get { return _currentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount; } }
         
-        public int startFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
+        public int loopStartFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
 
         private int _currentHitStopFrame; // 현재 공격의 남아있는 히트 스탑 프레임 수, 프레임 마다 -- 됨
         
@@ -116,8 +117,6 @@ namespace MyGame
         
         public void UpdateMovement()
         {
-            // int faceDir = _isFaceRight ? 1 : -1;
-            
             if (CurrentActionID == (int)FighterActionID.Forward)
             {
                 _position.x += _fighterData.forwardSpeed * Sign * Time.fixedDeltaTime;
@@ -144,26 +143,31 @@ namespace MyGame
             {
                 if (_fighterData.ActionDatas[CurrentActionID].isLoop)
                 {
-                    SetCurrentAction(CurrentActionID, startFrame);
+                    SetCurrentAction(CurrentActionID, loopStartFrame);
                 }
             }
         }
-        private void RequestAction(int actionID)
+        private void RequestAction(int actionID, int startFrame = 0)
         {
+            if (isActionEnd)
+            {
+                SetCurrentAction(actionID, startFrame);
+                return;
+            }
+            
             if(CurrentActionID == actionID) return;
-
+            
             SetCurrentAction(actionID);
         }
 
         public void UpdateAction()
         {
-            if(CurrentActionID == (int)FighterActionID.NAttack ||  CurrentActionID == (int)FighterActionID.Damaged)
+            if (!_fighterData.ActionDatas[CurrentActionID].isLoop)
             {
-                if(CurrentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount)
+                if (isActionEnd)
                 {
                     RequestAction((int)FighterActionID.Idle);
                 }
-
                 return;
             }
 
@@ -203,12 +207,6 @@ namespace MyGame
         
         private void SetCurrentAction(int actionID, int startFrame = 0)
         {
-            Debug.Log(
-                $"SetCurrentAction : " +
-                $"{(FighterActionID)CurrentActionID}({CurrentActionFrame}) -> " +
-                $"{(FighterActionID)actionID}"
-            );
-            
             CurrentActionID = actionID;
             _currentActionFrame = startFrame;
             _currentActionhitCount = 0;
@@ -229,7 +227,7 @@ namespace MyGame
             return true;
         }
 
-        public void SuccessfulAttack()
+        public void SuccessfullAttack()
         {
             _currentActionhitCount++;
         }
@@ -240,11 +238,12 @@ namespace MyGame
             _currentHitStopFrame = hitStopFrame;
         }
 
-        public void DamagedToAttacker()
+        public void DamagedFromAttacker()
         {
-            if(CurrentActionID == (int)FighterActionID.Damaged) return;
-            
-            SetCurrentAction((int)FighterActionID.Damaged);
+            if(CurrentActionID == (int)FighterActionID.Backward)
+                RequestAction((int)FighterActionID.CrouchGuard);
+            else
+                RequestAction((int)FighterActionID.Damaged);
         }
         
         public void UpdateBoxes()

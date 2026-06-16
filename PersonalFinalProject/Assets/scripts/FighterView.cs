@@ -32,21 +32,13 @@ namespace MyGame
 
         void FixedUpdate()
         {
-            PlayAnimation();
+            PlayFighterAnimation();
             UpdateFighterPosition();
         }
         
-        void PlayAnimation()
+        void PlayFighterAnimation()
         {
             if (_fighter == null) return;
-            
-            // Fighter의 CurrentActionID에 따라 출력할 애니메이션을 변경
-            // Debug.Log($"현재 액션 : {_fighter.CurrentActionID}");
-            // if (_fighter.isHitStopEnd)
-            //     _animator.speed = 1;
-            // else
-            //     _animator.speed = 0;
-            
             
             _animator.speed = 0;
             string actionName =
@@ -65,8 +57,7 @@ namespace MyGame
 
         void UpdateFighterPosition()
         {
-            if (_fighter == null)
-                return;
+            if (_fighter == null) return;
 
             transform.position = _fighter.Position;
             _spriteRenderer.flipX = !_fighter.IsFaceRight;
