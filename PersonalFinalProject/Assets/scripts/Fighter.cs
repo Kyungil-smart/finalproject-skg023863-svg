@@ -157,18 +157,14 @@ namespace MyGame
             
             if(CurrentActionID == actionID) return;
             
-            SetCurrentAction(actionID);
+            SetCurrentAction(actionID, startFrame);
         }
 
         public void UpdateAction()
         {
             if (!_fighterData.ActionDatas[CurrentActionID].isLoop)
             {
-                if (isActionEnd)
-                {
-                    RequestAction((int)FighterActionID.Idle);
-                }
-                return;
+                if (!isActionEnd) return;
             }
 
             if(_currentInput.Attack)
@@ -232,18 +228,42 @@ namespace MyGame
             _currentActionhitCount++;
         }
 
-        public void SetHitStopFrame(int attackID)
+        public void SetHitStopFrame(int hitStopFrame)
         {
-            int hitStopFrame = _fighterData.AttackDatas[attackID].hitStopFrame;
             _currentHitStopFrame = hitStopFrame;
         }
 
-        public void DamagedFromAttacker()
+        public int GetHitStopFrame(DamageResult damageResult, int attackID)
         {
-            if(CurrentActionID == (int)FighterActionID.Backward)
-                RequestAction((int)FighterActionID.CrouchGuard);
+            AttackData attackData = _fighterData.AttackDatas[attackID];
+            
+            if (damageResult == DamageResult.Guard)
+                return attackData.guardHitStopFrame;
+            
+            if (damageResult == DamageResult.Damage)
+                return attackData.hitStopFrame;
+            
+            return 0;
+        }
+
+        public DamageResult DamagedFromAttacker(AttackData attackData)
+        {
+            if (CurrentActionID == (int)FighterActionID.Backward)
+            {
+                RequestAction(attackData.guardActionID);
+                return DamageResult.Guard;
+            }
             else
-                RequestAction((int)FighterActionID.Damaged);
+            {
+                RequestAction(attackData.damageActionID);
+                return DamageResult.Damage;
+            }
+        }
+
+        public AttackData GetAttackData(int attackID)
+        {
+            AttackData attackData = _fighterData.AttackDatas[attackID];
+            return attackData;
         }
         
         public void UpdateBoxes()
