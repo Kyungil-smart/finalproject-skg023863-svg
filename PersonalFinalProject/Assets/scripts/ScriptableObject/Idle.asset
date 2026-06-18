@@ -15,7 +15,7 @@ MonoBehaviour:
   actionID: 0
   actionName: Idle
   frameCount: 24
-  isLoop: 1
+  isLoop: 0
   loopFromFrame: 0
   hitboxDatas: []
   hurtboxDatas:
@@ -36,4 +36,4 @@ MonoBehaviour:
       width: 0.8
       height: 1
     useBaseRect: 1
-  alwayscancelable: 1
+  isAlwayscancelable: 1

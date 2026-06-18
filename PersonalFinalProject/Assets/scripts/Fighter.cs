@@ -64,6 +64,9 @@ namespace MyGame
         private Vector2 _position;
         public Vector2 Position => _position;
         // public FighterActionID CurrentActionID { get; private set; } // 현재 액션
+
+        private float _velocityX;
+        
         public int CurrentActionID { get; private set; }
 
         private bool _isFaceRight = true;
@@ -86,7 +89,7 @@ namespace MyGame
 
         // 이 공격 이 이번 액션에서 이미 몇 번 적중했는가 확인용
         // 1히트 공격이 들어갔을 경우 1히트 보다 더 히트되면 안 되므로 비교하기 위해 사용되는 변수
-        private int _currentActionhitCount; 
+        private int _currentAttackhitCount; 
         
         private List<HitBox> _hitBoxes = new();
         public  List<HitBox> HitBoxes => _hitBoxes;
@@ -96,6 +99,10 @@ namespace MyGame
         
         private List<PushBox> _pushBoxes = new();
         public List<PushBox> PushBoxes => _pushBoxes;
+        
+        private List<MoveSpeed> _knockBackMoveSpeeds;
+
+        private int _currentKnockBackFrame;
         
         private FighterData _fighterData;
         
@@ -115,20 +122,6 @@ namespace MyGame
             _currentInput = input;
         }
         
-        public void UpdateMovement()
-        {
-            if (CurrentActionID == (int)FighterActionID.Forward)
-            {
-                _position.x += _fighterData.forwardSpeed * Sign * Time.fixedDeltaTime;
-                return;
-            }
-            if (CurrentActionID == (int)FighterActionID.Backward)
-            {
-                _position.x -= _fighterData.backwardSpeed * Sign * Time.fixedDeltaTime;
-                return;
-            }
-        }
-        
         public void IncrementActionFrame()
         {
             if (!isHitStopEnd)
@@ -138,14 +131,7 @@ namespace MyGame
             }
             
             _currentActionFrame++;
-
-            if (isActionEnd)
-            {
-                if (_fighterData.ActionDatas[CurrentActionID].isLoop)
-                {
-                    SetCurrentAction(CurrentActionID, loopStartFrame);
-                }
-            }
+            
         }
         private void RequestAction(int actionID, int startFrame = 0)
         {
@@ -157,12 +143,16 @@ namespace MyGame
             
             if(CurrentActionID == actionID) return;
             
-            SetCurrentAction(actionID, startFrame);
+            
+            if (_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
+            {
+                SetCurrentAction(actionID, startFrame);
+            }
         }
 
         public void UpdateAction()
         {
-            if (!_fighterData.ActionDatas[CurrentActionID].isLoop)
+            if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
             {
                 if (!isActionEnd) return;
             }
@@ -201,11 +191,51 @@ namespace MyGame
             }
         }
         
+        public void UpdateMovement()
+        {
+            if (!isHitStopEnd) return;
+            
+            if (CurrentActionID == (int)FighterActionID.Forward)
+            {
+                _position.x += _fighterData.forwardSpeed * Sign * Time.fixedDeltaTime;
+                return;
+            }
+            if (CurrentActionID == (int)FighterActionID.Backward)
+            {
+                _position.x -= _fighterData.backwardSpeed * Sign * Time.fixedDeltaTime;
+                return;
+            }
+
+            MoveSpeed moveSpeed;
+            
+            if (_fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard ||
+                _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Damaged)
+            {
+                moveSpeed = GetCurrentKnockBackMoveSpeed();
+                
+                if (moveSpeed != null)
+                {
+                    _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
+                }
+                return;
+            }
+            
+            moveSpeed = _fighterData.ActionDatas[CurrentActionID].GetMoveSpeed(CurrentActionFrame);
+            if (moveSpeed != null)
+            {
+                _velocityX = moveSpeed.speed;
+                _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
+            }
+            _velocityX = 0;
+            
+            
+        }
+        
         private void SetCurrentAction(int actionID, int startFrame = 0)
         {
             CurrentActionID = actionID;
             _currentActionFrame = startFrame;
-            _currentActionhitCount = 0;
+            _currentAttackhitCount = 0;
         }
 
         public void UpdateFacingDirection(Fighter opponent)
@@ -215,7 +245,7 @@ namespace MyGame
 
         public bool CanAttackMore(int attackID)
         {
-            if (_currentActionhitCount >= _fighterData.AttackDatas[attackID].hitCount)
+            if (_currentAttackhitCount >= _fighterData.AttackDatas[attackID].hitCount)
             {
                 return false;
             }
@@ -225,7 +255,7 @@ namespace MyGame
 
         public void SuccessfullAttack()
         {
-            _currentActionhitCount++;
+            _currentAttackhitCount++;
         }
 
         public void SetHitStopFrame(int hitStopFrame)
@@ -244,6 +274,42 @@ namespace MyGame
                 return attackData.hitStopFrame;
             
             return 0;
+        }
+
+        public List<MoveSpeed> GetMoveSpeeds(DamageResult damageResult, int attackID)
+        {
+            AttackData attackData = _fighterData.AttackDatas[attackID];
+            if (damageResult == DamageResult.Guard)
+                return attackData.guradMoveSpeeds;
+            if (damageResult == DamageResult.Damage)
+                return attackData.hitMoveSpeeds;
+
+            return null;
+        }
+
+        public void SetMoveSpeeds(List<MoveSpeed> moveSpeeds)
+        {
+            _knockBackMoveSpeeds = moveSpeeds;
+            _currentKnockBackFrame = 0;
+        }
+
+        private MoveSpeed GetCurrentKnockBackMoveSpeed()
+        {
+            if (_knockBackMoveSpeeds == null) return null;
+
+            foreach (MoveSpeed knockBackMoveSpeed in _knockBackMoveSpeeds)
+            {
+                if (_currentKnockBackFrame >= knockBackMoveSpeed.startEndFrame.x &&
+                    _currentKnockBackFrame <= knockBackMoveSpeed.startEndFrame.y)
+                {
+                    _currentKnockBackFrame++;
+                    return knockBackMoveSpeed;
+                }
+            }
+            
+            _knockBackMoveSpeeds = null;
+            _currentKnockBackFrame = 0;
+            return null;
         }
 
         public DamageResult DamagedFromAttacker(AttackData attackData)

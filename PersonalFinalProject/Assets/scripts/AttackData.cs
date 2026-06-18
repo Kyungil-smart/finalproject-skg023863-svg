@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 
 namespace MyGame
@@ -15,6 +16,9 @@ namespace MyGame
         
         public int hitStopFrame; // 공격에 적중 시 히트 스톱
         public int guardHitStopFrame; // 공격을 가드 시 히트 스톱
+        
+        public List<MoveSpeed> hitMoveSpeeds;
+        public List<MoveSpeed> guradMoveSpeeds;
     }
 }
 

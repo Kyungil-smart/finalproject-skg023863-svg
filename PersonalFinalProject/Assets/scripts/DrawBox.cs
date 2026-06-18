@@ -58,6 +58,7 @@ namespace MyGame
             //Debug.Log(_fighter.HitBoxes.Count);
             //Debug.Log(_fighter.HurtBoxes.Count);
             
+            // DrawWireCube의 인자중에 center는 정중앙을 뜻한다.
             Vector3 boxcenter = new Vector3(box.rect.x, box.rect.y + box.rect.height / 2, 0);
             Vector3 boxsize = new Vector3(box.rect.width, box.rect.height, 0);
             Gizmos.DrawWireCube(boxcenter, boxsize);
