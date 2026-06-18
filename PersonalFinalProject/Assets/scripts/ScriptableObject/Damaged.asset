@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 4
   actionName: Damaged
+  actionType: 2
   frameCount: 17
   isLoop: 0
   loopFromFrame: 0
+  moveSpeeds: []
   hitboxDatas: []
   hurtboxDatas:
   - startEndFrame: {x: 0, y: 16}
@@ -36,4 +38,4 @@ MonoBehaviour:
       width: 0.8
       height: 1
     useBaseRect: 0
-  alwayscancelable: 0
+  isAlwayscancelable: 0

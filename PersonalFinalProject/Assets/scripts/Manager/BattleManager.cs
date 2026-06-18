@@ -88,7 +88,9 @@ namespace MyGame
                         
                         DamageResult damageresult = defender.DamagedFromAttacker(attacker.GetAttackData(hitAttackID));
                         int hitStopFrame = attacker.GetHitStopFrame(damageresult, hitAttackID);
+                        List<MoveSpeed> moveSpeed = attacker.GetMoveSpeeds(damageresult, hitAttackID);
                         
+                        defender.SetMoveSpeeds(moveSpeed);
                         attacker.SetHitStopFrame(hitStopFrame);
                         defender.SetHitStopFrame(hitStopFrame);
                     }

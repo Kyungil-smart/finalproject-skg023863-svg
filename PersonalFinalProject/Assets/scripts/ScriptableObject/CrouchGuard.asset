@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 5
   actionName: CrouchGuard
+  actionType: 3
   frameCount: 15
   isLoop: 0
   loopFromFrame: 0
+  moveSpeeds: []
   hitboxDatas: []
   hurtboxDatas:
   - startEndFrame: {x: 0, y: 14}
@@ -36,4 +38,4 @@ MonoBehaviour:
       height: 0
     useBaseRect: 1
   pushBoxDatas: []
-  alwayscancelable: 0
+  isAlwayscancelable: 0

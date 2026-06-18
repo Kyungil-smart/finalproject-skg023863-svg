@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 3
   actionName: NAttack
+  actionType: 1
   frameCount: 22
   isLoop: 0
   loopFromFrame: 0
+  moveSpeeds: []
   hitboxDatas:
   - startEndFrame: {x: 4, y: 5}
     rect:
@@ -60,4 +62,4 @@ MonoBehaviour:
       width: 0.8
       height: 1
     useBaseRect: 1
-  alwayscancelable: 0
+  isAlwayscancelable: 0

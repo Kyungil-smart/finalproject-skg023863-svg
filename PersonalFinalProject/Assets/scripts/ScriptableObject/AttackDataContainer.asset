@@ -15,4 +15,25 @@ MonoBehaviour:
   attackDataList:
   - attackID: 1
     hitCount: 1
-    hitStopFrame: 10
+    damageActionID: 4
+    guardActionID: 5
+    hitStopFrame: 12
+    guardHitStopFrame: 10
+    hitMoveSpeeds:
+    - startEndFrame: {x: 0, y: 3}
+      speed: -3
+    - startEndFrame: {x: 4, y: 8}
+      speed: -2
+    - startEndFrame: {x: 9, y: 12}
+      speed: -0.5
+    - startEndFrame: {x: 13, y: 13}
+      speed: 0
+    guradMoveSpeeds:
+    - startEndFrame: {x: 0, y: 3}
+      speed: -2
+    - startEndFrame: {x: 4, y: 6}
+      speed: -1
+    - startEndFrame: {x: 7, y: 8}
+      speed: -0.5
+    - startEndFrame: {x: 9, y: 9}
+      speed: 0
