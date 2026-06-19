@@ -4,15 +4,22 @@ using UnityEngine;
 
 namespace MyGame
 {
+    // hitbox, hurtbox, pushbox등의 공통 부모 클래스
+    // 박스의 위치와 충돌 판정에 필요한 xMin, xMax, yMin, yMax 계산 기능을 제공
     public class BoxBase
     {
         public Rect rect;
         
-        public float xMin { get { return rect.x - rect.width / 2; }}
-        public float xMax { get { return rect.x + rect.width / 2; }}
-        public float yMin { get { return rect.y; }}
-        public float yMax { get { return rect.y + rect.height; }}
+        // 현재 Fighter들이 사용하는 스프라이트의 pivot은 x = 0.5, y = 0 이므로 Fighter들의 스프라이트는 중앙하단을 기준으로 그려지게 된다.
+        // Rect의 x,y는 오브젝트의 pivot을 기준으로 삼고 Rect의 하단좌측을 뜻한다.
+        // 박스들을 스프라이트의 기준점에 맞춰서 그리는게 편하므로
+        // Rect의 좌표를 그대로 사용하지 않고 마치 pivot x = 0.5, y = 0인 것처럼 사용하기위해 박스 위치를 재정의 해서 박스의 충돌을 비교하는데 사용한다. 
+        public float xMin { get { return rect.x - rect.width / 2; }} // 박스의 중심점으로부터 왼쪽
+        public float xMax { get { return rect.x + rect.width / 2; }} // 박스의 중심점으로부터 오른쪽
+        public float yMin { get { return rect.y; }}                  // 박스의 바닥 시작 점
+        public float yMax { get { return rect.y + rect.height; }}    // 박스의 높이
 
+        // 박스 끼리의 충돌 판정을 하기 위해 사용하는 메서드 opponentBox는 자신 이외의 상대 BoxBase가 들어간다.
         public bool BoxOverlap(BoxBase opponentBox)
         {
             // c = corner
@@ -87,6 +94,8 @@ namespace MyGame
         
         public bool isHitStopEnd { get { return _currentHitStopFrame <= 0; } }
 
+        public int ShakeSpritePower { get; private set; }
+
         // 이 공격 이 이번 액션에서 이미 몇 번 적중했는가 확인용
         // 1히트 공격이 들어갔을 경우 1히트 보다 더 히트되면 안 되므로 비교하기 위해 사용되는 변수
         private int _currentAttackhitCount; 
@@ -124,6 +133,12 @@ namespace MyGame
         
         public void IncrementActionFrame()
         {
+            if (Mathf.Abs(ShakeSpritePower) > 0)
+            {
+                ShakeSpritePower *= -1;
+                ShakeSpritePower += (ShakeSpritePower < 0 ? 1 : -1);
+            }
+            
             if (!isHitStopEnd)
             {
                 _currentHitStopFrame--;
@@ -235,7 +250,9 @@ namespace MyGame
         {
             CurrentActionID = actionID;
             _currentActionFrame = startFrame;
+            
             _currentAttackhitCount = 0;
+            ShakeSpritePower = 0;
         }
 
         public void UpdateFacingDirection(Fighter opponent)
@@ -276,11 +293,18 @@ namespace MyGame
             return 0;
         }
 
+        public void SetShakeSpritePower(int shakePower)
+        {
+            ShakeSpritePower = shakePower * Sign;
+        }
+
         public List<MoveSpeed> GetMoveSpeeds(DamageResult damageResult, int attackID)
         {
             AttackData attackData = _fighterData.AttackDatas[attackID];
+            
             if (damageResult == DamageResult.Guard)
                 return attackData.guradMoveSpeeds;
+            
             if (damageResult == DamageResult.Damage)
                 return attackData.hitMoveSpeeds;
 
@@ -312,7 +336,7 @@ namespace MyGame
             return null;
         }
 
-        public DamageResult DamagedFromAttacker(AttackData attackData)
+        public DamageResult DamagedAction(AttackData attackData)
         {
             if (CurrentActionID == (int)FighterActionID.Backward)
             {

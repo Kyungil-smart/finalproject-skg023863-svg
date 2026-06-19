@@ -13,8 +13,8 @@ namespace MyGame
         
         void Awake()
         {
-            _animator = GetComponent<Animator>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _animator = GetComponentInChildren<Animator>();
+            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
     
         public void Initialize(Fighter fighter)
@@ -22,16 +22,9 @@ namespace MyGame
             _fighter = fighter;    
         }
 
-        // void Update()
-        // {
-        //     if (gameObject.name == "Player2") return;
-        //     Debug.Log((FighterActionID)_fighter.CurrentActionID);
-        //     PlayAnimation();
-        //     UpdateFighterPosition();
-        // }
-
         void FixedUpdate()
         {
+            ShakeSprite();
             PlayFighterAnimation();
             UpdateFighterPosition();
         }
@@ -61,6 +54,11 @@ namespace MyGame
 
             transform.position = _fighter.Position;
             _spriteRenderer.flipX = !_fighter.IsFaceRight;
+        }
+
+        void ShakeSprite()
+        {
+            _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 6, 0, 0);
         }
     }
 

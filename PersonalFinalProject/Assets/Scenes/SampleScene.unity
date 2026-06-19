@@ -495,8 +495,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1425223837402722898, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
-      propertyPath: m_UpdateMode
+    - target: {fileID: 1513429874567182084, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
+      propertyPath: m_Size.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513429874567182084, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
+      propertyPath: m_Size.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513429874567182084, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b5cbbaa9ca03034da3fd353f814abc1, type: 3}
+    - target: {fileID: 1513429874567182084, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4726194522765658722, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
@@ -599,10 +611,6 @@ PrefabInstance:
     - target: {fileID: 4979528210563341644, guid: 702a79629b0a5bf4cb9560a0016e0487, type: 3}
       propertyPath: m_Name
       value: Player2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5870834800355594811, guid: 702a79629b0a5bf4cb9560a0016e0487, type: 3}
-      propertyPath: m_UpdateMode
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
