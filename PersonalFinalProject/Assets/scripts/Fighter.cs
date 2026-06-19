@@ -70,7 +70,6 @@ namespace MyGame
     {
         private Vector2 _position;
         public Vector2 Position => _position;
-        // public FighterActionID CurrentActionID { get; private set; } // 현재 액션
 
         private float _velocityX;
         
@@ -86,15 +85,24 @@ namespace MyGame
         private int _currentActionFrame; // 현재 액션의 핸재 프레임 
         public int CurrentActionFrame => _currentActionFrame;
         
-        public bool isActionEnd { get { return _currentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount; } }
+        public bool IsActionEnd 
+        { get 
+            { return _currentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount
+                && _currentActionFrame >= HitStunFrame; } 
+        }
         
-        public int loopStartFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
+        public int LoopStartFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
 
         private int _currentHitStopFrame; // 현재 공격의 남아있는 히트 스탑 프레임 수, 프레임 마다 -- 됨
         
-        public bool isHitStopEnd { get { return _currentHitStopFrame <= 0; } }
+        public bool IsHitStopEnd { get { return _currentHitStopFrame <= 0; } }
 
         public int ShakeSpritePower { get; private set; }
+        
+        public int HitStunFrame { get; private set; }
+        
+        public bool IsDamaged { get { return _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Damaged; } }
+        public bool IsGuarded { get { return _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard; } }
 
         // 이 공격 이 이번 액션에서 이미 몇 번 적중했는가 확인용
         // 1히트 공격이 들어갔을 경우 1히트 보다 더 히트되면 안 되므로 비교하기 위해 사용되는 변수
@@ -139,7 +147,7 @@ namespace MyGame
                 ShakeSpritePower += (ShakeSpritePower < 0 ? 1 : -1);
             }
             
-            if (!isHitStopEnd)
+            if (!IsHitStopEnd)
             {
                 _currentHitStopFrame--;
                 return;
@@ -150,7 +158,7 @@ namespace MyGame
         }
         private void RequestAction(int actionID, int startFrame = 0)
         {
-            if (isActionEnd)
+            if (IsActionEnd)
             {
                 SetCurrentAction(actionID, startFrame);
                 return;
@@ -169,7 +177,7 @@ namespace MyGame
         {
             if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
             {
-                if (!isActionEnd) return;
+                if (!IsActionEnd) return;
             }
 
             if(_currentInput.Attack)
@@ -208,7 +216,7 @@ namespace MyGame
         
         public void UpdateMovement()
         {
-            if (!isHitStopEnd) return;
+            if (!IsHitStopEnd) return;
             
             if (CurrentActionID == (int)FighterActionID.Forward)
             {
@@ -223,8 +231,7 @@ namespace MyGame
 
             MoveSpeed moveSpeed;
             
-            if (_fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard ||
-                _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Damaged)
+            if (IsGuarded || IsDamaged)
             {
                 moveSpeed = GetCurrentKnockBackMoveSpeed();
                 
@@ -253,6 +260,7 @@ namespace MyGame
             
             _currentAttackhitCount = 0;
             ShakeSpritePower = 0;
+            HitStunFrame = 0;
         }
 
         public void UpdateFacingDirection(Fighter opponent)
@@ -270,16 +278,11 @@ namespace MyGame
             return true;
         }
 
-        public void SuccessfullAttack()
+        public void SuccessfullyAttack()
         {
             _currentAttackhitCount++;
         }
-
-        public void SetHitStopFrame(int hitStopFrame)
-        {
-            _currentHitStopFrame = hitStopFrame;
-        }
-
+        
         public int GetHitStopFrame(DamageResult damageResult, int attackID)
         {
             AttackData attackData = _fighterData.AttackDatas[attackID];
@@ -293,6 +296,11 @@ namespace MyGame
             return 0;
         }
 
+        public void SetHitStopFrame(int hitStopFrame)
+        {
+            _currentHitStopFrame = hitStopFrame;
+        }
+        
         public void SetShakeSpritePower(int shakePower)
         {
             ShakeSpritePower = shakePower * Sign;
@@ -315,6 +323,24 @@ namespace MyGame
         {
             _knockBackMoveSpeeds = moveSpeeds;
             _currentKnockBackFrame = 0;
+        }
+
+        public int GetHitStunFrame(DamageResult damageResult, int attackID)
+        {
+            AttackData attackData =  _fighterData.AttackDatas[attackID];
+
+            if (damageResult == DamageResult.Damage)
+                return attackData.hitStunFrame;
+            
+            if (damageResult == DamageResult.Guard)
+                return attackData.guardHitStunFrame;
+
+            return 0;
+        }
+
+        public void SetHitStunFrame(int hitStunFrame)
+        {
+            HitStunFrame = hitStunFrame;
         }
 
         private MoveSpeed GetCurrentKnockBackMoveSpeed()

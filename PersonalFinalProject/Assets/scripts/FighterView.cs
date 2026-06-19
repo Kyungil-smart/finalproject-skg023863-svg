@@ -34,14 +34,24 @@ namespace MyGame
             if (_fighter == null) return;
             
             _animator.speed = 0;
+            
             string actionName =
                 ((FighterActionID)_fighter.CurrentActionID)
                 .ToString();
             
             float currentFrame = (float)_fighter.CurrentActionFrame;
+
+            float fullFrame;
             
-            float fullFrame =
-                (float)_fighter.FighterData.ActionDatas[_fighter.CurrentActionID].frameCount - 1f;
+            if (_fighter.IsDamaged || _fighter.IsGuarded)
+            {
+                fullFrame = _fighter.HitStunFrame;
+                Debug.Log(_fighter.HitStunFrame);
+            }
+            else
+            {
+                fullFrame = (float)_fighter.FighterData.ActionDatas[_fighter.CurrentActionID].frameCount - 1f;
+            }
             
             float normalizedTime = currentFrame / fullFrame;
             
@@ -58,7 +68,7 @@ namespace MyGame
 
         void ShakeSprite()
         {
-            _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 6, 0, 0);
+            _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 8, 0, 0);
         }
     }
 
