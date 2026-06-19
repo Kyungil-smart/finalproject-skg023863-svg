@@ -16,6 +16,8 @@ namespace MyGame
         
         public int hitStopFrame; // 공격에 적중 시 히트 스톱
         public int guardHitStopFrame; // 공격을 가드 시 히트 스톱
+        public int hitStunFrame;
+        public int guardHitStunFrame;
         
         public List<MoveSpeed> hitMoveSpeeds;
         public List<MoveSpeed> guradMoveSpeeds;
