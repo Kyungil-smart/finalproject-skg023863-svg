@@ -86,10 +86,11 @@ namespace MyGame
                     {
                         attacker.SuccessfullAttack();
                         
-                        DamageResult damageresult = defender.DamagedFromAttacker(attacker.GetAttackData(hitAttackID));
+                        DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID));
                         int hitStopFrame = attacker.GetHitStopFrame(damageresult, hitAttackID);
                         List<MoveSpeed> moveSpeed = attacker.GetMoveSpeeds(damageresult, hitAttackID);
                         
+                        defender.SetShakeSpritePower(hitStopFrame / 3);
                         defender.SetMoveSpeeds(moveSpeed);
                         attacker.SetHitStopFrame(hitStopFrame);
                         defender.SetHitStopFrame(hitStopFrame);
