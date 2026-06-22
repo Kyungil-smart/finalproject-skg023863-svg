@@ -19,6 +19,8 @@ MonoBehaviour:
     guardActionID: 5
     hitStopFrame: 12
     guardHitStopFrame: 10
+    hitStunFrame: 17
+    guardHitStunFrame: 15
     hitMoveSpeeds:
     - startEndFrame: {x: 0, y: 3}
       speed: -3

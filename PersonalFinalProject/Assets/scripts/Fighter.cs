@@ -14,8 +14,8 @@ namespace MyGame
         // Rect의 x,y는 오브젝트의 pivot을 기준으로 삼고 Rect의 하단좌측을 뜻한다.
         // 박스들을 스프라이트의 기준점에 맞춰서 그리는게 편하므로
         // Rect의 좌표를 그대로 사용하지 않고 마치 pivot x = 0.5, y = 0인 것처럼 사용하기위해 박스 위치를 재정의 해서 박스의 충돌을 비교하는데 사용한다. 
-        public float xMin { get { return rect.x - rect.width / 2; }} // 박스의 중심점으로부터 왼쪽
-        public float xMax { get { return rect.x + rect.width / 2; }} // 박스의 중심점으로부터 오른쪽
+        public float xMin { get { return rect.x - rect.width / 2; }} // 박스의 중심점으로부터 width/2 만큼 왼쪽
+        public float xMax { get { return rect.x + rect.width / 2; }} // 박스의 중심점으로부터 width/2 만큼 오른쪽
         public float yMin { get { return rect.y; }}                  // 박스의 바닥 시작 점
         public float yMax { get { return rect.y + rect.height; }}    // 박스의 높이
 
@@ -32,22 +32,25 @@ namespace MyGame
         }
     }
 
+    // 히트박스. attackID를 받아와서 어떤 공격의 히트박스인지 확인 가능
     public class HitBox : BoxBase
     {
         public int attackID;
     }
 
+    // 허트박스. 히트박스에 닿으면 공격을 받은 것으로 간주 된다.
     public class HurtBox : BoxBase
     {
         
     }
-
+    
+    // 푸쉬박스. Fighter끼리 밀어내거나 맵 밖으로 나게가 될 경우를 방지.
     public class PushBox : BoxBase
     {
         
     }
     
-    // 캐릭터들의 행동을 열거형으로 정리
+    // Fighter들의 행동을 열거형으로 정리
     public enum FighterActionID
     {
         Idle,
@@ -58,39 +61,45 @@ namespace MyGame
         CrouchGuard,
     }
 
+    // Fighter가 공격 받았을 때 어떤 상황인지 열거형으로 정리
     public enum DamageResult
     {
-        Damage,
-        Guard,
-        GuradBreak,
+        Damage, 
+        Guard,  
+        GuradBreak, 
     }
     
     // 대전에서 사용할 캐릭터(Fighter)의 로직
     public class Fighter
     {
-        private Vector2 _position;
+        private Vector2 _position; // Fighter의 위치
         public Vector2 Position => _position;
 
-        private float _velocityX;
+        // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
+        private float _velocityX; 
         
-        public int CurrentActionID { get; private set; }
+        public int CurrentActionID { get; private set; } // 현재의 액션 ID를 저장
 
-        private bool _isFaceRight = true;
+        private bool _isFaceRight = true; // 오른쪽을 바라 보고 있는지 확인하는 bool 변수, true면 오른쪽을 바라보고 있는 것.
         public bool IsFaceRight => _isFaceRight;
         
+        // 어느 쪽을 바라보고 있는지에 따라 방향키의 입력이 전진, 후진이 되도록 하기 위해 사용하는 변수
         public int Sign { get { return _isFaceRight ? 1 : -1; } }
         
-        private InputData _currentInput;
+        private InputData _currentInput; // 현재 입력을 저장
         
-        private int _currentActionFrame; // 현재 액션의 핸재 프레임 
+        private int _currentActionFrame; // 현재 액션의 몇번째 프레임인지. 0부터 시작함.
         public int CurrentActionFrame => _currentActionFrame;
         
+        // 현재 액션이 끝났는지 확인하는 bool 변수.
+        // _currentActionFrame이 현재 액션의 총 프레임 수보다 크거나 같던지, HitStunFrame 프레임 수보다 크거나 같으면 true 반환
         public bool IsActionEnd 
         { get 
             { return _currentActionFrame >= _fighterData.ActionDatas[CurrentActionID].frameCount
                 && _currentActionFrame >= HitStunFrame; } 
         }
         
+        // 만약 IsLoop
         public int LoopStartFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
 
         private int _currentHitStopFrame; // 현재 공격의 남아있는 히트 스탑 프레임 수, 프레임 마다 -- 됨
@@ -366,12 +375,12 @@ namespace MyGame
         {
             if (CurrentActionID == (int)FighterActionID.Backward)
             {
-                RequestAction(attackData.guardActionID);
+                SetCurrentAction(attackData.guardActionID);
                 return DamageResult.Guard;
             }
             else
             {
-                RequestAction(attackData.damageActionID);
+                SetCurrentAction(attackData.damageActionID);
                 return DamageResult.Damage;
             }
         }
