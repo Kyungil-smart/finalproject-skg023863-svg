@@ -40,8 +40,11 @@ namespace MyGame
 
         private void FixedUpdate()
         {
-            _fighter1.UpdateInput(_inputController.Player1InputData);
-            _fighter2.UpdateInput(_inputController.Player2InputData);
+            //_fighter1.UpdateInput(_inputController.Player1InputData);
+            //_fighter2.UpdateInput(_inputController.Player2InputData);
+            
+            _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
+            _fighter2.UpdateInput(_inputController.GetPlayer2InputData());
             
             fighters.ForEach(f => f.IncrementActionFrame());
             
@@ -94,6 +97,7 @@ namespace MyGame
                         defender.SetShakeSpritePower(hitStopFrame / 3);
                         defender.SetHitStunFrame(hitStunFrame);
                         defender.SetMoveSpeeds(moveSpeed);
+                        
                         attacker.SetHitStopFrame(hitStopFrame);
                         defender.SetHitStopFrame(hitStopFrame);
                     }
