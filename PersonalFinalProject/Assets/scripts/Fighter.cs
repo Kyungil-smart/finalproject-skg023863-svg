@@ -134,6 +134,12 @@ namespace MyGame
         
         public FighterData FighterData => _fighterData;
 
+        private static int inputRecordFrame = 180;
+
+        private int[] input = new int[inputRecordFrame];
+        private int[] inputDown = new int[inputRecordFrame];
+        private int[] inputUp = new int[inputRecordFrame];
+
         public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
         {
             _fighterData = fighterData;
@@ -143,9 +149,21 @@ namespace MyGame
             SetCurrentAction((int)FighterActionID.Idle);
         }
 
-        public void UpdateInput(InputData input)
+        public void UpdateInput(InputData inputData)
         {
-            _currentInput = input;
+            for (int i = input.Length - 1; i >= 1; i--)
+            {
+                input[i] = input[i - 1];
+                inputDown[i] = inputDown[i - 1];
+                inputUp[i] = inputUp[i - 1];
+            }
+
+            // ^(XOR)는 비트 연산자. 비트가 같으면 0 틀리면 1
+            input[0] = inputData.Input;
+            inputDown[0] = (input[0] ^ input[1]) & input[0];
+            inputUp[0] = (input[0] ^ input[1]) & ~input[0];
+            
+            _currentInput = inputData;
         }
         
         public void IncrementActionFrame()
@@ -189,24 +207,14 @@ namespace MyGame
                 if (!IsActionEnd) return;
             }
 
-            if(_currentInput.Attack)
+            bool isForward = IsInputForward(input[0]);
+            bool isBackward = IsInputBackward(input[0]);
+            bool isAttack = IsInputAttack(inputDown[0]);
+
+            if(isAttack)
             {
                 RequestAction((int)FighterActionID.NAttack);
                 return;
-            }
-
-            bool isForward;
-            bool isBackward;
-
-            if (_isFaceRight)
-            {
-                isForward = _currentInput.MoveX > 0;
-                isBackward = _currentInput.MoveX < 0;
-            }
-            else
-            {
-                isForward = _currentInput.MoveX < 0;
-                isBackward = _currentInput.MoveX > 0;
             }
 
             if (isForward)
@@ -389,6 +397,35 @@ namespace MyGame
         {
             AttackData attackData = _fighterData.AttackDatas[attackID];
             return attackData;
+        }
+
+        private bool IsInputForward(int input)
+        {
+            if (_isFaceRight)
+            {
+                return (input & (int)InputDefine.Right) > 0;
+            }
+            else
+            {
+                return (input & (int)InputDefine.Left) > 0;
+            }
+        }
+
+        private bool IsInputBackward(int input)
+        {
+            if (_isFaceRight)
+            {
+                return (input & (int)InputDefine.Left) > 0;
+            }
+            else
+            {
+                return (input & (int)InputDefine.Right) > 0;
+            }
+        }
+        
+        private bool IsInputAttack(int input)
+        {
+            return (input & (int)InputDefine.Attack) > 0;
         }
         
         public void UpdateBoxes()
