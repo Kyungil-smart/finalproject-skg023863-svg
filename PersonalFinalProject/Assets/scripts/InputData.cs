@@ -11,8 +11,5 @@ namespace MyGame
     public struct InputData
     {
         public int Input;
-        
-        public float MoveX; // 좌우 입력
-        public bool Attack; // 공격 입력
     }
 }

@@ -40,9 +40,6 @@ namespace MyGame
 
         private void FixedUpdate()
         {
-            //_fighter1.UpdateInput(_inputController.Player1InputData);
-            //_fighter2.UpdateInput(_inputController.Player2InputData);
-            
             _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
             _fighter2.UpdateInput(_inputController.GetPlayer2InputData());
             

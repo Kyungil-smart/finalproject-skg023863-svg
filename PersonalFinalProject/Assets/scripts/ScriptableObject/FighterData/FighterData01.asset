@@ -28,3 +28,4 @@ MonoBehaviour:
     height: 1
   _actionDataContainer: {fileID: 11400000, guid: 10fab431b0e3eea408224434acbc46b5, type: 2}
   _attackDataContainer: {fileID: 11400000, guid: c04615bc54bb34649a132fb3daee4d6c, type: 2}
+  _commandDataContainer: {fileID: 11400000, guid: c8ba7131cfa7508489cbe5ffbb301ee4, type: 2}

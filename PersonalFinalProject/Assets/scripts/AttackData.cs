@@ -9,6 +9,7 @@ namespace MyGame
     public class AttackData
     {
         public int attackID; // 공격 ID
+        public string attackName;
         public int hitCount; // 최대 히트 수
 
         public int damageActionID;
