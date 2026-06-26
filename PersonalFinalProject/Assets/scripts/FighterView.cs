@@ -8,6 +8,8 @@ namespace MyGame
     {
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
+        private const float AnimationSampleOffset = 0.05f;
+        
         private Fighter _fighter;
         public Fighter Fighter => _fighter;
         
@@ -31,6 +33,8 @@ namespace MyGame
         
         void PlayFighterAnimation()
         {
+            //if (gameObject.name == "Player2") return;
+            
             if (_fighter == null) return;
             
             _animator.speed = 0;
@@ -38,7 +42,7 @@ namespace MyGame
             string actionName = _fighter.CurrentActionName;
             
             float currentFrame = (float)_fighter.CurrentActionFrame;
-
+            
             float fullFrame;
             
             if (_fighter.IsDamaged || _fighter.IsGuarded)
@@ -51,8 +55,9 @@ namespace MyGame
                 fullFrame = (float)_fighter.FighterData.ActionDatas[_fighter.CurrentActionID].frameCount - 1f;
             }
             
-            float normalizedTime = currentFrame / fullFrame;
+            float normalizedTime = (currentFrame + AnimationSampleOffset )/ fullFrame;
             
+            // Debug.Log($"[FighterView] normalizedTime {normalizedTime}");
             _animator.Play(actionName, 0, normalizedTime);
         }
 
