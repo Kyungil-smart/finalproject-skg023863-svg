@@ -18,8 +18,13 @@ namespace MyGame
         private Dictionary<int, AttackData> _attackDatas = new();
         public Dictionary<int, AttackData> AttackDatas => _attackDatas;
         
+        private Dictionary<CommandType, CommandData> _commandDatas = new();
+        
+        public Dictionary<CommandType, CommandData> CommandDatas => _commandDatas;
+        
         [SerializeField] private ActionDataContainer _actionDataContainer;
         [SerializeField] private AttackDataContainer _attackDataContainer;
+        [SerializeField] private CommandDataContainer _commandDataContainer;
 
         public void DictionaryInit()
         {
@@ -35,14 +40,25 @@ namespace MyGame
                 return;
             }
 
+            if (_commandDataContainer == null)
+            {
+                Debug.LogError("No CommandDatacontainer");
+                return;
+            }
+
             foreach (var action in _actionDataContainer.actions)
             {
                 _actionDatas.Add(action.actionID, action);
             }
             
-            foreach (var attack in _attackDataContainer.attackDataList)
+            foreach (var attack in _attackDataContainer.attackDatas)
             {
                 _attackDatas.Add(attack.attackID, attack);
+            }
+
+            foreach (var command in _commandDataContainer.commandDatas)
+            {
+                _commandDatas.Add(command.commandType, command);
             }
         }
     }

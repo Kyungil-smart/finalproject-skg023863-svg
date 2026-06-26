@@ -47,6 +47,15 @@ namespace MyGame
     {
         public float speed;
     }
+
+    [Serializable]
+    public class CancelData : FrameBase
+    {
+        public bool buffer;
+        public bool execute;
+        public CommandType commandType;
+        public int nextActionID;
+    }
     
     // 하나의 액션에 필요한 정보들을 담고 있는 Data
     [CreateAssetMenu]
@@ -58,11 +67,11 @@ namespace MyGame
         public int frameCount; // 액션의 총 프레임 수
         public bool isLoop; // 루프를 하는 액션인지
         public int loopFromFrame; // 루프를 시작하면 어느 프레임부터 시작하는지
-        // public MoveSpeed[] moveSpeeds;
-        public List<MoveSpeed> moveSpeeds;
         public HitBoxData[] hitboxDatas;
         public HurtBoxData[] hurtboxDatas;
         public PushBoxData[] pushBoxDatas;
+        public List<MoveSpeed> moveSpeeds;
+        public CancelData[] cancelDatas;
         public bool isAlwayscancelable; // 언제든지 캔슬할 수 있는 액션인지
 
         public List<HitBoxData> GetHitBoxData(int frame)
@@ -103,6 +112,23 @@ namespace MyGame
                 }
             }
             return null;
+        }
+
+        public List<CancelData> GetCancelData(int frame)
+        {
+            List<CancelData> cancel = new List<CancelData>();
+
+            foreach (var cancelData in cancelDatas)
+            {
+                if (frame >= cancelData.startEndFrame.x && frame <= cancelData.startEndFrame.y)
+                {
+                    cancel.Add(cancelData);
+                }
+            }
+            
+            Debug.Log($"frame = {frame}, 반환 개수 = {cancel.Count}");
+            
+            return cancel;
         }
         
     }

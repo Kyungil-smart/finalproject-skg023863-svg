@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
   m_Name: CrouchGuard
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
-  actionID: 5
+  actionID: 4
   actionName: CrouchGuard
   actionType: 3
   frameCount: 15
   isLoop: 0
   loopFromFrame: 0
-  moveSpeeds: []
   hitboxDatas: []
   hurtboxDatas:
   - startEndFrame: {x: 0, y: 14}
@@ -38,4 +37,6 @@ MonoBehaviour:
       height: 0
     useBaseRect: 1
   pushBoxDatas: []
+  moveSpeeds: []
+  cancelDatas: []
   isAlwayscancelable: 0

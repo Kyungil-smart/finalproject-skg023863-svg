@@ -51,14 +51,23 @@ namespace MyGame
     }
     
     // Fighter들의 행동을 열거형으로 정리
-    public enum FighterActionID
+    public enum FighterState
     {
         Idle,
         Forward,
         Backward,
-        NAttack,
         Damaged,
         CrouchGuard,
+    }
+    
+    public enum CommandType
+    {
+        None,
+        Command4,
+        Command6,
+        Command236,
+        Command623,
+        HoldAttackRelease,
     }
 
     // Fighter가 공격 받았을 때 어떤 상황인지 열거형으로 정리
@@ -68,6 +77,8 @@ namespace MyGame
         Guard,  
         GuradBreak, 
     }
+
+    
     
     // 대전에서 사용할 캐릭터(Fighter)의 로직
     public class Fighter
@@ -79,6 +90,10 @@ namespace MyGame
         private float _velocityX; 
         
         public int CurrentActionID { get; private set; } // 현재의 액션 ID를 저장
+
+        private int _bufferActionID = -1;
+        
+        public string CurrentActionName { get { return _fighterData.ActionDatas[CurrentActionID].actionName; } }
 
         private bool _isFaceRight = true; // 오른쪽을 바라 보고 있는지 확인하는 bool 변수, true면 오른쪽을 바라보고 있는 것.
         public bool IsFaceRight => _isFaceRight;
@@ -146,7 +161,7 @@ namespace MyGame
             _position = position;
             _isFaceRight = isFaceRight;
             
-            SetCurrentAction((int)FighterActionID.Idle);
+            SetCurrentAction((int)FighterState.Idle);
         }
 
         public void UpdateInput(InputData inputData)
@@ -157,13 +172,11 @@ namespace MyGame
                 inputDown[i] = inputDown[i - 1];
                 inputUp[i] = inputUp[i - 1];
             }
-
+            
             // ^(XOR)는 비트 연산자. 비트가 같으면 0 틀리면 1
             input[0] = inputData.Input;
             inputDown[0] = (input[0] ^ input[1]) & input[0];
             inputUp[0] = (input[0] ^ input[1]) & ~input[0];
-            
-            _currentInput = inputData;
         }
         
         public void IncrementActionFrame()
@@ -193,7 +206,6 @@ namespace MyGame
             
             if(CurrentActionID == actionID) return;
             
-            
             if (_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
             {
                 SetCurrentAction(actionID, startFrame);
@@ -202,32 +214,44 @@ namespace MyGame
 
         public void UpdateAction()
         {
-            if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
+            if (_bufferActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
-                if (!IsActionEnd) return;
+                SetCurrentAction(_bufferActionID);
+                _bufferActionID = -1;
+                return;
             }
+            
+            // if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
+            // {
+            //     if (!IsActionEnd) return;
+            // }
 
             bool isForward = IsInputForward(input[0]);
             bool isBackward = IsInputBackward(input[0]);
             bool isAttack = IsInputAttack(inputDown[0]);
-
+            
             if(isAttack)
             {
-                RequestAction((int)FighterActionID.NAttack);
-                return;
+                Debug.Log($"공격 눌림{CurrentActionFrame}");
+                
+                CommandType command = DetectCommand();
+
+                if (TryCancel(command)) return;
+                
+                RequestCommand(command);
             }
 
             if (isForward)
             {
-                RequestAction((int)FighterActionID.Forward);
+                RequestAction((int)FighterState.Forward);
             }
             else if (isBackward)
             {
-                RequestAction((int)FighterActionID.Backward);
+                RequestAction((int)FighterState.Backward);
             }
             else
             {
-                RequestAction((int)FighterActionID.Idle);
+                RequestAction((int)FighterState.Idle);
             }
         }
         
@@ -235,12 +259,12 @@ namespace MyGame
         {
             if (!IsHitStopEnd) return;
             
-            if (CurrentActionID == (int)FighterActionID.Forward)
+            if (CurrentActionID == (int)FighterState.Forward)
             {
                 _position.x += _fighterData.forwardSpeed * Sign * Time.fixedDeltaTime;
                 return;
             }
-            if (CurrentActionID == (int)FighterActionID.Backward)
+            if (CurrentActionID == (int)FighterState.Backward)
             {
                 _position.x -= _fighterData.backwardSpeed * Sign * Time.fixedDeltaTime;
                 return;
@@ -278,6 +302,65 @@ namespace MyGame
             _currentAttackhitCount = 0;
             ShakeSpritePower = 0;
             HitStunFrame = 0;
+            _bufferActionID = -1;
+        }
+
+        private void RequestCommand(CommandType commandType)
+        {
+            if(!_fighterData.CommandDatas.TryGetValue(commandType, out CommandData commandData)) return;
+            
+            RequestAction(commandData.ActionID);
+        }
+
+        private CommandType DetectCommand()
+        {
+            // if (Check236())
+            //     return CommandType.Command236;
+            //
+            // if (Check623())
+            //     return CommandType.Command623;
+            //
+            // if (CheckForwardAttack())
+            //     return CommandType.ForwardAttack;
+            //
+            // if (CheckDownAttack())
+            //     return CommandType.DownAttack;
+
+            return CommandType.None;
+        }
+        
+        private bool TryCancel(CommandType commandType)
+        {
+            Debug.Log($"현재 아이디{CurrentActionID}");
+            foreach(var cancelData in _fighterData.ActionDatas[CurrentActionID].GetCancelData(CurrentActionFrame))
+            {
+                if (cancelData.commandType != commandType) continue;
+                
+                Debug.Log("CancelData 발견");
+                
+                if(cancelData.execute)
+                {
+                    Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
+                    SetCurrentAction(cancelData.nextActionID);
+                    return true;
+                }
+
+                if(cancelData.buffer)
+                {
+                    Debug.Log($"버퍼 아이디는 {cancelData.nextActionID}");
+                    _bufferActionID = cancelData.nextActionID;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool CanCancelAttack()
+        {
+            if (_currentAttackhitCount > 0) return true;
+            
+            return false;
         }
 
         public void UpdateFacingDirection(Fighter opponent)
@@ -381,7 +464,7 @@ namespace MyGame
 
         public DamageResult DamagedAction(AttackData attackData)
         {
-            if (CurrentActionID == (int)FighterActionID.Backward)
+            if (CurrentActionID == (int)FighterState.Backward)
             {
                 SetCurrentAction(attackData.guardActionID);
                 return DamageResult.Guard;
@@ -448,7 +531,6 @@ namespace MyGame
                 HurtBox hurtBox = new HurtBox();
                 Rect rect = hurtBoxData.useBaseRect ? _fighterData.baseHurtBox : hurtBoxData.rect;
                 hurtBox.rect = MoveBoxes(rect, _position);
-                // hurtBox.rect = MoveBoxes(hurtBoxData.rect, _position);
                 _hurtBoxes.Add(hurtBox);
             }
         }

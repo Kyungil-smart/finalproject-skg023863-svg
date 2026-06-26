@@ -35,9 +35,7 @@ namespace MyGame
             
             _animator.speed = 0;
             
-            string actionName =
-                ((FighterActionID)_fighter.CurrentActionID)
-                .ToString();
+            string actionName = _fighter.CurrentActionName;
             
             float currentFrame = (float)_fighter.CurrentActionFrame;
 
@@ -46,7 +44,7 @@ namespace MyGame
             if (_fighter.IsDamaged || _fighter.IsGuarded)
             {
                 fullFrame = _fighter.HitStunFrame;
-                Debug.Log(_fighter.HitStunFrame);
+                // Debug.Log(_fighter.HitStunFrame);
             }
             else
             {
