@@ -19,21 +19,13 @@ MonoBehaviour:
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas:
-  - startEndFrame: {x: 0, y: 14}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
-    attackID: 2
   - startEndFrame: {x: 11, y: 14}
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 2
+      y: 2.2
+      width: 1.8
+      height: 1
     attackID: 2
   hurtboxDatas:
   - startEndFrame: {x: 0, y: 43}

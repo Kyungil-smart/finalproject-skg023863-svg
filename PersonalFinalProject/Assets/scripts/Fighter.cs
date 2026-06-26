@@ -336,8 +336,6 @@ namespace MyGame
             {
                 if (cancelData.commandType != commandType) continue;
                 
-                Debug.Log("CancelData 발견");
-                
                 if(cancelData.execute)
                 {
                     Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
@@ -464,7 +462,8 @@ namespace MyGame
 
         public DamageResult DamagedAction(AttackData attackData)
         {
-            if (CurrentActionID == (int)FighterState.Backward)
+            if (CurrentActionID == (int)FighterState.Backward || 
+                _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard)
             {
                 SetCurrentAction(attackData.guardActionID);
                 return DamageResult.Guard;
@@ -515,7 +514,7 @@ namespace MyGame
         {
             _hitBoxes.Clear();
             _hurtBoxes.Clear();
-
+            
             foreach (HitBoxData hitboxData in _fighterData.ActionDatas[CurrentActionID]
                          .GetHitBoxData(CurrentActionFrame))
             {
