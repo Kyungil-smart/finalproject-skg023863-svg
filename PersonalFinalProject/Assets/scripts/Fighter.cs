@@ -58,6 +58,8 @@ namespace MyGame
         Backward,
         Damaged,
         CrouchGuard,
+        Won,
+        Dead,
     }
     
     public enum CommandType
@@ -76,6 +78,7 @@ namespace MyGame
         Damage, 
         Guard,  
         GuradBreak, 
+        Dead
     }
 
     
@@ -85,6 +88,14 @@ namespace MyGame
     {
         private Vector2 _position; // Fighter의 위치
         public Vector2 Position => _position;
+
+        private int _healthGage;
+        
+        private int _guardGage;
+
+        private bool _isWin;
+
+        private bool _isDead;
 
         // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
         private float _velocityX; 
@@ -157,6 +168,9 @@ namespace MyGame
 
         public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
         {
+            _healthGage = fighterData.healthGage;
+            _guardGage = fighterData.guardGage;
+            
             _fighterData = fighterData;
             _position = position;
             _isFaceRight = isFaceRight;
@@ -196,28 +210,18 @@ namespace MyGame
             _currentActionFrame++;
             
         }
-        private void RequestAction(int actionID, int startFrame = 0)
+        
+        public void UpdateAction()
         {
-            if (IsActionEnd)
+            if (_isDead)
             {
-                SetCurrentAction(actionID, startFrame);
+                RequestAction((int)FighterState.Dead);
                 return;
             }
             
-            if(CurrentActionID == actionID) return;
-            
-            if (_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
-            {
-                SetCurrentAction(actionID, startFrame);
-            }
-        }
-
-        public void UpdateAction()
-        {
             if (_bufferActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
                 SetCurrentAction(_bufferActionID);
-                _bufferActionID = -1;
                 return;
             }
             
@@ -238,7 +242,7 @@ namespace MyGame
 
                 if (TryCancel(command)) return;
                 
-                RequestCommand(command);
+                if(RequestCommand(command)) return;
             }
 
             if (isForward)
@@ -284,14 +288,39 @@ namespace MyGame
             }
             
             moveSpeed = _fighterData.ActionDatas[CurrentActionID].GetMoveSpeed(CurrentActionFrame);
+            
             if (moveSpeed != null)
             {
                 _velocityX = moveSpeed.speed;
                 _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
             }
+            
             _velocityX = 0;
+        }
+        
+        private bool RequestAction(int actionID, int startFrame = 0)
+        {
+            if (IsActionEnd)
+            {
+                if (_fighterData.ActionDatas[actionID].isLoop)
+                {
+                    SetCurrentAction(actionID, _fighterData.ActionDatas[actionID].loopFromFrame);
+                    return true;
+                }
+                
+                SetCurrentAction(actionID, startFrame);
+                return true;
+            }
             
+            if(CurrentActionID == actionID) return false;
             
+            if (_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
+            {
+                SetCurrentAction(actionID, startFrame);
+                return true;
+            }
+            
+            return false;
         }
         
         private void SetCurrentAction(int actionID, int startFrame = 0)
@@ -305,11 +334,11 @@ namespace MyGame
             _bufferActionID = -1;
         }
 
-        private void RequestCommand(CommandType commandType)
+        private bool RequestCommand(CommandType commandType)
         {
-            if(!_fighterData.CommandDatas.TryGetValue(commandType, out CommandData commandData)) return;
+            if(!_fighterData.CommandDatas.TryGetValue(commandType, out CommandData commandData)) return false;
             
-            RequestAction(commandData.ActionID);
+            return RequestAction(commandData.ActionID);
         }
 
         private CommandType DetectCommand()
@@ -320,10 +349,10 @@ namespace MyGame
             // if (Check623())
             //     return CommandType.Command623;
             //
-            // if (CheckForwardAttack())
+            // if (Check6())
             //     return CommandType.ForwardAttack;
             //
-            // if (CheckDownAttack())
+            // if (Check4())
             //     return CommandType.DownAttack;
 
             return CommandType.None;
@@ -339,7 +368,9 @@ namespace MyGame
                 if(cancelData.execute)
                 {
                     Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
-                    SetCurrentAction(cancelData.nextActionID);
+                    //SetCurrentAction(cancelData.nextActionID);
+                    //RequestAction(cancelData.nextActionID);
+                    _bufferActionID = cancelData.nextActionID;
                     return true;
                 }
 
@@ -422,25 +453,7 @@ namespace MyGame
             _knockBackMoveSpeeds = moveSpeeds;
             _currentKnockBackFrame = 0;
         }
-
-        public int GetHitStunFrame(DamageResult damageResult, int attackID)
-        {
-            AttackData attackData =  _fighterData.AttackDatas[attackID];
-
-            if (damageResult == DamageResult.Damage)
-                return attackData.hitStunFrame;
-            
-            if (damageResult == DamageResult.Guard)
-                return attackData.guardHitStunFrame;
-
-            return 0;
-        }
-
-        public void SetHitStunFrame(int hitStunFrame)
-        {
-            HitStunFrame = hitStunFrame;
-        }
-
+        
         private MoveSpeed GetCurrentKnockBackMoveSpeed()
         {
             if (_knockBackMoveSpeeds == null) return null;
@@ -460,6 +473,24 @@ namespace MyGame
             return null;
         }
 
+        public int GetHitStunFrame(DamageResult damageResult, int attackID)
+        {
+            AttackData attackData =  _fighterData.AttackDatas[attackID];
+
+            if (damageResult == DamageResult.Damage)
+                return attackData.hitStunFrame;
+            
+            if (damageResult == DamageResult.Guard)
+                return attackData.guardHitStunFrame;
+
+            return 0;
+        }
+
+        public void SetHitStunFrame(int hitStunFrame)
+        {
+            HitStunFrame = hitStunFrame;
+        }
+        
         public DamageResult DamagedAction(AttackData attackData)
         {
             if (CurrentActionID == (int)FighterState.Backward || 
@@ -468,11 +499,21 @@ namespace MyGame
                 SetCurrentAction(attackData.guardActionID);
                 return DamageResult.Guard;
             }
-            else
+
+            //_healthGage -= attackData.damage;
+            
+            if(_healthGage > 0)
             {
                 SetCurrentAction(attackData.damageActionID);
                 return DamageResult.Damage;
             }
+            else
+            {
+                SetCurrentAction(attackData.deadActionID);
+                //_isDead = true;
+                return DamageResult.Dead;
+            }
+            
         }
 
         public AttackData GetAttackData(int attackID)

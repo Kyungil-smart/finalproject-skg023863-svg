@@ -8,7 +8,7 @@ namespace MyGame
     {
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
-        private const float AnimationSampleOffset = 0.05f;
+        [SerializeField]private float AnimationSampleOffset = 0.05f;
         
         private Fighter _fighter;
         public Fighter Fighter => _fighter;
@@ -47,7 +47,7 @@ namespace MyGame
             
             if (_fighter.IsDamaged || _fighter.IsGuarded)
             {
-                fullFrame = _fighter.HitStunFrame;
+                fullFrame = _fighter.HitStunFrame - 1f;
                 // Debug.Log(_fighter.HitStunFrame);
             }
             else
@@ -71,6 +71,8 @@ namespace MyGame
 
         void ShakeSprite()
         {
+            if (_fighter == null) return;
+            
             _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 8, 0, 0);
         }
     }

@@ -6,6 +6,9 @@ namespace MyGame
     [CreateAssetMenu]
     public class FighterData : ScriptableObject
     {
+        public int healthGage;
+        public int guardGage;
+        
         public float forwardSpeed;
         public float backwardSpeed;
 
@@ -19,7 +22,6 @@ namespace MyGame
         public Dictionary<int, AttackData> AttackDatas => _attackDatas;
         
         private Dictionary<CommandType, CommandData> _commandDatas = new();
-        
         public Dictionary<CommandType, CommandData> CommandDatas => _commandDatas;
         
         [SerializeField] private ActionDataContainer _actionDataContainer;
