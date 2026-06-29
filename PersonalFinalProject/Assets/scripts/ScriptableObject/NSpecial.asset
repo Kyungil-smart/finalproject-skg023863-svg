@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
   m_Name: NSpecial
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
-  actionID: 6
+  actionID: 101
   actionName: NSpecial
   actionType: 1
   frameCount: 44
@@ -22,7 +22,7 @@ MonoBehaviour:
   - startEndFrame: {x: 11, y: 14}
     rect:
       serializedVersion: 2
-      x: 2
+      x: 1.8
       y: 2.2
       width: 1.8
       height: 1
@@ -39,29 +39,29 @@ MonoBehaviour:
   - startEndFrame: {x: 10, y: 25}
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 1.5
+      y: 2
+      width: 2
+      height: 1
     useBaseRect: 0
   - startEndFrame: {x: 26, y: 28}
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
-      width: 0
-      height: 0
+      x: 1
+      y: 0.8
+      width: 1.6
+      height: 1
     useBaseRect: 0
   pushBoxDatas: []
   moveSpeeds:
   - startEndFrame: {x: 0, y: 3}
-    speed: 0
+    speed: 3
   - startEndFrame: {x: 4, y: 15}
-    speed: 0
+    speed: 8
   - startEndFrame: {x: 16, y: 17}
-    speed: 0
+    speed: 4
   - startEndFrame: {x: 18, y: 20}
-    speed: 0
+    speed: 2
   - startEndFrame: {x: 21, y: 21}
     speed: 0
   cancelDatas: []

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944cf8611fea04341b60d02e80ced508, type: 3}
   m_Name: FighterData01
   m_EditorClassIdentifier: Assembly-CSharp::FighterData
+  healthGage: 1
+  guardGage: 3
   forwardSpeed: 4.5
   backwardSpeed: 3.8
   baseHurtBox:

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.CommandDataContainer
   commandDatas:
   - commandType: 0
-    ActionID: 5
+    ActionID: 100
   - commandType: 5
-    ActionID: 6
+    ActionID: 101
