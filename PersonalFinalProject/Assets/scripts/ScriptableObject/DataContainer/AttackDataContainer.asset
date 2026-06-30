@@ -18,8 +18,10 @@ MonoBehaviour:
     hitCount: 1
     damageActionID: 3
     guardActionID: 4
-    deadActionID: 6
+    guardBreakActionID: 6
+    deadActionID: 8
     damage: 0
+    gaurdDamage: 1
     hitStopFrame: 12
     guardHitStopFrame: 10
     hitStunFrame: 17
@@ -47,12 +49,14 @@ MonoBehaviour:
     hitCount: 1
     damageActionID: 3
     guardActionID: 4
-    deadActionID: 6
+    guardBreakActionID: 6
+    deadActionID: 8
     damage: 1
-    hitStopFrame: 12
-    guardHitStopFrame: 10
-    hitStunFrame: 17
-    guardHitStunFrame: 14
+    gaurdDamage: 1
+    hitStopFrame: 15
+    guardHitStopFrame: 12
+    hitStunFrame: 22
+    guardHitStunFrame: 19
     hitMoveSpeeds:
     - startEndFrame: {x: 0, y: 3}
       speed: -4.5
@@ -64,10 +68,10 @@ MonoBehaviour:
       speed: 0
     guradMoveSpeeds:
     - startEndFrame: {x: 0, y: 3}
-      speed: -3
+      speed: -7
     - startEndFrame: {x: 4, y: 6}
-      speed: -1.5
+      speed: -5
     - startEndFrame: {x: 7, y: 8}
-      speed: -0.8
+      speed: -3
     - startEndFrame: {x: 9, y: 9}
       speed: 0

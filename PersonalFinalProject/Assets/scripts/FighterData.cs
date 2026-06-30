@@ -6,8 +6,8 @@ namespace MyGame
     [CreateAssetMenu]
     public class FighterData : ScriptableObject
     {
-        public int healthGage;
-        public int guardGage;
+        public int healthGauge;
+        public int guardBreakGauge;
         
         public float forwardSpeed;
         public float backwardSpeed;

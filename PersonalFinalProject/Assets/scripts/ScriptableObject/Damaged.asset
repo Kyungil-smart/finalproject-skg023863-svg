@@ -15,12 +15,12 @@ MonoBehaviour:
   actionID: 3
   actionName: Damaged
   actionType: 2
-  frameCount: 17
+  frameCount: 1
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas: []
   hurtboxDatas:
-  - startEndFrame: {x: 0, y: 16}
+  - startEndFrame: {x: 0, y: 100}
     rect:
       serializedVersion: 2
       x: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
       height: 1.2
     useBaseRect: 1
   pushBoxDatas:
-  - startEndFrame: {x: 0, y: 16}
+  - startEndFrame: {x: 0, y: 100}
     rect:
       serializedVersion: 2
       x: 0

@@ -10,24 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
-  m_Name: CrouchGuard
+  m_Name: StandGuard
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
-  actionID: 4
-  actionName: CrouchGuard
-  actionType: 3
+  actionID: 5
+  actionName: StandGuard
+  actionType: 0
   frameCount: 0
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas: []
-  hurtboxDatas:
-  - startEndFrame: {x: 0, y: 100}
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 2.3
-      height: 2.8
-    useBaseRect: 0
+  hurtboxDatas: []
   pushBoxDatas: []
   moveSpeeds: []
   cancelDatas: []
