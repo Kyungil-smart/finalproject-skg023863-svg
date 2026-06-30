@@ -39,6 +39,8 @@ namespace MyGame
             
             _animator.speed = 0;
             
+            //string actionName = _fighter.CurrentActionName;
+
             string actionName = _fighter.CurrentActionName;
             
             float currentFrame = (float)_fighter.CurrentActionFrame;

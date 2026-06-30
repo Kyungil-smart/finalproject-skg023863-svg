@@ -50,7 +50,7 @@ namespace MyGame
         
     }
     
-    // Fighter들의 행동을 열거형으로 정리
+    // Fighter의 행동을 열거형으로 정리
     public enum FighterState
     {
         Idle,
@@ -58,10 +58,13 @@ namespace MyGame
         Backward,
         Damaged,
         CrouchGuard,
+        StandGuard,
+        GuardBraek,
         Won,
         Dead,
     }
     
+    // Fighter의 커맨드 입력을 열거형으로 정리, 숫자패드로 커맨드 방향 표기 예) 236 = ↓↘→
     public enum CommandType
     {
         None,
@@ -91,11 +94,13 @@ namespace MyGame
 
         private int _healthGage;
         
-        private int _guardGage;
+        private int _guardBreakGauge;
 
         private bool _isWin;
 
         private bool _isDead;
+
+        private bool _isGuardBreak;
 
         // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
         private float _velocityX; 
@@ -103,6 +108,8 @@ namespace MyGame
         public int CurrentActionID { get; private set; } // 현재의 액션 ID를 저장
 
         private int _bufferActionID = -1;
+
+        private int _reserveActionID = -1;
         
         public string CurrentActionName { get { return _fighterData.ActionDatas[CurrentActionID].actionName; } }
 
@@ -125,7 +132,6 @@ namespace MyGame
                 && _currentActionFrame >= HitStunFrame; } 
         }
         
-        // 만약 IsLoop
         public int LoopStartFrame { get { return _fighterData.ActionDatas[CurrentActionID].loopFromFrame; } }
 
         private int _currentHitStopFrame; // 현재 공격의 남아있는 히트 스탑 프레임 수, 프레임 마다 -- 됨
@@ -168,8 +174,8 @@ namespace MyGame
 
         public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
         {
-            _healthGage = fighterData.healthGage;
-            _guardGage = fighterData.guardGage;
+            _healthGage = fighterData.healthGauge;
+            _guardBreakGauge = fighterData.guardBreakGauge;
             
             _fighterData = fighterData;
             _position = position;
@@ -219,17 +225,20 @@ namespace MyGame
                 return;
             }
             
+            if (_reserveActionID != -1 && IsHitStopEnd)
+            {
+                Debug.Log($"가드브레이크 아이디 {_reserveActionID}");
+                SetCurrentAction(_reserveActionID);
+                _reserveActionID = -1;
+                return;
+            }
+            
             if (_bufferActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
                 SetCurrentAction(_bufferActionID);
                 return;
             }
             
-            // if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable)
-            // {
-            //     if (!IsActionEnd) return;
-            // }
-
             bool isForward = IsInputForward(input[0]);
             bool isBackward = IsInputBackward(input[0]);
             bool isAttack = IsInputAttack(inputDown[0]);
@@ -275,6 +284,19 @@ namespace MyGame
             }
 
             MoveSpeed moveSpeed;
+
+            if (_isGuardBreak || _isDead)
+            {
+                moveSpeed = _fighterData.ActionDatas[CurrentActionID].GetMoveSpeed(CurrentActionFrame);
+            
+                if (moveSpeed != null)
+                {
+                    _velocityX = moveSpeed.speed;
+                    _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
+                }
+
+                return;
+            }
             
             if (IsGuarded || IsDamaged)
             {
@@ -284,6 +306,7 @@ namespace MyGame
                 {
                     _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
                 }
+                    
                 return;
             }
             
@@ -294,8 +317,6 @@ namespace MyGame
                 _velocityX = moveSpeed.speed;
                 _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
             }
-            
-            _velocityX = 0;
         }
         
         private bool RequestAction(int actionID, int startFrame = 0)
@@ -368,8 +389,6 @@ namespace MyGame
                 if(cancelData.execute)
                 {
                     Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
-                    //SetCurrentAction(cancelData.nextActionID);
-                    //RequestAction(cancelData.nextActionID);
                     _bufferActionID = cancelData.nextActionID;
                     return true;
                 }
@@ -421,6 +440,9 @@ namespace MyGame
             
             if (damageResult == DamageResult.Damage)
                 return attackData.hitStopFrame;
+
+            if (damageResult == DamageResult.GuradBreak)
+                return attackData.guardBreakHitStopFrame;
             
             return 0;
         }
@@ -482,7 +504,10 @@ namespace MyGame
             
             if (damageResult == DamageResult.Guard)
                 return attackData.guardHitStunFrame;
-
+            
+            if(damageResult == DamageResult.GuradBreak)
+                return attackData.guardHitStunFrame;
+            
             return 0;
         }
 
@@ -493,14 +518,33 @@ namespace MyGame
         
         public DamageResult DamagedAction(AttackData attackData)
         {
+            _isGuardBreak = false;
+            
+            if (attackData.gaurdDamage > 0)
+            {
+                _guardBreakGauge -= attackData.gaurdDamage;
+                
+                if (_guardBreakGauge <= 0)
+                {
+                    _guardBreakGauge = 0;
+                    _isGuardBreak = true;
+                }
+            }
+            
             if (CurrentActionID == (int)FighterState.Backward || 
                 _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard)
             {
+                if (_isGuardBreak)
+                {
+                    SetCurrentAction(attackData.guardActionID);
+                    _reserveActionID = attackData.guardBreakActionID;
+                    return DamageResult.GuradBreak;
+                }
                 SetCurrentAction(attackData.guardActionID);
                 return DamageResult.Guard;
             }
 
-            //_healthGage -= attackData.damage;
+            if (attackData.damage > 0) _healthGage -= attackData.damage;
             
             if(_healthGage > 0)
             {
@@ -510,7 +554,7 @@ namespace MyGame
             else
             {
                 SetCurrentAction(attackData.deadActionID);
-                //_isDead = true;
+                _isDead = true;
                 return DamageResult.Dead;
             }
             

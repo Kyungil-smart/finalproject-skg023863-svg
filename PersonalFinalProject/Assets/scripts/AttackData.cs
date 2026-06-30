@@ -14,12 +14,15 @@ namespace MyGame
 
         public int damageActionID;
         public int guardActionID;
+        public int guardBreakActionID;
         public int deadActionID;
 
         public int damage;
+        public int gaurdDamage;
         
         public int hitStopFrame; // 공격에 적중 시 히트 스톱
         public int guardHitStopFrame; // 공격을 가드 시 히트 스톱
+        public int guardBreakHitStopFrame;
         public int hitStunFrame;
         public int guardHitStunFrame;
         
