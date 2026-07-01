@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -91,10 +92,12 @@ namespace MyGame
     {
         private Vector2 _position; // Fighter의 위치
         public Vector2 Position => _position;
+        
+        public event Action<int> OnGuardBreakGaugeChanged;
 
         private int _healthGage;
         
-        private int _guardBreakGauge;
+        public int GuardBreakGauge { get; private set; }
 
         private bool _isWin;
 
@@ -173,7 +176,7 @@ namespace MyGame
         public void BattleSetup(FighterData fighterData, Vector2 position, bool isFaceRight)
         {
             _healthGage = fighterData.healthGauge;
-            _guardBreakGauge = fighterData.guardBreakGauge;
+            GuardBreakGauge = fighterData.guardBreakGauge;
             
             _fighterData = fighterData;
             _position = position;
@@ -536,13 +539,14 @@ namespace MyGame
             
             if (attackData.gaurdDamage > 0)
             {
-                _guardBreakGauge -= attackData.gaurdDamage;
+                GuardBreakGauge -= attackData.gaurdDamage;
                 
-                if (_guardBreakGauge <= 0)
+                if (GuardBreakGauge <= 0)
                 {
-                    _guardBreakGauge = 0;
+                    GuardBreakGauge = 0;
                     isGuardBreak = true;
                 }
+                OnGuardBreakGaugeChanged?.Invoke(GuardBreakGauge);
             }
             
             if (CurrentActionID == (int)FighterState.Backward || 
