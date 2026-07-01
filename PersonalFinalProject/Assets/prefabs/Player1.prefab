@@ -104,15 +104,15 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1b5cbbaa9ca03034da3fd353f814abc1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!1 &5013169725059220183
 GameObject:
@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 137a5db4be9145c4b95edc342e7250b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.FighterView
+  AnimationSampleOffset: 0.05
 --- !u!114 &950005588889027416
 MonoBehaviour:
   m_ObjectHideFlags: 0
