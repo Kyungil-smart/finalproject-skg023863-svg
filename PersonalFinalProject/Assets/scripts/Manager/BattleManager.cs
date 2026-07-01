@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MyGame;
+using System;
 using UnityEngine;
 
 namespace MyGame
@@ -12,7 +12,10 @@ namespace MyGame
         [SerializeField] private FighterData[] _fighterDataList;
 
         private Fighter _fighter1;
+        public Fighter Fighter1 => _fighter1;
+        
         private Fighter _fighter2;
+        public Fighter Fighter2 => _fighter2;
 
         public List<Fighter> fighters = new();
 
