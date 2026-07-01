@@ -541,7 +541,7 @@ namespace MyGame
             {
                 GuardBreakGauge -= attackData.gaurdDamage;
                 
-                if (GuardBreakGauge <= 0)
+                if (GuardBreakGauge < 0)
                 {
                     GuardBreakGauge = 0;
                     isGuardBreak = true;
