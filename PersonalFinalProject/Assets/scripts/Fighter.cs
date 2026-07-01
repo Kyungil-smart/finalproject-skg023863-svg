@@ -59,7 +59,7 @@ namespace MyGame
         Damaged,
         CrouchGuard,
         StandGuard,
-        GuardBraek,
+        GuardBreak,
         Won,
         Dead,
     }
@@ -99,8 +99,6 @@ namespace MyGame
         private bool _isWin;
 
         private bool _isDead;
-
-        private bool _isGuardBreak;
 
         // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
         private float _velocityX; 
@@ -285,7 +283,7 @@ namespace MyGame
 
             MoveSpeed moveSpeed;
 
-            if (_isGuardBreak || _isDead)
+            if (CurrentActionID == (int)FighterState.GuardBreak || _isDead)
             {
                 moveSpeed = _fighterData.ActionDatas[CurrentActionID].GetMoveSpeed(CurrentActionFrame);
             
@@ -451,6 +449,22 @@ namespace MyGame
         {
             _currentHitStopFrame = hitStopFrame;
         }
+
+        public int GetShakeSpritePower(DamageResult damageResult, int attackID)
+        {
+            AttackData attackData = _fighterData.AttackDatas[attackID];
+            
+            if (damageResult == DamageResult.Guard)
+                return attackData.guardShakePower;
+            
+            if (damageResult == DamageResult.Damage)
+                return attackData.hitShakePower;
+
+            if (damageResult == DamageResult.GuradBreak)
+                return attackData.guardBreakShakePower;
+            
+            return 0;
+        }
         
         public void SetShakeSpritePower(int shakePower)
         {
@@ -518,7 +532,7 @@ namespace MyGame
         
         public DamageResult DamagedAction(AttackData attackData)
         {
-            _isGuardBreak = false;
+            bool isGuardBreak = false;
             
             if (attackData.gaurdDamage > 0)
             {
@@ -527,14 +541,14 @@ namespace MyGame
                 if (_guardBreakGauge <= 0)
                 {
                     _guardBreakGauge = 0;
-                    _isGuardBreak = true;
+                    isGuardBreak = true;
                 }
             }
             
             if (CurrentActionID == (int)FighterState.Backward || 
                 _fighterData.ActionDatas[CurrentActionID].actionType == ActionType.Guard)
             {
-                if (_isGuardBreak)
+                if (isGuardBreak)
                 {
                     SetCurrentAction(attackData.guardActionID);
                     _reserveActionID = attackData.guardBreakActionID;

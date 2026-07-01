@@ -15,7 +15,7 @@ MonoBehaviour:
   actionID: 3
   actionName: Damaged
   actionType: 2
-  frameCount: 1
+  frameCount: 0
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas: []

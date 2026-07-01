@@ -24,6 +24,7 @@ MonoBehaviour:
     gaurdDamage: 1
     hitStopFrame: 12
     guardHitStopFrame: 10
+    guardBreakHitStopFrame: 30
     hitStunFrame: 17
     guardHitStunFrame: 14
     hitMoveSpeeds:
@@ -55,6 +56,7 @@ MonoBehaviour:
     gaurdDamage: 1
     hitStopFrame: 15
     guardHitStopFrame: 12
+    guardBreakHitStopFrame: 30
     hitStunFrame: 22
     guardHitStunFrame: 19
     hitMoveSpeeds:

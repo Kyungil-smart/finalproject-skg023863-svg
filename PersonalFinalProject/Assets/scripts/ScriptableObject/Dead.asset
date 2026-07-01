@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 8
   actionName: Dead
-  actionType: 0
+  actionType: 5
   frameCount: 72
   isLoop: 1
   loopFromFrame: 70
