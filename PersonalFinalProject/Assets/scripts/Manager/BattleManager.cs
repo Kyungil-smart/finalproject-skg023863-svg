@@ -89,9 +89,10 @@ namespace MyGame
                         DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID));
                         int hitStopFrame = attacker.GetHitStopFrame(damageresult, hitAttackID);
                         int hitStunFrame = attacker.GetHitStunFrame(damageresult, hitAttackID);
+                        int shakePower = attacker.GetShakeSpritePower(damageresult, hitAttackID);
                         List<MoveSpeed> moveSpeed = attacker.GetMoveSpeeds(damageresult, hitAttackID);
                         
-                        defender.SetShakeSpritePower(hitStopFrame / 3);
+                        defender.SetShakeSpritePower(shakePower);
                         defender.SetHitStunFrame(hitStunFrame);
                         defender.SetMoveSpeeds(moveSpeed);
                         

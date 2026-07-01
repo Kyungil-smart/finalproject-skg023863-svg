@@ -9,7 +9,9 @@ namespace MyGame
         Movement,
         Attack,
         Damaged,
-        Guard
+        Guard,
+        GuardBreak,
+        Dead
     }
     // 모든 행동의 프레임의 기본 골자. x가 시작 프레임, y가 끝 프레임을 뜻 함.
     public abstract class FrameBase

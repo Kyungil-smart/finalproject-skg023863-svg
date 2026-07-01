@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 6
   actionName: GuardBreak
-  actionType: 2
+  actionType: 4
   frameCount: 36
   isLoop: 0
   loopFromFrame: 0
@@ -39,11 +39,11 @@ MonoBehaviour:
     useBaseRect: 1
   moveSpeeds:
   - startEndFrame: {x: 0, y: 3}
-    speed: -2
+    speed: -6.5
   - startEndFrame: {x: 4, y: 6}
-    speed: -1
+    speed: -4
   - startEndFrame: {x: 7, y: 10}
-    speed: -0.5
+    speed: -1
   - startEndFrame: {x: 11, y: 11}
     speed: 0
   cancelDatas: []
