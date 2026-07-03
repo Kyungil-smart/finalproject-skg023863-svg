@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace MyGame
 {
+    public enum BattleState
+    {
+        Intro,
+        Battle,
+        KO,
+        End,
+    }
     public class BattleManager : MonoBehaviour
     {
         [SerializeField] private InputController _inputController;
@@ -21,7 +28,21 @@ namespace MyGame
 
         private FighterView _fighter1View;
         private FighterView _fighter2View;
+        
+        private BattleState _battleState = BattleState.Intro;
 
+        [SerializeField] private int _maxRoundWin;
+        public int Fighter1RoundWinCount { get; private set; }
+        public int Fighter2RoundWinCount { get; private set; }
+
+        private float _timer;
+
+        [SerializeField]private float _introStateTime;
+        [SerializeField]private float _koStateTime;
+        [SerializeField]private float _endStateTime;
+
+        public event Action OnResetGuardBraekGauge;
+        
         void Awake()
         {
             _fighter1View = _player1.GetComponent<FighterView>();
@@ -40,8 +61,142 @@ namespace MyGame
             _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
             _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
         }
-
+        
         private void FixedUpdate()
+        {
+            switch (_battleState)
+            {
+                case BattleState.Intro:
+                    if (Fighter1RoundWinCount >= _maxRoundWin || Fighter2RoundWinCount >= _maxRoundWin)
+                    {
+                        // 타이틀로 바로 돌아가기 혹은 재경기 확인
+                        break;
+                    }
+                    
+                    IntroState();
+                    
+                    _timer -= Time.deltaTime;
+                    if (_timer <= 0) ChangeBattleState(BattleState.Battle);
+                    break;
+                
+                case BattleState.Battle:
+
+                    FightState();
+
+                    Fighter deadFighter = fighters.Find(f => f.IsDead);
+                    if (deadFighter != null)
+                    {
+                        ChangeBattleState(BattleState.KO);
+                    }
+                    
+                    break;
+                
+                case BattleState.KO:
+                    
+                    KoState();
+                    
+                    _timer -= Time.deltaTime;
+                    if(_timer <= 0) ChangeBattleState(BattleState.End);
+                    
+                    break;
+                
+                case BattleState.End:
+
+                    EndState();
+                    _timer -= Time.deltaTime;
+                    if (_timer <= 0) ChangeBattleState(BattleState.Intro);
+                    
+                    break;
+            }
+            
+        }
+
+        void ChangeBattleState(BattleState state)
+        {
+            _battleState = state;
+            
+            switch (state)
+            {
+                case BattleState.Intro:
+                    
+                    OnResetGuardBraekGauge?.Invoke();
+                    
+                    _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
+                    _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
+                    
+                    _fighter1.ClearInput();
+                    _fighter2.ClearInput();
+                    
+                    _timer = _introStateTime;
+                    
+                    break;
+                case BattleState.Battle:
+                    
+                    break;
+                case BattleState.KO:
+                    _timer = _koStateTime;
+                    
+                    break;
+                case BattleState.End:
+                    _timer = _endStateTime;
+                    
+                    List<Fighter> deadFighter = fighters.FindAll(f => f.IsDead);
+                    if (deadFighter.Count >= 1)
+                    {
+                        if (deadFighter[0] == _fighter1)
+                        {
+                            Fighter2RoundWinCount++;
+                            Debug.Log($"플레이어2 승 : 승리 점수 {Fighter2RoundWinCount}" );
+                            _fighter2.RequestWinAction();
+                        }
+                        else if (deadFighter[0] == _fighter2)
+                        {
+                            Fighter1RoundWinCount++;
+                            Debug.Log($"플레이어2 승 : 승리 점수 {Fighter1RoundWinCount}" );
+                            _fighter1.RequestWinAction();
+                        }
+                    }
+                    
+                    break;
+            }
+        }
+        
+        void IntroState()
+        {
+            _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
+            _fighter2.UpdateInput(_inputController.GetPlayer2InputData());
+            
+            fighters.ForEach(f => f.IncrementActionFrame());
+            
+            _fighter1.UpdateFacingDirection(_fighter2);
+            _fighter2.UpdateFacingDirection(_fighter1);
+            
+            fighters.ForEach(f => f.UpdateIntroAction());
+        }
+
+        void FightState()
+        {
+            _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
+            _fighter2.UpdateInput(_inputController.GetPlayer2InputData());
+            
+            fighters.ForEach(f => f.IncrementActionFrame());
+            
+            _fighter1.UpdateFacingDirection(_fighter2);
+            _fighter2.UpdateFacingDirection(_fighter1);
+            
+            fighters.ForEach(f => f.UpdateAction());
+            fighters.ForEach(f => f.UpdateMovement());
+            fighters.ForEach(f => f.UpdateBoxes());
+
+            CheckHitAndHurtBox();
+        }
+
+        void KoState()
+        {
+            
+        }
+
+        void EndState()
         {
             _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
             _fighter2.UpdateInput(_inputController.GetPlayer2InputData());

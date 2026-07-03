@@ -61,7 +61,7 @@ namespace MyGame
         CrouchGuard,
         StandGuard,
         GuardBreak,
-        Won,
+        Win,
         Dead,
     }
     
@@ -101,7 +101,7 @@ namespace MyGame
 
         private bool _isWin;
 
-        private bool _isDead;
+        public bool IsDead { get; private set; }
 
         // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
         private float _velocityX; 
@@ -181,6 +181,8 @@ namespace MyGame
             _fighterData = fighterData;
             _position = position;
             _isFaceRight = isFaceRight;
+            _isWin = false;
+            IsDead = false;
             
             SetCurrentAction((int)FighterState.Idle);
         }
@@ -198,6 +200,16 @@ namespace MyGame
             input[0] = inputData.Input;
             inputDown[0] = (input[0] ^ input[1]) & input[0];
             inputUp[0] = (input[0] ^ input[1]) & ~input[0];
+        }
+
+        public void ClearInput()
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                input[i] = 0;
+                inputDown[i] = 0;
+                inputUp[i] = 0;
+            }
         }
         
         public void IncrementActionFrame()
@@ -217,10 +229,21 @@ namespace MyGame
             _currentActionFrame++;
             
         }
+
+        public void UpdateIntroAction()
+        {
+            RequestAction((int)FighterState.Idle);
+        }
         
         public void UpdateAction()
         {
-            if (_isDead)
+            if (_isWin)
+            {
+                RequestAction((int)FighterState.Win);
+                return;
+            }
+            
+            if (IsDead)
             {
                 RequestAction((int)FighterState.Dead);
                 return;
@@ -286,7 +309,7 @@ namespace MyGame
 
             MoveSpeed moveSpeed;
 
-            if (CurrentActionID == (int)FighterState.GuardBreak || _isDead)
+            if (CurrentActionID == (int)FighterState.GuardBreak || IsDead)
             {
                 moveSpeed = _fighterData.ActionDatas[CurrentActionID].GetMoveSpeed(CurrentActionFrame);
             
@@ -343,6 +366,11 @@ namespace MyGame
             }
             
             return false;
+        }
+
+        public void RequestWinAction()
+        {
+            _isWin = true;
         }
         
         private void SetCurrentAction(int actionID, int startFrame = 0)
@@ -572,7 +600,7 @@ namespace MyGame
             else
             {
                 SetCurrentAction(attackData.deadActionID);
-                _isDead = true;
+                IsDead = true;
                 return DamageResult.Dead;
             }
             

@@ -17,21 +17,28 @@ namespace MyGame
         {
             _fighter = _isPlayerOne ? _battleManager.Fighter1 : _battleManager.Fighter2;
             _fighter.OnGuardBreakGaugeChanged += UpdateGuardBreakGauge;
+            _battleManager.OnResetGuardBraekGauge += SetGuardBreakGauge;
 
-            for (int i = 0; i < _guardBreakGaugeImage.Length; i++)
-            {
-                _guardBreakGaugeImage[i].SetActive(true);
-            }
+            SetGuardBreakGauge();
         }
 
         void OnDestroy()
         {
-            if (_fighter != null) _fighter.OnGuardBreakGaugeChanged -= UpdateGuardBreakGauge;
+            _fighter.OnGuardBreakGaugeChanged -= UpdateGuardBreakGauge;
+            _battleManager.OnResetGuardBraekGauge -= SetGuardBreakGauge;
         }
 
         void UpdateGuardBreakGauge(int gauge)
         {
             _guardBreakGaugeImage[gauge].SetActive(false);
+        }
+
+        void SetGuardBreakGauge()
+        {
+            for (int i = 0; i < _guardBreakGaugeImage.Length; i++)
+            {
+                _guardBreakGaugeImage[i].SetActive(true);
+            }
         }
         
     }
