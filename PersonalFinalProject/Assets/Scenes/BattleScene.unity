@@ -507,7 +507,7 @@ MonoBehaviour:
   _player2: {fileID: 194180728}
   _fighterDataList:
   - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
-  _maxRoundWin: 3
+  maxRoundWin: 3
   _introStateTime: 3
   _koStateTime: 3
   _endStateTime: 3
@@ -667,6 +667,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1031735734}
     - target: {fileID: 8199398363505721124, guid: 748ab4b564df1d74ea016dd76e41aa6f, type: 3}
+      propertyPath: _battleManager
+      value: 
+      objectReference: {fileID: 1031735734}
+    - target: {fileID: 8568819447476864034, guid: 748ab4b564df1d74ea016dd76e41aa6f, type: 3}
       propertyPath: _battleManager
       value: 
       objectReference: {fileID: 1031735734}
