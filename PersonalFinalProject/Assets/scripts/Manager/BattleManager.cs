@@ -31,7 +31,7 @@ namespace MyGame
         
         private BattleState _battleState = BattleState.Intro;
 
-        [SerializeField] private int _maxRoundWin;
+        public int maxRoundWin;
         public int Fighter1RoundWinCount { get; private set; }
         public int Fighter2RoundWinCount { get; private set; }
 
@@ -42,9 +42,16 @@ namespace MyGame
         [SerializeField]private float _endStateTime;
 
         public event Action OnResetGuardBraekGauge;
+        public event Action OnSetWinMarker;
+
+        public event Action OnResetBattle;
         
         void Awake()
         {
+            _timer = _introStateTime;
+            
+            _fighterDataList[0].DictionaryInit();
+            
             _fighter1View = _player1.GetComponent<FighterView>();
             _fighter2View = _player2.GetComponent<FighterView>();
         
@@ -54,10 +61,9 @@ namespace MyGame
             fighters.Add(_fighter1);
             fighters.Add(_fighter2);
             
-            _fighterDataList[0].DictionaryInit();
             
             _fighter1View.Initialize(_fighter1);
-            _fighter2View.Initialize(_fighter2);
+            _fighter2View.Initialize(_fighter2); 
             _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
             _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
         }
@@ -67,12 +73,6 @@ namespace MyGame
             switch (_battleState)
             {
                 case BattleState.Intro:
-                    if (Fighter1RoundWinCount >= _maxRoundWin || Fighter2RoundWinCount >= _maxRoundWin)
-                    {
-                        // 타이틀로 바로 돌아가기 혹은 재경기 확인
-                        break;
-                    }
-                    
                     IntroState();
                     
                     _timer -= Time.deltaTime;
@@ -104,7 +104,18 @@ namespace MyGame
 
                     EndState();
                     _timer -= Time.deltaTime;
-                    if (_timer <= 0) ChangeBattleState(BattleState.Intro);
+
+                    if (_timer <= 0)
+                    {
+                        if (Fighter1RoundWinCount >= maxRoundWin || Fighter2RoundWinCount >= maxRoundWin)
+                        {
+                            Fighter1RoundWinCount = 0;
+                            Fighter2RoundWinCount = 0;
+                            OnResetBattle?.Invoke();
+                        }
+                        
+                        ChangeBattleState(BattleState.Intro);
+                    }
                     
                     break;
             }
@@ -146,12 +157,14 @@ namespace MyGame
                         if (deadFighter[0] == _fighter1)
                         {
                             Fighter2RoundWinCount++;
+                            OnSetWinMarker?.Invoke();
                             Debug.Log($"플레이어2 승 : 승리 점수 {Fighter2RoundWinCount}" );
                             _fighter2.RequestWinAction();
                         }
                         else if (deadFighter[0] == _fighter2)
                         {
                             Fighter1RoundWinCount++;
+                            OnSetWinMarker?.Invoke();
                             Debug.Log($"플레이어2 승 : 승리 점수 {Fighter1RoundWinCount}" );
                             _fighter1.RequestWinAction();
                         }
@@ -198,9 +211,6 @@ namespace MyGame
 
         void EndState()
         {
-            _fighter1.UpdateInput(_inputController.GetPlayer1InputData());
-            _fighter2.UpdateInput(_inputController.GetPlayer2InputData());
-            
             fighters.ForEach(f => f.IncrementActionFrame());
             
             _fighter1.UpdateFacingDirection(_fighter2);
@@ -209,8 +219,6 @@ namespace MyGame
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
             fighters.ForEach(f => f.UpdateBoxes());
-
-            CheckHitAndHurtBox();
         }
         
         private void CheckHitAndHurtBox()

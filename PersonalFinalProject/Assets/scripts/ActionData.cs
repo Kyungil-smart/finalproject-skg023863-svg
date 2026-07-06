@@ -120,6 +120,8 @@ namespace MyGame
         {
             List<CancelData> cancel = new List<CancelData>();
 
+            if (cancelDatas == null) return cancel;
+
             foreach (var cancelData in cancelDatas)
             {
                 if (frame >= cancelData.startEndFrame.x && frame <= cancelData.startEndFrame.y)
