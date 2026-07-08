@@ -18,6 +18,9 @@ namespace MyGame
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
 
+        [SerializeField] private float _mapMaxX;
+        [SerializeField] private float _mapMinX;
+
         private Fighter _fighter1;
         public Fighter Fighter1 => _fighter1;
         
@@ -185,6 +188,10 @@ namespace MyGame
             _fighter2.UpdateFacingDirection(_fighter1);
             
             fighters.ForEach(f => f.UpdateIntroAction());
+            fighters.ForEach(f => f.UpdateBoxes());
+            
+            CheckPushBox();
+            CheckHitAndHurtBox();
         }
 
         void FightState()
@@ -201,6 +208,8 @@ namespace MyGame
             fighters.ForEach(f => f.UpdateMovement());
             fighters.ForEach(f => f.UpdateBoxes());
 
+            CheckPushBox();
+            CheckOutMap();
             CheckHitAndHurtBox();
         }
 
@@ -219,6 +228,10 @@ namespace MyGame
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
             fighters.ForEach(f => f.UpdateBoxes());
+
+            CheckPushBox();
+            CheckOutMap();
+            CheckHitAndHurtBox();
         }
         
         private void CheckHitAndHurtBox()
@@ -268,6 +281,45 @@ namespace MyGame
                 }
             }
             
+        }
+
+        private void CheckPushBox()
+        {
+            if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
+            
+            Rect rect1 = _fighter1.PushBox.rect;
+            Rect rect2 = _fighter2.PushBox.rect;
+
+            if (rect1.Overlaps(rect2))
+            {
+                if (_fighter1.Position.x < _fighter2.Position.x)
+                {
+                    _fighter1.ChangePosition((rect1.xMax - rect2.xMin) * -1 / 2 ,_fighter1.Position.y);
+                    _fighter2.ChangePosition((rect1.xMax - rect2.xMin) * 1 / 2, _fighter2.Position.y);
+                }
+                else if (_fighter1.Position.x > _fighter2.Position.x)
+                {
+                    _fighter1.ChangePosition((rect2.xMax - rect1.xMin) * 1 / 2 , _fighter1.Position.y);
+                    _fighter2.ChangePosition((rect2.xMax - rect1.xMin) * -1 / 2, _fighter2.Position.y);
+                }
+            }
+        }
+
+        private void CheckOutMap()
+        {
+            if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
+            
+            fighters.ForEach(f =>
+            {
+                if (f.PushBox.xMin < _mapMinX)
+                {
+                    f.ChangePosition(_mapMinX - f.PushBox.xMin, f.Position.y);
+                }
+                else if (f.PushBox.xMax > _mapMaxX)
+                {
+                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, f.Position.y);
+                }
+            });
         }
     }
     

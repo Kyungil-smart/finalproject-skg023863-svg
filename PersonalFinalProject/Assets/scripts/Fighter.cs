@@ -156,8 +156,8 @@ namespace MyGame
         private List<HurtBox> _hurtBoxes = new();
         public List<HurtBox> HurtBoxes => _hurtBoxes;
         
-        private List<PushBox> _pushBoxes = new();
-        public List<PushBox> PushBoxes => _pushBoxes;
+        private PushBox _pushBox;
+        public PushBox PushBox => _pushBox;
         
         private List<MoveSpeed> _knockBackMoveSpeeds;
 
@@ -640,12 +640,33 @@ namespace MyGame
         {
             return (input & (int)InputDefine.Attack) > 0;
         }
-        
+
+        public void ChangePosition(float x, float y)
+        {
+            _position.x += x;
+            _position.y += y;
+
+            foreach (HitBox hitBox in _hitBoxes)
+            {
+                hitBox.rect.x += x;
+                hitBox.rect.y += y;
+            }
+
+            foreach (HurtBox hurtBox in _hurtBoxes)
+            {
+                hurtBox.rect.x += x;
+                hurtBox.rect.y += y;
+            }
+
+            _pushBox.rect.x += x;
+            _pushBox.rect.y += y;
+        }
+
         public void UpdateBoxes()
         {
             _hitBoxes.Clear();
             _hurtBoxes.Clear();
-            
+
             foreach (HitBoxData hitboxData in _fighterData.ActionDatas[CurrentActionID]
                          .GetHitBoxData(CurrentActionFrame))
             {
@@ -662,6 +683,16 @@ namespace MyGame
                 Rect rect = hurtBoxData.useBaseRect ? _fighterData.baseHurtBox : hurtBoxData.rect;
                 hurtBox.rect = MoveBoxes(rect, _position);
                 _hurtBoxes.Add(hurtBox);
+            }
+
+            PushBoxData pushBoxData = _fighterData.ActionDatas[CurrentActionID].GetPushBoxData(CurrentActionFrame);
+            
+            if (pushBoxData != null)
+            {
+                _pushBox = new PushBox();
+                Rect pushRect = pushBoxData.useBaseRect ? _fighterData.basePushBox : pushBoxData.rect;
+                _pushBox.rect = MoveBoxes(pushRect, _position);
+
             }
         }
 

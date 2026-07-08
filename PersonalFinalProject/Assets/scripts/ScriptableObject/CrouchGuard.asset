@@ -28,7 +28,15 @@ MonoBehaviour:
       width: 2.3
       height: 2.8
     useBaseRect: 0
-  pushBoxDatas: []
+  pushBoxDatas:
+  - startEndFrame: {x: 0, y: 100}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
   moveSpeeds: []
   cancelDatas: []
   isAlwayscancelable: 0

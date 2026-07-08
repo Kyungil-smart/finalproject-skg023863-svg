@@ -36,7 +36,7 @@ MonoBehaviour:
       y: 0
       width: 0.8
       height: 1
-    useBaseRect: 0
+    useBaseRect: 1
   moveSpeeds: []
   cancelDatas: []
   isAlwayscancelable: 0

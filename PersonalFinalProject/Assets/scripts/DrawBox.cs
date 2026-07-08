@@ -27,6 +27,7 @@ namespace MyGame
             
             DrawHitBox(Color.red);
             DrawHurtBox(Color.yellow);
+            DrawPushBox(Color.blue);
         }
 
         private void DrawHitBox(Color color)
@@ -51,6 +52,16 @@ namespace MyGame
             {
                 DrawBoxes(box);
             }
+        }
+        
+        private void DrawPushBox(Color color)
+        {
+            Gizmos.color = color;
+            
+            if (_fighter.PushBox == null) return;
+            
+            DrawBoxes(_fighter.PushBox);
+            
         }
 
         private void DrawBoxes(BoxBase box)
