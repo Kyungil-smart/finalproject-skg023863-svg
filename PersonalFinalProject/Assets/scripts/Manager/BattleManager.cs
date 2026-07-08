@@ -18,8 +18,8 @@ namespace MyGame
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
 
-        [SerializeField] private float _mapMaxX;
-        [SerializeField] private float _mapMinX;
+         public static float MapMaxX;
+         public static float MapMinX;
 
         private Fighter _fighter1;
         public Fighter Fighter1 => _fighter1;
@@ -311,13 +311,13 @@ namespace MyGame
             
             fighters.ForEach(f =>
             {
-                if (f.PushBox.xMin < _mapMinX)
+                if (f.PushBox.xMin < MapMinX)
                 {
-                    f.ChangePosition(_mapMinX - f.PushBox.xMin, f.Position.y);
+                    f.ChangePosition(MapMinX - f.PushBox.xMin, f.Position.y);
                 }
-                else if (f.PushBox.xMax > _mapMaxX)
+                else if (f.PushBox.xMax > MapMaxX)
                 {
-                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, f.Position.y);
+                    f.ChangePosition(MapMaxX - f.PushBox.xMax, f.Position.y);
                 }
             });
         }
