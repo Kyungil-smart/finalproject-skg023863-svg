@@ -104,6 +104,19 @@ namespace MyGame
             return hurtbox;
         }
 
+        public PushBoxData GetPushBoxData(int frame)
+        {
+            foreach (var pushboxData in pushBoxDatas)
+            {
+                if (frame >= pushboxData.startEndFrame.x && frame <= pushboxData.startEndFrame.y)
+                {
+                    return pushboxData;
+                }
+            }
+            
+            return null;
+        }
+
         public MoveSpeed GetMoveSpeed(int frame)
         {
             foreach (var moveSpeed in moveSpeeds)

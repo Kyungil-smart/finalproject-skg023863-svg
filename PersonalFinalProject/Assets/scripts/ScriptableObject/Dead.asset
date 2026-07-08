@@ -20,7 +20,31 @@ MonoBehaviour:
   loopFromFrame: 70
   hitboxDatas: []
   hurtboxDatas: []
-  pushBoxDatas: []
+  pushBoxDatas:
+  - startEndFrame: {x: 0, y: 9}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 1.5
+      width: 5
+      height: 1.5
+    useBaseRect: 0
+  - startEndFrame: {x: 10, y: 20}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 1.5
+      width: 5
+      height: 1.5
+    useBaseRect: 0
+  - startEndFrame: {x: 21, y: 71}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 5
+      height: 1.5
+    useBaseRect: 0
   moveSpeeds:
   - startEndFrame: {x: 0, y: 19}
     speed: -6
