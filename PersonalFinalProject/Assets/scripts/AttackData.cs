@@ -31,6 +31,10 @@ namespace MyGame
         public int hitStunFrame; // 공격에 적중 당했을 시 스턴 프레임(히트 당했을 시 해당 히트 액션의 총 프레임 수)
         public int guardHitStunFrame; // 공격을 가드 했을 시 스턴 프레임(가드 했을 시 해당 가드 액션의 총 프레임 수)
         
+        public AudioClip hitSE;
+        public AudioClip guardSE;
+        public AudioClip guardBreakSE;
+        
         public List<MoveSpeed> hitMoveSpeeds; // 상대가 히트 당햇을 시 넉백 속도 
         public List<MoveSpeed> guradMoveSpeeds; // 상대가 가드 했을 시 넉백 속도
     }

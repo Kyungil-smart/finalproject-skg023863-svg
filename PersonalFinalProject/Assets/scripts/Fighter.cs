@@ -641,6 +641,13 @@ namespace MyGame
             return (input & (int)InputDefine.Attack) > 0;
         }
 
+        public void UpdateFighterSound()
+        {
+            //if (!IsHitStopEnd) return;
+            SEData sound = _fighterData.ActionDatas[CurrentActionID].GetSEData(CurrentActionFrame);
+            if (sound != null) SoundManager.instance.PlayFighterSE(sound.audioClip, _isFaceRight, Position);
+        }
+
         public void ChangePosition(float x, float y)
         {
             _position.x += x;

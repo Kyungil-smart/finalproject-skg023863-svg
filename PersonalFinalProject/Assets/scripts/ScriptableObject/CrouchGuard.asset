@@ -39,4 +39,5 @@ MonoBehaviour:
     useBaseRect: 1
   moveSpeeds: []
   cancelDatas: []
+  seDatas: []
   isAlwayscancelable: 0

@@ -5,6 +5,12 @@ namespace MyGame
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance; // 싱글톤
+        
+        [SerializeField] private float _mapMinX;
+        [SerializeField] private float _mapMaxX;
+
+        public float MapMinX => _mapMinX;
+        public float MapMaxX => _mapMaxX;
         void Awake()
         {
             if (Instance != null && Instance != this)

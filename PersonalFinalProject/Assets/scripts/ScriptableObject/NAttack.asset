@@ -73,4 +73,7 @@ MonoBehaviour:
     execute: 1
     commandType: 0
     nextActionID: 101
+  seDatas:
+  - frame: 0
+    audioClip: {fileID: 8300000, guid: f0c0fcfce9f7a3e408d00527408a8256, type: 3}
   isAlwayscancelable: 0
