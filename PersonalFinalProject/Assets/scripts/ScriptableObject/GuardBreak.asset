@@ -47,4 +47,5 @@ MonoBehaviour:
   - startEndFrame: {x: 11, y: 11}
     speed: 0
   cancelDatas: []
+  seDatas: []
   isAlwayscancelable: 0

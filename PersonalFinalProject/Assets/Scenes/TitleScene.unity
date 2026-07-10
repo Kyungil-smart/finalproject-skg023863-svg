@@ -389,7 +389,7 @@ AudioSource:
   m_GameObject: {fileID: 231213693}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -4676599769013152403, guid: af18ec5f11f2806408c7875b73cb27e4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -518,7 +518,7 @@ AudioSource:
   m_GameObject: {fileID: 246631157}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1853146524853631835, guid: af18ec5f11f2806408c7875b73cb27e4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 252267892}
   - component: {fileID: 252267893}
   m_Layer: 5
-  m_Name: BGM Volume
+  m_Name: BgmVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -757,6 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.OptionMenuSelect
   _cursorPoint: {fileID: 157385627}
   _menu: {fileID: 1847110143}
+  _optionType: 2
 --- !u!1 &294763117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,6 +1200,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 367220380}
+  - component: {fileID: 367220381}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -1224,6 +1226,26 @@ Transform:
   - {fileID: 412915809}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &367220381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367220379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4cf73c8e0d1ebc4899861bb7f718e3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.SoundManager
+  _audioMixer: {fileID: 24100000, guid: af18ec5f11f2806408c7875b73cb27e4, type: 2}
+  _BgmSource: {fileID: 231213695}
+  _player1SESource: {fileID: 246631159}
+  _player2SESource: {fileID: 412915810}
+  masterVolume: 0
+  bgmVolume: 0
+  seVolume: 0
+  _TestBgm: {fileID: 8300000, guid: eadbfa731a523d34d83cfb10d355724d, type: 3}
 --- !u!1 &374627976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,7 +1683,7 @@ AudioSource:
   m_GameObject: {fileID: 412915808}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5641426594541506332, guid: af18ec5f11f2806408c7875b73cb27e4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1764,7 +1786,7 @@ GameObject:
   - component: {fileID: 460630084}
   - component: {fileID: 460630085}
   m_Layer: 5
-  m_Name: Master Volume
+  m_Name: MasterVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1900,6 +1922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.OptionMenuSelect
   _cursorPoint: {fileID: 301244035}
   _menu: {fileID: 1847110143}
+  _optionType: 1
 --- !u!1 &514352719
 GameObject:
   m_ObjectHideFlags: 0
@@ -2488,6 +2511,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749809294}
   m_CullTransparentMesh: 1
+--- !u!1 &789089136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 789089138}
+  - component: {fileID: 789089137}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &789089137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789089136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdc8ed54d7cec74abc739f544e1d08d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.GameManager
+  _mapMinX: -8
+  _mapMaxX: 8
+--- !u!4 &789089138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789089136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 806.8396, y: 727.6059, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &799954027
 GameObject:
   m_ObjectHideFlags: 0
@@ -3672,6 +3741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1847110142}
   - component: {fileID: 1847110143}
+  - component: {fileID: 1847110144}
   m_Layer: 5
   m_Name: OptionUI
   m_TagString: Untagged
@@ -3716,7 +3786,24 @@ MonoBehaviour:
   _masterVolumeButton: {fileID: 460630081}
   _BgmVolumeButton: {fileID: 252267889}
   _SeVolumeButton: {fileID: 2115609794}
+  _masterVolumeText: {fileID: 1007011820}
+  _bgmVolumeText: {fileID: 2031314966}
+  _seVolumeText: {fileID: 1347514044}
   _cursor: {fileID: 30523358}
+  cursorIndex: 0
+--- !u!114 &1847110144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847110141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5867b3ea396ff504980df7b33dd85b8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.OptionInputController
+  _menu: {fileID: 1847110143}
 --- !u!1 &1874394153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4371,7 +4458,7 @@ GameObject:
   - component: {fileID: 2115609797}
   - component: {fileID: 2115609798}
   m_Layer: 5
-  m_Name: SE Volume
+  m_Name: SEVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4507,6 +4594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.OptionMenuSelect
   _cursorPoint: {fileID: 1176651178}
   _menu: {fileID: 1847110143}
+  _optionType: 3
 --- !u!1 &2134840905
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,6 +4757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.OptionMenuSelect
   _cursorPoint: {fileID: 351158178}
   _menu: {fileID: 1847110143}
+  _optionType: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4677,3 +4766,4 @@ SceneRoots:
   - {fileID: 657318762}
   - {fileID: 514352722}
   - {fileID: 367220380}
+  - {fileID: 789089138}

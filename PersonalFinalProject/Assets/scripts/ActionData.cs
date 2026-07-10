@@ -51,6 +51,13 @@ namespace MyGame
     }
 
     [Serializable]
+    public class SEData
+    {
+        public int frame;
+        public AudioClip audioClip;
+    }
+
+    [Serializable]
     public class CancelData : FrameBase
     {
         public bool buffer;
@@ -74,6 +81,7 @@ namespace MyGame
         public PushBoxData[] pushBoxDatas;
         public List<MoveSpeed> moveSpeeds;
         public CancelData[] cancelDatas;
+        public SEData[] seDatas;
         public bool isAlwayscancelable; // 언제든지 캔슬할 수 있는 액션인지
 
         public List<HitBoxData> GetHitBoxData(int frame)
@@ -146,6 +154,18 @@ namespace MyGame
             Debug.Log($"frame = {frame}, 반환 개수 = {cancel.Count}");
             
             return cancel;
+        }
+
+        public SEData GetSEData(int frame)
+        {
+            if (seDatas == null) return null;
+            
+            foreach (var seData in seDatas)
+            {
+                if (frame == seData.frame) return seData;
+            }
+
+            return null;
         }
         
     }

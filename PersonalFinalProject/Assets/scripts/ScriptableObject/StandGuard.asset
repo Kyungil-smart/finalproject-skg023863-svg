@@ -23,4 +23,5 @@ MonoBehaviour:
   pushBoxDatas: []
   moveSpeeds: []
   cancelDatas: []
+  seDatas: []
   isAlwayscancelable: 0

@@ -73,4 +73,7 @@ MonoBehaviour:
   - startEndFrame: {x: 21, y: 21}
     speed: 0
   cancelDatas: []
+  seDatas:
+  - frame: 0
+    audioClip: {fileID: 8300000, guid: a3ce472626421944696b81b3d82ca116, type: 3}
   isAlwayscancelable: 0

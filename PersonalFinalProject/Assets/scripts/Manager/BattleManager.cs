@@ -18,8 +18,8 @@ namespace MyGame
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
 
-         public static float MapMaxX;
-         public static float MapMinX;
+         private float _mapMaxX = GameManager.Instance.MapMaxX;
+         private float _mapMinX =  GameManager.Instance.MapMinX;
 
         private Fighter _fighter1;
         public Fighter Fighter1 => _fighter1;
@@ -43,6 +43,7 @@ namespace MyGame
         [SerializeField]private float _introStateTime;
         [SerializeField]private float _koStateTime;
         [SerializeField]private float _endStateTime;
+        [SerializeField]private float _waitKoTime;
 
         public event Action OnResetGuardBraekGauge;
         public event Action OnSetWinMarker;
@@ -96,6 +97,9 @@ namespace MyGame
                 
                 case BattleState.KO:
                     
+                    _waitKoTime -= Time.deltaTime;
+                    if (_waitKoTime > 0) return;
+                        
                     KoState();
                     
                     _timer -= Time.deltaTime;
@@ -149,6 +153,7 @@ namespace MyGame
                     break;
                 case BattleState.KO:
                     _timer = _koStateTime;
+                    _waitKoTime = _koStateTime;
                     
                     break;
                 case BattleState.End:
@@ -211,11 +216,24 @@ namespace MyGame
             CheckPushBox();
             CheckOutMap();
             CheckHitAndHurtBox();
+            fighters.ForEach(f => f.UpdateFighterSound());
         }
 
         void KoState()
         {
+            fighters.ForEach(f => f.IncrementActionFrame());
             
+            _fighter1.UpdateFacingDirection(_fighter2);
+            _fighter2.UpdateFacingDirection(_fighter1);
+            
+            fighters.ForEach(f => f.UpdateAction());
+            fighters.ForEach(f => f.UpdateMovement());
+            fighters.ForEach(f => f.UpdateBoxes());
+            
+            CheckPushBox();
+            CheckOutMap();
+            
+            fighters.ForEach(f => f.UpdateFighterSound());
         }
 
         void EndState()
@@ -311,13 +329,13 @@ namespace MyGame
             
             fighters.ForEach(f =>
             {
-                if (f.PushBox.xMin < MapMinX)
+                if (f.PushBox.xMin < _mapMinX)
                 {
-                    f.ChangePosition(MapMinX - f.PushBox.xMin, f.Position.y);
+                    f.ChangePosition(_mapMinX - f.PushBox.xMin, f.Position.y);
                 }
-                else if (f.PushBox.xMax > MapMaxX)
+                else if (f.PushBox.xMax > _mapMaxX)
                 {
-                    f.ChangePosition(MapMaxX - f.PushBox.xMax, f.Position.y);
+                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, f.Position.y);
                 }
             });
         }

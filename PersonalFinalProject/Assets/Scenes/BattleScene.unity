@@ -507,8 +507,6 @@ MonoBehaviour:
   _player2: {fileID: 194180728}
   _fighterDataList:
   - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
-  _mapMaxX: 10
-  _mapMinX: -10
   maxRoundWin: 3
   _introStateTime: 3
   _koStateTime: 3
@@ -544,7 +542,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1541306114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdc8ed54d7cec74abc739f544e1d08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.GameManager
+  _mapMinX: 0
+  _mapMaxX: 0
 --- !u!4 &1541306115
 Transform:
   m_ObjectHideFlags: 0
