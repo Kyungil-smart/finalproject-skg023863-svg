@@ -16,6 +16,14 @@ namespace MyGame
         [SerializeField] private AudioSource _BgmSource;
         [SerializeField] private AudioSource _player1SESource;
         [SerializeField] private AudioSource _player2SESource;
+
+        [SerializeField] private AudioClip _baseHitSE;
+        [SerializeField] private AudioClip _baseGaurdSE;
+        [SerializeField] private AudioClip _baseGuardBreakSE;
+        
+        public AudioClip BaseHitSE => _baseHitSE;
+        public AudioClip BaseGaurdSE => _baseGaurdSE;
+        public AudioClip BaseGuardBreakSE => _baseGuardBreakSE;
         
         public int masterVolume;
         public int bgmVolume;
@@ -59,6 +67,8 @@ namespace MyGame
         public void PlayFighterSE(AudioClip clip, bool isPlayer1, Vector2 position)
         {
             AudioSource source = isPlayer1 ? _player1SESource : _player2SESource;
+
+            if (clip == null) return;
 
             source.panStereo = CalculatePan(position.x);
             source.PlayOneShot(clip);
