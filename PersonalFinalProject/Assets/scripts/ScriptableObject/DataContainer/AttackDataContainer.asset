@@ -30,6 +30,12 @@ MonoBehaviour:
     guardBreakHitStopFrame: 30
     hitStunFrame: 17
     guardHitStunFrame: 14
+    isUseBaseHitSE: 1
+    isUseBaseGuardSE: 1
+    isUseBaseGuardBreakSE: 1
+    hitSE: {fileID: 0}
+    guardSE: {fileID: 0}
+    guardBreakSE: {fileID: 0}
     hitMoveSpeeds:
     - startEndFrame: {x: 0, y: 3}
       speed: -4.5
@@ -65,6 +71,12 @@ MonoBehaviour:
     guardBreakHitStopFrame: 30
     hitStunFrame: 22
     guardHitStunFrame: 19
+    isUseBaseHitSE: 1
+    isUseBaseGuardSE: 1
+    isUseBaseGuardBreakSE: 1
+    hitSE: {fileID: 0}
+    guardSE: {fileID: 0}
+    guardBreakSE: {fileID: 0}
     hitMoveSpeeds:
     - startEndFrame: {x: 0, y: 3}
       speed: -4.5

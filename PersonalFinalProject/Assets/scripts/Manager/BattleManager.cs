@@ -166,14 +166,12 @@ namespace MyGame
                         {
                             Fighter2RoundWinCount++;
                             OnSetWinMarker?.Invoke();
-                            Debug.Log($"플레이어2 승 : 승리 점수 {Fighter2RoundWinCount}" );
                             _fighter2.RequestWinAction();
                         }
                         else if (deadFighter[0] == _fighter2)
                         {
                             Fighter1RoundWinCount++;
                             OnSetWinMarker?.Invoke();
-                            Debug.Log($"플레이어2 승 : 승리 점수 {Fighter1RoundWinCount}" );
                             _fighter1.RequestWinAction();
                         }
                     }
@@ -229,10 +227,9 @@ namespace MyGame
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
             fighters.ForEach(f => f.UpdateBoxes());
-            
+
             CheckPushBox();
             CheckOutMap();
-            
             fighters.ForEach(f => f.UpdateFighterSound());
         }
 
@@ -245,11 +242,7 @@ namespace MyGame
             
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
-            fighters.ForEach(f => f.UpdateBoxes());
-
-            CheckPushBox();
-            CheckOutMap();
-            CheckHitAndHurtBox();
+            fighters.ForEach(f => f.UpdateFighterSound());
         }
         
         private void CheckHitAndHurtBox()
@@ -288,10 +281,12 @@ namespace MyGame
                         int hitStunFrame = attacker.GetHitStunFrame(damageresult, hitAttackID);
                         int shakePower = attacker.GetShakeSpritePower(damageresult, hitAttackID);
                         List<MoveSpeed> moveSpeed = attacker.GetMoveSpeeds(damageresult, hitAttackID);
+                        AudioClip audioClip = attacker.GetHitSound(damageresult, hitAttackID);
                         
                         defender.SetShakeSpritePower(shakePower);
                         defender.SetHitStunFrame(hitStunFrame);
                         defender.SetMoveSpeeds(moveSpeed);
+                        defender.SetHitsound(audioClip);
                         
                         attacker.SetHitStopFrame(hitStopFrame);
                         defender.SetHitStopFrame(hitStopFrame);
@@ -300,26 +295,28 @@ namespace MyGame
             }
             
         }
-
+        
         private void CheckPushBox()
         {
-            if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
-            
-            Rect rect1 = _fighter1.PushBox.rect;
-            Rect rect2 = _fighter2.PushBox.rect;
+            if (_fighter1.PushBox == null || _fighter2.PushBox == null)
+                return;
 
-            if (rect1.Overlaps(rect2))
+            if (!_fighter1.PushBox.BoxOverlap(_fighter2.PushBox))
+                return;
+
+            if (_fighter1.Position.x < _fighter2.Position.x)
             {
-                if (_fighter1.Position.x < _fighter2.Position.x)
-                {
-                    _fighter1.ChangePosition((rect1.xMax - rect2.xMin) * -1 / 2 ,_fighter1.Position.y);
-                    _fighter2.ChangePosition((rect1.xMax - rect2.xMin) * 1 / 2, _fighter2.Position.y);
-                }
-                else if (_fighter1.Position.x > _fighter2.Position.x)
-                {
-                    _fighter1.ChangePosition((rect2.xMax - rect1.xMin) * 1 / 2 , _fighter1.Position.y);
-                    _fighter2.ChangePosition((rect2.xMax - rect1.xMin) * -1 / 2, _fighter2.Position.y);
-                }
+                float overlap = _fighter1.PushBox.xMax - _fighter2.PushBox.xMin;
+
+                _fighter1.ChangePosition(-overlap * 0.5f, 0);
+                _fighter2.ChangePosition( overlap * 0.5f, 0);
+            }
+            else
+            {
+                float overlap = _fighter2.PushBox.xMax - _fighter1.PushBox.xMin;
+
+                _fighter1.ChangePosition( overlap * 0.5f, 0);
+                _fighter2.ChangePosition(-overlap * 0.5f, 0);
             }
         }
 
@@ -331,11 +328,11 @@ namespace MyGame
             {
                 if (f.PushBox.xMin < _mapMinX)
                 {
-                    f.ChangePosition(_mapMinX - f.PushBox.xMin, f.Position.y);
+                    f.ChangePosition(_mapMinX - f.PushBox.xMin, 0);
                 }
                 else if (f.PushBox.xMax > _mapMaxX)
                 {
-                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, f.Position.y);
+                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, 0);
                 }
             });
         }

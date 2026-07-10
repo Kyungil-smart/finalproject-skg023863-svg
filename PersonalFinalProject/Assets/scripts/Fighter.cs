@@ -643,9 +643,41 @@ namespace MyGame
 
         public void UpdateFighterSound()
         {
-            //if (!IsHitStopEnd) return;
             SEData sound = _fighterData.ActionDatas[CurrentActionID].GetSEData(CurrentActionFrame);
             if (sound != null) SoundManager.instance.PlayFighterSE(sound.audioClip, _isFaceRight, Position);
+        }
+
+        public AudioClip GetHitSound(DamageResult damageResult, int attackID)
+        {
+            AttackData attackData =  _fighterData.AttackDatas[attackID];
+            AudioClip audioClip;
+
+            if (damageResult == DamageResult.Damage)
+            {
+                audioClip = attackData.isUseBaseHitSE ? 
+                    SoundManager.instance.BaseHitSE : attackData.hitSE;
+                return audioClip;
+            }
+
+            if (damageResult == DamageResult.Guard)
+            {
+                audioClip = attackData.isUseBaseGuardSE ? 
+                    SoundManager.instance.BaseGaurdSE : attackData.guardSE;
+                return audioClip;
+            }
+            
+            if (damageResult == DamageResult.GuradBreak)
+            {
+                audioClip = attackData.isUseBaseGuardBreakSE ? 
+                    SoundManager.instance.BaseGuardBreakSE : attackData.guardBreakSE;
+                return audioClip;
+            }
+            return null;
+        }
+
+        public void SetHitsound(AudioClip audioClip)
+        {
+            SoundManager.instance.PlayFighterSE(audioClip, _isFaceRight, _position);
         }
 
         public void ChangePosition(float x, float y)
