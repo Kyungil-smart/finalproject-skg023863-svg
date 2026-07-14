@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace MyGame
@@ -50,6 +51,11 @@ namespace MyGame
     {
         
     }
+
+    public class WallPushBox : BoxBase
+    {
+        
+    }
     
     // Fighter의 행동을 열거형으로 정리
     public enum FighterState
@@ -57,6 +63,8 @@ namespace MyGame
         Idle,
         Forward,
         Backward,
+        ForwardDash,
+        BackwardDash,
         Damaged,
         CrouchGuard,
         StandGuard,
@@ -102,6 +110,8 @@ namespace MyGame
         private bool _isWin;
 
         public bool IsDead { get; private set; }
+        
+        public bool IsIgnorePushBox { get; private set; }
 
         // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
         private float _velocityX; 
@@ -158,6 +168,9 @@ namespace MyGame
         
         private PushBox _pushBox;
         public PushBox PushBox => _pushBox;
+
+        private WallPushBox _wallPushBox;
+        public WallPushBox WallPushBox => _wallPushBox;
         
         private List<MoveSpeed> _knockBackMoveSpeeds;
 
@@ -278,18 +291,26 @@ namespace MyGame
                 if(RequestCommand(command)) return;
             }
 
-            if (isForward)
+            if (CheckForwardDash())
             {
+                RequestAction((int)FighterState.ForwardDash);
+                
+            }
+            else if (CheckBackwardDash())
+            {
+                RequestAction((int)FighterState.BackwardDash);
+                
+            }
+            
+            else if (isForward)
                 RequestAction((int)FighterState.Forward);
-            }
+            
             else if (isBackward)
-            {
                 RequestAction((int)FighterState.Backward);
-            }
+            
             else
-            {
                 RequestAction((int)FighterState.Idle);
-            }
+            
         }
         
         public void UpdateMovement()
@@ -382,6 +403,7 @@ namespace MyGame
             ShakeSpritePower = 0;
             HitStunFrame = 0;
             _bufferActionID = -1;
+            IsIgnorePushBox = _fighterData.ActionDatas[CurrentActionID].isIgnorePushBox;
         }
 
         private bool RequestCommand(CommandType commandType)
@@ -406,6 +428,48 @@ namespace MyGame
             //     return CommandType.DownAttack;
 
             return CommandType.None;
+        }
+
+        private bool CheckForwardDash()
+        {
+            if (!IsInputForward(inputDown[0])) return false;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                if(IsInputBackward(inputDown[i])) return false;
+
+                if (IsInputForward(inputDown[i]))
+                {
+                    for (int j = 1; j < i; j++)
+                    {
+                        if(!IsInputForward(inputDown[j]) && !IsInputBackward(inputDown[j])) 
+                            return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+        
+        private bool CheckBackwardDash()
+        {
+            if (!IsInputBackward(inputDown[0])) return false;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                if(IsInputForward(inputDown[i])) return false;
+
+                if (IsInputBackward(inputDown[i]))
+                {
+                    for (int j = 1; j < i; j++)
+                    {
+                        if(!IsInputForward(inputDown[j]) && !IsInputBackward(inputDown[j])) 
+                            return true;
+                    }
+                }
+            }
+            
+            return false;
         }
         
         private bool TryCancel(CommandType commandType)
@@ -442,6 +506,7 @@ namespace MyGame
 
         public void UpdateFacingDirection(Fighter opponent)
         {
+            if (CurrentActionID == (int)FighterState.ForwardDash) return;
             _isFaceRight = _position.x < opponent.Position.x;
         }
 
@@ -705,6 +770,9 @@ namespace MyGame
 
             _pushBox.rect.x += x;
             _pushBox.rect.y += y;
+            
+            _wallPushBox.rect.x += x;
+            _wallPushBox.rect.y += y;
         }
 
         public void UpdateBoxes()
@@ -732,6 +800,12 @@ namespace MyGame
 
             PushBoxData pushBoxData = _fighterData.ActionDatas[CurrentActionID].GetPushBoxData(CurrentActionFrame);
             
+            if (pushBoxData == null)
+            {
+                _pushBox = null;
+                return;
+            }
+            
             if (pushBoxData != null)
             {
                 _pushBox = new PushBox();
@@ -739,6 +813,12 @@ namespace MyGame
                 _pushBox.rect = MoveBoxes(pushRect, _position);
 
             }
+            
+            WallPushBoxData wallPushBoxData = _fighterData.ActionDatas[CurrentActionID].GetWallPushBoxData(CurrentActionFrame);
+            
+            _wallPushBox = new WallPushBox();
+            Rect wallPushRect = wallPushBoxData.useBaseRect ? _fighterData.baseWallPushBox : wallPushBoxData.rect;
+            _wallPushBox.rect = MoveBoxes(wallPushRect, _position);
         }
 
         private Rect MoveBoxes(Rect boxData, Vector2 basePosition)

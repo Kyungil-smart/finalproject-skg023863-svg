@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
-  m_Name: Damaged
+  m_Name: ForwardDash
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
-  actionID: 5
-  actionName: Damaged
-  actionType: 2
-  frameCount: 0
+  actionID: 3
+  actionName: ForwardDash
+  actionType: 0
+  frameCount: 16
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas: []
   hurtboxDatas:
-  - startEndFrame: {x: 0, y: 100}
+  - startEndFrame: {x: 0, y: 15}
     rect:
       serializedVersion: 2
       x: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
       height: 0
     useBaseRect: 1
   pushBoxDatas:
-  - startEndFrame: {x: 0, y: 100}
+  - startEndFrame: {x: 0, y: 15}
     rect:
       serializedVersion: 2
       x: 0
@@ -37,8 +37,22 @@ MonoBehaviour:
       width: 0
       height: 0
     useBaseRect: 1
-  moveSpeeds: []
+  moveSpeeds:
+  - startEndFrame: {x: 0, y: 2}
+    speed: 9
+  - startEndFrame: {x: 3, y: 8}
+    speed: 15
+  - startEndFrame: {x: 9, y: 11}
+    speed: 9
+  - startEndFrame: {x: 12, y: 13}
+    speed: 6
+  - startEndFrame: {x: 14, y: 14}
+    speed: 3
+  - startEndFrame: {x: 15, y: 15}
+    speed: 0
   cancelDatas: []
-  seDatas: []
+  seDatas:
+  - frame: 0
+    audioClip: {fileID: 8300000, guid: 4c25adf654d210740a4bb211a58d2eba, type: 3}
   isAlwayscancelable: 0
-  isIgnorePushBox: 0
+  isIgnorePushBox: 1

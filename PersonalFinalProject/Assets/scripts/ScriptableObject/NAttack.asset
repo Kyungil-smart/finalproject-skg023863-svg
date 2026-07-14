@@ -58,8 +58,8 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 0.8
-      height: 1
+      width: 0
+      height: 0
     useBaseRect: 1
   moveSpeeds: []
   cancelDatas:
@@ -77,3 +77,4 @@ MonoBehaviour:
   - frame: 0
     audioClip: {fileID: 8300000, guid: f0c0fcfce9f7a3e408d00527408a8256, type: 3}
   isAlwayscancelable: 0
+  isIgnorePushBox: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
   m_Name: StandGuard
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
-  actionID: 5
+  actionID: 7
   actionName: StandGuard
   actionType: 0
   frameCount: 0

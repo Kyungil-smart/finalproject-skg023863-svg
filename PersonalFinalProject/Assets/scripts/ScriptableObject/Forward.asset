@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
   actionID: 1
   actionName: Forward
+  actionType: 0
   frameCount: 24
   isLoop: 0
   loopFromFrame: 0
@@ -24,8 +25,8 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 1
-      height: 1.2
+      width: 0
+      height: 0
     useBaseRect: 1
   pushBoxDatas:
   - startEndFrame: {x: 0, y: 23}
@@ -33,7 +34,11 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 0.8
-      height: 1
+      width: 0
+      height: 0
     useBaseRect: 1
+  moveSpeeds: []
+  cancelDatas: []
+  seDatas: []
   isAlwayscancelable: 1
+  isIgnorePushBox: 0
