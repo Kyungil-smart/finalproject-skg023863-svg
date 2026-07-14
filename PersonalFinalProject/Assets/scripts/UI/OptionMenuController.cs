@@ -26,9 +26,9 @@ namespace MyGame
         
         void Start()
         {
-            _masterVolume = SoundManager.instance.masterVolume;
-            _bgmVolume =  SoundManager.instance.bgmVolume;
-            _seVolume = SoundManager.instance.seVolume;
+            _masterVolume = SoundManager.Instance.masterVolume;
+            _bgmVolume =  SoundManager.Instance.bgmVolume;
+            _seVolume = SoundManager.Instance.seVolume;
             
             _masterVolumeText.text = _masterVolume.ToString();
             _bgmVolumeText.text = _bgmVolume.ToString();
@@ -89,7 +89,7 @@ namespace MyGame
                     _masterVolume += amount;
                     _masterVolume = Mathf.Clamp(_masterVolume, 0, 100);
 
-                    SoundManager.instance.SetMasterVolume(_masterVolume);
+                    SoundManager.Instance.SetMasterVolume(_masterVolume);
                     PlayerPrefs.SetInt(type.ToString(), _masterVolume);
                     _masterVolumeText.text = _masterVolume.ToString();
                     break;
@@ -98,7 +98,7 @@ namespace MyGame
                     _bgmVolume += amount;
                     _bgmVolume = Mathf.Clamp(_bgmVolume, 0, 100);
 
-                    SoundManager.instance.SetBGMVolume(_bgmVolume);
+                    SoundManager.Instance.SetBGMVolume(_bgmVolume);
                     PlayerPrefs.SetInt(type.ToString(), _bgmVolume);
                     _bgmVolumeText.text = _bgmVolume.ToString();
                     break;
@@ -107,7 +107,7 @@ namespace MyGame
                     _seVolume += amount;
                     _seVolume = Mathf.Clamp(_seVolume, 0, 100);
 
-                    SoundManager.instance.SetSEVolume(_seVolume);
+                    SoundManager.Instance.SetSEVolume(_seVolume);
                     PlayerPrefs.SetInt(type.ToString(), _seVolume);
                     _seVolumeText.text = _seVolume.ToString();
                     break;

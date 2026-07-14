@@ -21,6 +21,7 @@ namespace MyGame
 
             Instance = this;
             
+            DontDestroyOnLoad(gameObject);
             Application.targetFrameRate = 60; // 60프레임 고정
         }
     }

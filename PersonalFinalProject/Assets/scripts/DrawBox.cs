@@ -21,8 +21,6 @@ namespace MyGame
             {
                 _fighter = _player.Fighter;
             }
-            
-            
             // Debug.Log($"{gameObject.name} : {_fighter}");
             
             DrawHitBox(Color.red);

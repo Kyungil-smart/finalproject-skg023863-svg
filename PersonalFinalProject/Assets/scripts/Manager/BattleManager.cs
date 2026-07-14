@@ -18,8 +18,8 @@ namespace MyGame
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
 
-         private float _mapMaxX = GameManager.Instance.MapMaxX;
-         private float _mapMinX =  GameManager.Instance.MapMinX;
+         private float _mapMaxX;
+         private float _mapMinX;
 
         private Fighter _fighter1;
         public Fighter Fighter1 => _fighter1;
@@ -52,6 +52,10 @@ namespace MyGame
         
         void Awake()
         {
+        _mapMaxX = GameManager.Instance.MapMaxX;
+        _mapMinX = GameManager.Instance.MapMinX;
+            
+            
             _timer = _introStateTime;
             
             _fighterDataList[0].DictionaryInit();
@@ -131,6 +135,7 @@ namespace MyGame
 
         void ChangeBattleState(BattleState state)
         {
+            Debug.Log($"지금 배틀 스테이트는 {state}");
             _battleState = state;
             
             switch (state)
@@ -250,7 +255,9 @@ namespace MyGame
             foreach (Fighter attacker in fighters)
             {
                 bool isHit = false;
+                bool isPlayer1 = false;
                 int hitAttackID = -1;
+                Vector2 damagePosition = new Vector2();
                 
                 foreach (Fighter defender in fighters)
                 {
@@ -265,6 +272,15 @@ namespace MyGame
                             if (hitBox.BoxOverlap(hurtBox))
                             {
                                 isHit = true;
+                                if(attacker == _fighter1) isPlayer1 = true;
+                                
+                                float x1 = Mathf.Min(hitBox.xMax, hurtBox.xMax);
+                                float x2 = Mathf.Max(hitBox.xMin, hurtBox.xMin);
+                                float y1 = Mathf.Min(hitBox.yMax, hurtBox.yMax);
+                                float y2 = Mathf.Max(hitBox.yMin, hurtBox.yMin);
+                                damagePosition.x = (x1 + x2) / 2;
+                                damagePosition.y = (y1 + y2) / 2;
+                                
                                 hitAttackID = hitBox.attackID;
                             }
                         }
@@ -282,6 +298,9 @@ namespace MyGame
                         int shakePower = attacker.GetShakeSpritePower(damageresult, hitAttackID);
                         List<MoveSpeed> moveSpeed = attacker.GetMoveSpeeds(damageresult, hitAttackID);
                         AudioClip audioClip = attacker.GetHitSound(damageresult, hitAttackID);
+                        EffectType effectType = attacker.GetEffectType(hitAttackID);
+                        
+                        EffectManager.Instance.PlayEffect(effectType, damageresult, damagePosition, isPlayer1);
                         
                         defender.SetShakeSpritePower(shakePower);
                         defender.SetHitStunFrame(hitStunFrame);

@@ -31,16 +31,19 @@ namespace MyGame
         public int hitStunFrame; // 공격에 적중 당했을 시 스턴 프레임(히트 당했을 시 해당 히트 액션의 총 프레임 수)
         public int guardHitStunFrame; // 공격을 가드 했을 시 스턴 프레임(가드 했을 시 해당 가드 액션의 총 프레임 수)
 
-        public bool isUseBaseHitSE;
-        public bool isUseBaseGuardSE;
-        public bool isUseBaseGuardBreakSE;
+        public bool isUseBaseHitSE; // 기본 피격음을 사용할 것인지
+        public bool isUseBaseGuardSE; // 기본 가드음을 사용할 것인지
+        public bool isUseBaseGuardBreakSE; // 기본 가드브레이크음을 사용할 것인지
         
-        public AudioClip hitSE;
-        public AudioClip guardSE;
-        public AudioClip guardBreakSE;
+        public AudioClip hitSE; // 피격음
+        public AudioClip guardSE; // 가드음
+        public AudioClip guardBreakSE; // 가드브레이크 음
+        
+        public EffectType effectType; // 이 공격이 성공했을 때 어떤 이펙트를 사용할 것인지
         
         public List<MoveSpeed> hitMoveSpeeds; // 상대가 히트 당햇을 시 넉백 속도 
         public List<MoveSpeed> guradMoveSpeeds; // 상대가 가드 했을 시 넉백 속도
+        
     }
 }
 

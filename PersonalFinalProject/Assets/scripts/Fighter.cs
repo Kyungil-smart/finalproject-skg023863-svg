@@ -502,6 +502,12 @@ namespace MyGame
             ShakeSpritePower = shakePower * Sign;
         }
 
+        public EffectType GetEffectType(int attackID)
+        {
+            AttackData attackData = _fighterData.AttackDatas[attackID];
+            return attackData.effectType;
+        }
+
         public List<MoveSpeed> GetMoveSpeeds(DamageResult damageResult, int attackID)
         {
             AttackData attackData = _fighterData.AttackDatas[attackID];
@@ -644,7 +650,7 @@ namespace MyGame
         public void UpdateFighterSound()
         {
             SEData sound = _fighterData.ActionDatas[CurrentActionID].GetSEData(CurrentActionFrame);
-            if (sound != null) SoundManager.instance.PlayFighterSE(sound.audioClip, _isFaceRight, Position);
+            if (sound != null) SoundManager.Instance.PlayFighterSE(sound.audioClip, _isFaceRight, Position);
         }
 
         public AudioClip GetHitSound(DamageResult damageResult, int attackID)
@@ -655,21 +661,21 @@ namespace MyGame
             if (damageResult == DamageResult.Damage)
             {
                 audioClip = attackData.isUseBaseHitSE ? 
-                    SoundManager.instance.BaseHitSE : attackData.hitSE;
+                    SoundManager.Instance.BaseHitSE : attackData.hitSE;
                 return audioClip;
             }
 
             if (damageResult == DamageResult.Guard)
             {
                 audioClip = attackData.isUseBaseGuardSE ? 
-                    SoundManager.instance.BaseGaurdSE : attackData.guardSE;
+                    SoundManager.Instance.BaseGaurdSE : attackData.guardSE;
                 return audioClip;
             }
             
             if (damageResult == DamageResult.GuradBreak)
             {
                 audioClip = attackData.isUseBaseGuardBreakSE ? 
-                    SoundManager.instance.BaseGuardBreakSE : attackData.guardBreakSE;
+                    SoundManager.Instance.BaseGuardBreakSE : attackData.guardBreakSE;
                 return audioClip;
             }
             return null;
@@ -677,7 +683,7 @@ namespace MyGame
 
         public void SetHitsound(AudioClip audioClip)
         {
-            SoundManager.instance.PlayFighterSE(audioClip, _isFaceRight, _position);
+            SoundManager.Instance.PlayFighterSE(audioClip, _isFaceRight, _position);
         }
 
         public void ChangePosition(float x, float y)

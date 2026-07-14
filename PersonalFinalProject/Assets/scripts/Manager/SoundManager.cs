@@ -31,17 +31,17 @@ namespace MyGame
 
         [SerializeField] private AudioClip _TestBgm;
         
-        public static SoundManager instance;
+        public static SoundManager Instance;
 
         void Awake()
         {
-            if (instance != null)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            instance = this;
+            Instance = this;
             
             LoadVolume();
             DontDestroyOnLoad(gameObject);
