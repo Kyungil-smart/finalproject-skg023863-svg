@@ -45,6 +45,23 @@ MonoBehaviour:
       width: 5
       height: 1.5
     useBaseRect: 0
+  wallPushBoxDatas:
+  - startEndFrame: {x: 0, y: 9}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  - startEndFrame: {x: 10, y: 71}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 5
+      height: 1.5
+    useBaseRect: 0
   moveSpeeds:
   - startEndFrame: {x: 0, y: 19}
     speed: -6
@@ -59,3 +76,4 @@ MonoBehaviour:
   - frame: 0
     audioClip: {fileID: 8300000, guid: 4b0a261ce2a2f35499cd3d77d4cd679d, type: 3}
   isAlwayscancelable: 0
+  isIgnorePushBox: 0

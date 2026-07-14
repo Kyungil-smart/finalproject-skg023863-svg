@@ -26,7 +26,13 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2
+    width: 1.8
+    height: 3.4
+  baseWallPushBox:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1.8
     height: 3.4
   _actionDataContainer: {fileID: 11400000, guid: 10fab431b0e3eea408224434acbc46b5, type: 2}
   _attackDataContainer: {fileID: 11400000, guid: c04615bc54bb34649a132fb3daee4d6c, type: 2}

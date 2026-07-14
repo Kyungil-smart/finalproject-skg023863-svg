@@ -8,6 +8,7 @@ namespace MyGame
     {
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
         [SerializeField]private float AnimationSampleOffset = 0.05f;
         
         private Fighter _fighter;
@@ -78,12 +79,9 @@ namespace MyGame
             _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 8, 0, 0);
         }
 
-        void UpdateLayer(Fighter opponent)
+        public void UpdateLayer(int layer)
         {
-            if (_fighter.IsIgnorePushBox)
-            {
-                
-            }
+            _spriteRenderer.sortingOrder = layer;
         }
     }
 

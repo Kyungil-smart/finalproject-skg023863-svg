@@ -302,6 +302,17 @@ namespace MyGame
                         
                         EffectManager.Instance.PlayEffect(effectType, damageresult, damagePosition, isPlayer1);
                         
+                        if (isPlayer1)
+                        {
+                            _fighter1View.UpdateLayer(1);
+                            _fighter2View.UpdateLayer(0);
+                        }
+                        else
+                        {
+                            _fighter1View.UpdateLayer(0);
+                            _fighter2View.UpdateLayer(1);
+                        }
+                        
                         defender.SetShakeSpritePower(shakePower);
                         defender.SetHitStunFrame(hitStunFrame);
                         defender.SetMoveSpeeds(moveSpeed);
@@ -317,10 +328,21 @@ namespace MyGame
         
         private void CheckPushBox()
         {
-            if (_fighter1.IsIgnorePushBox || _fighter2.IsIgnorePushBox) return;
-            
-            if (_fighter1.PushBox == null || _fighter2.PushBox == null)
+            if (_fighter1.IsIgnorePushBox)
+            {
+                _fighter1View.UpdateLayer(0);
+                _fighter2View.UpdateLayer(1);
                 return;
+            }
+
+            if (_fighter2.IsIgnorePushBox)
+            {
+                _fighter1View.UpdateLayer(1);
+                _fighter2View.UpdateLayer(0);
+                return;
+            }
+            
+            // if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
 
             if (!_fighter1.PushBox.BoxOverlap(_fighter2.PushBox))
                 return;
