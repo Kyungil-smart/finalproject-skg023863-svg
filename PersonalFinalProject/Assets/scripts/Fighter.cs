@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -284,11 +285,12 @@ namespace MyGame
             {
                 Debug.Log($"공격 눌림{CurrentActionFrame}");
                 
-                CommandType command = DetectCommand();
-
-                if (TryCancel(command)) return;
-                
-                if(RequestCommand(command)) return;
+                // CommandType command = DetectCommand();
+                //
+                // if (TryCancel(command)) return;
+                //
+                // if(RequestCommand(command)) return;
+                TryCommand();
             }
 
             if (CheckForwardDash())
@@ -408,8 +410,12 @@ namespace MyGame
 
         private bool RequestCommand(CommandType commandType)
         {
-            if(!_fighterData.CommandDatas.TryGetValue(commandType, out CommandData commandData)) return false;
-            
+            if (!_fighterData.CommandDatas.TryGetValue(commandType, out CommandData commandData))
+            {
+                if (!_fighterData.CommandDatas.TryGetValue(CommandType.None, out commandData))
+                    return false;
+            }
+
             return RequestAction(commandData.ActionID);
         }
 
@@ -428,6 +434,37 @@ namespace MyGame
                 return CommandType.Command4;
 
             return CommandType.None;
+        }
+
+        private void TryCommand()
+        {
+            // if (Check623())
+            // {
+            //     if (TryCancel(CommandType.Command623)) return;
+            //     if (RequestCommand(CommandType.Command623)) return;
+            // }
+            //
+            // if (Check236())
+            // {
+            //     if (TryCancel(CommandType.Command236)) return;
+            //     if (RequestCommand(CommandType.Command236)) return;
+            // }
+
+            if (Check6())
+            {
+                if (TryCancel(CommandType.Command6)) return;
+                if (RequestCommand(CommandType.Command6)) return;
+            }
+
+            if (Check4())
+            {
+                if (TryCancel(CommandType.Command4)) return;
+                if (RequestCommand(CommandType.Command4)) return;
+            }
+
+            if (TryCancel(CommandType.None)) return;
+            
+            RequestCommand(CommandType.None);
         }
 
         private bool CheckForwardDash()
