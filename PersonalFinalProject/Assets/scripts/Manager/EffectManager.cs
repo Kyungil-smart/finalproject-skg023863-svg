@@ -44,24 +44,20 @@ namespace MyGame
                 animator = _player2EffectAnimator;
             }
             
-            if (damageResult == DamageResult.Damage)
+            switch (damageResult)
             {
-                transform.localScale = new Vector3(2f, 2f, 1f);
-            }
-            
-            if (damageResult == DamageResult.Guard)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
+                case DamageResult.Damage:
+                case DamageResult.Dead:
+                    transform.localScale = new Vector3(2f, 2f, 1f);
+                    break;
 
-            if (damageResult == DamageResult.GuradBreak)
-            {
-                transform.localScale = new Vector3(4f, 4f, 1f);
-            }
+                case DamageResult.Guard:
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                    break;
 
-            if (damageResult == DamageResult.Dead)
-            {
-                transform.localScale = new Vector3(2f, 2f, 1f);
+                case DamageResult.GuradBreak:
+                    transform.localScale = new Vector3(4f, 4f, 1f);
+                    break;
             }
             
             transform.position = position;

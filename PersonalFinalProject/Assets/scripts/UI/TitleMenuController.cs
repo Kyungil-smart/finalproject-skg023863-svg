@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace MyGame
 {
-    public enum SenecName
+    public enum SceneName
     {
         TitleScene,
         BattleScene
@@ -32,12 +32,12 @@ namespace MyGame
         
         public void ChangeBattleScene()
         {
-            ChangeScene(SenecName.BattleScene);
+            ChangeScene(SceneName.BattleScene);
         }
 
         public void ChangeTitleScene()
         {
-            ChangeScene(SenecName.TitleScene);    
+            ChangeScene(SceneName.TitleScene);    
         }
 
         public void OpenOptionUI()
@@ -57,7 +57,7 @@ namespace MyGame
             }
         }
 
-        private void ChangeScene(SenecName scene)
+        private void ChangeScene(SceneName scene)
         {
             string sceneName = scene.ToString();
             SceneManager.LoadScene(sceneName);

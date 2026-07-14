@@ -39,6 +39,7 @@ namespace MyGame
         public int Fighter2RoundWinCount { get; private set; }
 
         private float _timer;
+        private float _koTimer;
 
         [SerializeField]private float _introStateTime;
         [SerializeField]private float _koStateTime;
@@ -101,8 +102,8 @@ namespace MyGame
                 
                 case BattleState.KO:
                     
-                    _waitKoTime -= Time.deltaTime;
-                    if (_waitKoTime > 0) return;
+                    _koTimer -= Time.deltaTime;
+                    if (_koTimer > 0) return;
                         
                     KoState();
                     
@@ -147,9 +148,6 @@ namespace MyGame
                     _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
                     _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
                     
-                    _fighter1.ClearInput();
-                    _fighter2.ClearInput();
-                    
                     _timer = _introStateTime;
                     
                     break;
@@ -158,7 +156,10 @@ namespace MyGame
                     break;
                 case BattleState.KO:
                     _timer = _koStateTime;
-                    _waitKoTime = _koStateTime;
+                    _koTimer = _waitKoTime;
+                    
+                    _fighter1.ClearInput();
+                    _fighter2.ClearInput();
                     
                     break;
                 case BattleState.End:
