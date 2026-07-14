@@ -646,7 +646,7 @@ namespace MyGame
         {
             return (input & (int)InputDefine.Attack) > 0;
         }
-
+        
         public void UpdateFighterSound()
         {
             SEData sound = _fighterData.ActionDatas[CurrentActionID].GetSEData(CurrentActionFrame);

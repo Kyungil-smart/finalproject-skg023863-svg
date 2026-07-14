@@ -285,6 +285,15 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""fde28d37-3375-4140-a169-b2be3bd17640"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -397,6 +406,17 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Player2Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff6be9b9-5419-4f5d-aa79-126ec8efff2c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -430,6 +450,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Player1Navigate = m_UI.FindAction("Player1Navigate", throwIfNotFound: true);
         m_UI_Player2Navigate = m_UI.FindAction("Player2Navigate", throwIfNotFound: true);
+        m_UI_Escape = m_UI.FindAction("Escape", throwIfNotFound: true);
     }
 
     ~@MyGameInputAction()
@@ -642,6 +663,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Player1Navigate;
     private readonly InputAction m_UI_Player2Navigate;
+    private readonly InputAction m_UI_Escape;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -661,6 +683,10 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/Player2Navigate".
         /// </summary>
         public InputAction @Player2Navigate => m_Wrapper.m_UI_Player2Navigate;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Escape".
+        /// </summary>
+        public InputAction @Escape => m_Wrapper.m_UI_Escape;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -693,6 +719,9 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
             @Player2Navigate.started += instance.OnPlayer2Navigate;
             @Player2Navigate.performed += instance.OnPlayer2Navigate;
             @Player2Navigate.canceled += instance.OnPlayer2Navigate;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         /// <summary>
@@ -710,6 +739,9 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
             @Player2Navigate.started -= instance.OnPlayer2Navigate;
             @Player2Navigate.performed -= instance.OnPlayer2Navigate;
             @Player2Navigate.canceled -= instance.OnPlayer2Navigate;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         /// <summary>
@@ -813,5 +845,12 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlayer2Navigate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

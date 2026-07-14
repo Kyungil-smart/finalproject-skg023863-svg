@@ -199,6 +199,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "fde28d37-3375-4140-a169-b2be3bd17640",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -311,6 +320,17 @@
                     "action": "Player2Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ff6be9b9-5419-4f5d-aa79-126ec8efff2c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
