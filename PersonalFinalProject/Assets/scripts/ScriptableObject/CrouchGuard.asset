@@ -37,7 +37,17 @@ MonoBehaviour:
       width: 0
       height: 0
     useBaseRect: 1
+  wallPushBoxDatas:
+  - startEndFrame: {x: 0, y: 100}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
   moveSpeeds: []
   cancelDatas: []
   seDatas: []
   isAlwayscancelable: 0
+  isIgnorePushBox: 0

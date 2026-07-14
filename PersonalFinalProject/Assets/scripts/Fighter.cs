@@ -421,11 +421,11 @@ namespace MyGame
             // if (Check623())
             //     return CommandType.Command623;
             //
-            // if (Check6())
-            //     return CommandType.ForwardAttack;
-            //
-            // if (Check4())
-            //     return CommandType.DownAttack;
+            if (Check6())
+                return CommandType.Command6;
+            
+            if (Check4())
+                return CommandType.Command4;
 
             return CommandType.None;
         }
@@ -829,6 +829,16 @@ namespace MyGame
             rect.width = boxData.width;
             rect.height = boxData.height;
             return rect;
+        }
+
+        private bool Check6()
+        {
+            return IsInputForward(input[0]);
+        }
+
+        private bool Check4()
+        {
+            return IsInputBackward(input[0]);
         }
     }
 }
