@@ -77,6 +77,14 @@ namespace MyGame
             
             _spriteRenderer.transform.localPosition = new Vector3((float)_fighter.ShakeSpritePower / 8, 0, 0);
         }
+
+        void UpdateLayer(Fighter opponent)
+        {
+            if (_fighter.IsIgnorePushBox)
+            {
+                
+            }
+        }
     }
 
 }

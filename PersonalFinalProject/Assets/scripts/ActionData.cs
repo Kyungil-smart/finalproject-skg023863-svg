@@ -43,6 +43,13 @@ namespace MyGame
         public bool useBaseRect;
     }
 
+    [Serializable]
+    public class WallPushBoxData : FrameBase
+    {
+        public Rect rect;
+        public bool useBaseRect;
+    }
+
     // 특정 프레임에서 캐릭터의 속도를 나타내기 위해 사용.
     [Serializable]
     public class MoveSpeed : FrameBase
@@ -79,10 +86,12 @@ namespace MyGame
         public HitBoxData[] hitboxDatas;
         public HurtBoxData[] hurtboxDatas;
         public PushBoxData[] pushBoxDatas;
+        public WallPushBoxData[] wallPushBoxDatas;
         public List<MoveSpeed> moveSpeeds;
         public CancelData[] cancelDatas;
         public SEData[] seDatas;
         public bool isAlwayscancelable; // 언제든지 캔슬할 수 있는 액션인지
+        public bool isIgnorePushBox; // 해당 액션을 사용할때 pushBox를 무시 하는지
 
         public List<HitBoxData> GetHitBoxData(int frame)
         {
@@ -119,6 +128,19 @@ namespace MyGame
                 if (frame >= pushboxData.startEndFrame.x && frame <= pushboxData.startEndFrame.y)
                 {
                     return pushboxData;
+                }
+            }
+            
+            return null;
+        }
+        
+        public WallPushBoxData GetWallPushBoxData(int frame)
+        {
+            foreach (var wallpushboxData in wallPushBoxDatas)
+            {
+                if (frame >= wallpushboxData.startEndFrame.x && frame <= wallpushboxData.startEndFrame.y)
+                {
+                    return wallpushboxData;
                 }
             }
             

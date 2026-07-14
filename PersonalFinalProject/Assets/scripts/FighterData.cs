@@ -14,6 +14,7 @@ namespace MyGame
 
         public Rect baseHurtBox;
         public Rect basePushBox;
+        public Rect baseWallPushBox;
 
         private Dictionary<int, ActionData> _actionDatas = new();
         public Dictionary<int, ActionData> ActionDatas => _actionDatas;

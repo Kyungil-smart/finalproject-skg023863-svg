@@ -136,7 +136,6 @@ namespace MyGame
 
         void ChangeBattleState(BattleState state)
         {
-            Debug.Log($"지금 배틀 스테이트는 {state}");
             _battleState = state;
             
             switch (state)
@@ -318,6 +317,8 @@ namespace MyGame
         
         private void CheckPushBox()
         {
+            if (_fighter1.IsIgnorePushBox || _fighter2.IsIgnorePushBox) return;
+            
             if (_fighter1.PushBox == null || _fighter2.PushBox == null)
                 return;
 
@@ -342,17 +343,17 @@ namespace MyGame
 
         private void CheckOutMap()
         {
-            if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
+            if (_fighter1.WallPushBox == null || _fighter2.WallPushBox == null) return;
             
             fighters.ForEach(f =>
             {
-                if (f.PushBox.xMin < _mapMinX)
+                if (f.WallPushBox.xMin < _mapMinX)
                 {
-                    f.ChangePosition(_mapMinX - f.PushBox.xMin, 0);
+                    f.ChangePosition(_mapMinX - f.WallPushBox.xMin, 0);
                 }
-                else if (f.PushBox.xMax > _mapMaxX)
+                else if (f.WallPushBox.xMax > _mapMaxX)
                 {
-                    f.ChangePosition(_mapMaxX - f.PushBox.xMax, 0);
+                    f.ChangePosition(_mapMaxX - f.WallPushBox.xMax, 0);
                 }
             });
         }
