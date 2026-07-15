@@ -20,7 +20,7 @@ MonoBehaviour:
   loopFromFrame: 0
   hitboxDatas: []
   hurtboxDatas:
-  - startEndFrame: {x: 14, y: 15}
+  - startEndFrame: {x: 13, y: 15}
     rect:
       serializedVersion: 2
       x: 0
