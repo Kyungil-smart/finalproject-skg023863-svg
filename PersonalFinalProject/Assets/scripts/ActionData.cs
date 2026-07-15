@@ -173,8 +173,6 @@ namespace MyGame
                 }
             }
             
-            Debug.Log($"frame = {frame}, 반환 개수 = {cancel.Count}");
-            
             return cancel;
         }
 

@@ -418,24 +418,7 @@ namespace MyGame
 
             return RequestAction(commandData.ActionID);
         }
-
-        private CommandType DetectCommand()
-        {
-            // if (Check236())
-            //     return CommandType.Command236;
-            //
-            // if (Check623())
-            //     return CommandType.Command623;
-            //
-            if (Check6())
-                return CommandType.Command6;
-            
-            if (Check4())
-                return CommandType.Command4;
-
-            return CommandType.None;
-        }
-
+        
         private void TryCommand()
         {
             // if (Check623())
@@ -511,7 +494,6 @@ namespace MyGame
         
         private bool TryCancel(CommandType commandType)
         {
-            Debug.Log($"현재 아이디{CurrentActionID}");
             foreach(var cancelData in _fighterData.ActionDatas[CurrentActionID].GetCancelData(CurrentActionFrame))
             {
                 if (cancelData.commandType != commandType) continue;
@@ -541,10 +523,12 @@ namespace MyGame
             return false;
         }
 
-        public void UpdateFacingDirection(Fighter opponent)
+        public void UpdateFacingDirection(Vector2 opponentPosition)
         {
-            if (CurrentActionID == (int)FighterState.ForwardDash) return;
-            _isFaceRight = _position.x < opponent.Position.x;
+            if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable) return;
+            //if (CurrentActionID == (int)FighterState.ForwardDash) return;
+            
+            _isFaceRight = _position.x < opponentPosition.x;
         }
 
         public bool CanAttackMore(int attackID)
@@ -557,8 +541,9 @@ namespace MyGame
             return true;
         }
 
-        public void SuccessfullyAttack()
+        public void SuccessfullyAttack(Vector2 opponentPosition)
         {
+            _isFaceRight = _position.x < opponentPosition.x;
             _currentAttackhitCount++;
         }
         
@@ -669,8 +654,10 @@ namespace MyGame
             HitStunFrame = hitStunFrame;
         }
         
-        public DamageResult DamagedAction(AttackData attackData)
+        public DamageResult DamagedAction(AttackData attackData, Vector2 opponentPosition)
         {
+            _isFaceRight = _position.x < opponentPosition.x;
+            
             bool isGuardBreak = false;
             
             if (attackData.gaurdDamage > 0)
