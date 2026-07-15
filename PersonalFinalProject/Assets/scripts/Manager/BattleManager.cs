@@ -192,8 +192,8 @@ namespace MyGame
             
             fighters.ForEach(f => f.IncrementActionFrame());
             
-            _fighter1.UpdateFacingDirection(_fighter2);
-            _fighter2.UpdateFacingDirection(_fighter1);
+            _fighter1.UpdateFacingDirection(_fighter2.Position);
+            _fighter2.UpdateFacingDirection(_fighter1.Position);
             
             fighters.ForEach(f => f.UpdateIntroAction());
             fighters.ForEach(f => f.UpdateBoxes());
@@ -209,8 +209,8 @@ namespace MyGame
             
             fighters.ForEach(f => f.IncrementActionFrame());
             
-            _fighter1.UpdateFacingDirection(_fighter2);
-            _fighter2.UpdateFacingDirection(_fighter1);
+            _fighter1.UpdateFacingDirection(_fighter2.Position);
+            _fighter2.UpdateFacingDirection(_fighter1.Position);
             
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
@@ -226,8 +226,8 @@ namespace MyGame
         {
             fighters.ForEach(f => f.IncrementActionFrame());
             
-            _fighter1.UpdateFacingDirection(_fighter2);
-            _fighter2.UpdateFacingDirection(_fighter1);
+            _fighter1.UpdateFacingDirection(_fighter2.Position);
+            _fighter2.UpdateFacingDirection(_fighter1.Position);
             
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
@@ -242,8 +242,8 @@ namespace MyGame
         {
             fighters.ForEach(f => f.IncrementActionFrame());
             
-            _fighter1.UpdateFacingDirection(_fighter2);
-            _fighter2.UpdateFacingDirection(_fighter1);
+            _fighter1.UpdateFacingDirection(_fighter2.Position);
+            _fighter2.UpdateFacingDirection(_fighter1.Position);
             
             fighters.ForEach(f => f.UpdateAction());
             fighters.ForEach(f => f.UpdateMovement());
@@ -290,9 +290,8 @@ namespace MyGame
                     
                     if (isHit)
                     {
-                        attacker.SuccessfullyAttack();
-                        
-                        DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID));
+                        attacker.SuccessfullyAttack(defender.Position);
+                        DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID), attacker.Position);
                         int hitStopFrame = attacker.GetHitStopFrame(damageresult, hitAttackID);
                         int hitStunFrame = attacker.GetHitStunFrame(damageresult, hitAttackID);
                         int shakePower = attacker.GetShakeSpritePower(damageresult, hitAttackID);
