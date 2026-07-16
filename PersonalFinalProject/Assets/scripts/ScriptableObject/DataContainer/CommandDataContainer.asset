@@ -17,3 +17,7 @@ MonoBehaviour:
     ActionID: 100
   - commandType: 5
     ActionID: 101
+  - commandType: 1
+    ActionID: 102
+  - commandType: 2
+    ActionID: 102

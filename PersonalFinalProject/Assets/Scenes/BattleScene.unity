@@ -780,7 +780,7 @@ MonoBehaviour:
   _fighterDataList:
   - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
   maxRoundWin: 3
-  _introStateTime: 3
+  _introStateTime: 0
   _koStateTime: 3
   _endStateTime: 3
   _waitKoTime: 3
