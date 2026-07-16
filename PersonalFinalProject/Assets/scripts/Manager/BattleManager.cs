@@ -254,10 +254,10 @@ namespace MyGame
         {
             foreach (Fighter attacker in fighters)
             {
-                bool isHit = false;
-                bool isPlayer1 = false;
-                int hitAttackID = -1;
-                Vector2 damagePosition = new Vector2();
+                bool isHit = false; // 공격 성공시 true로 변환
+                bool isPlayer1 = false; // 공격을 성공한 플레이어가 1p인지 2p인지 확인. true면 1p
+                int hitAttackID = -1; // 성공한 공격의 AttackID를 임시 저장할 변수
+                Vector2 damagePosition = new Vector2(); // 히트 이펙트를 어디서 실행시킬지
                 
                 foreach (Fighter defender in fighters)
                 {
@@ -288,10 +288,12 @@ namespace MyGame
                         if (isHit) break;
                     }
                     
-                    if (isHit)
+                    if (isHit) // 히트에 성공했다면
                     {
                         attacker.SuccessfullyAttack(defender.Position);
+                        
                         DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID), attacker.Position);
+                        
                         int hitStopFrame = attacker.GetHitStopFrame(damageresult, hitAttackID);
                         int hitStunFrame = attacker.GetHitStunFrame(damageresult, hitAttackID);
                         int shakePower = attacker.GetShakeSpritePower(damageresult, hitAttackID);
@@ -316,9 +318,9 @@ namespace MyGame
                         defender.SetHitStunFrame(hitStunFrame);
                         defender.SetMoveSpeeds(moveSpeed);
                         defender.SetHitsound(audioClip);
+                        defender.SetHitStopFrame(hitStopFrame);
                         
                         attacker.SetHitStopFrame(hitStopFrame);
-                        defender.SetHitStopFrame(hitStopFrame);
                     }
                 }
             }
@@ -340,8 +342,6 @@ namespace MyGame
                 _fighter2View.UpdateLayer(0);
                 return;
             }
-            
-            // if (_fighter1.PushBox == null || _fighter2.PushBox == null) return;
 
             if (!_fighter1.PushBox.BoxOverlap(_fighter2.PushBox))
                 return;

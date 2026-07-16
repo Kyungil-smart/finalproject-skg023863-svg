@@ -740,6 +740,7 @@ namespace MyGame
         {
             SEData sound = _fighterData.ActionDatas[CurrentActionID].GetSEData(CurrentActionFrame);
             if (sound != null) SoundManager.Instance.PlayFighterSE(sound.audioClip, _isFaceRight, Position);
+            
         }
 
         public AudioClip GetHitSound(DamageResult damageResult, int attackID)
@@ -854,7 +855,8 @@ namespace MyGame
             rect.height = boxData.height;
             return rect;
         }
-
+        
+        // 커멘드 체크 함수
         private bool Check6()
         {
             return IsInputForward(input[0]);
