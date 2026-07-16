@@ -22,10 +22,10 @@ MonoBehaviour:
   - startEndFrame: {x: 3, y: 5}
     rect:
       serializedVersion: 2
-      x: 0.8
+      x: 1.6
       y: 0
-      width: 1.6
-      height: 0.9
+      width: 1.5
+      height: 2.5
     attackID: 3
   hurtboxDatas:
   - startEndFrame: {x: 0, y: 21}
@@ -36,21 +36,21 @@ MonoBehaviour:
       width: 0
       height: 0
     useBaseRect: 1
-  - startEndFrame: {x: 3, y: 14}
+  - startEndFrame: {x: 3, y: 15}
     rect:
       serializedVersion: 2
-      x: 0.7
+      x: 1.5
+      y: 0
+      width: 1.5
+      height: 2.5
+    useBaseRect: 0
+  - startEndFrame: {x: 16, y: 17}
+    rect:
+      serializedVersion: 2
+      x: 1.2
       y: 0
       width: 1.4
-      height: 0.9
-    useBaseRect: 0
-  - startEndFrame: {x: 15, y: 17}
-    rect:
-      serializedVersion: 2
-      x: 0.6
-      y: 0
-      width: 1.2
-      height: 0.9
+      height: 2
     useBaseRect: 0
   pushBoxDatas:
   - startEndFrame: {x: 0, y: 21}
