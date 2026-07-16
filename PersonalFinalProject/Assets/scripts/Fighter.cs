@@ -81,6 +81,7 @@ namespace MyGame
         Command4,
         Command6,
         Command236,
+        Command214,
         Command623,
         HoldAttackRelease,
     }
@@ -113,9 +114,6 @@ namespace MyGame
         public bool IsDead { get; private set; }
         
         public bool IsIgnorePushBox { get; private set; }
-
-        // Fighter의 속도. 이동속도를 제외하고 특정 액션에서 속도가 필요할 경우 이 변수에 적용해서 사용. 예)가드 시 밀려 날 때, 전진성 있는 공격 등
-        private float _velocityX; 
         
         public int CurrentActionID { get; private set; } // 현재의 액션 ID를 저장
 
@@ -303,7 +301,6 @@ namespace MyGame
                 RequestAction((int)FighterState.BackwardDash);
                 
             }
-            
             else if (isForward)
                 RequestAction((int)FighterState.Forward);
             
@@ -338,7 +335,6 @@ namespace MyGame
             
                 if (moveSpeed != null)
                 {
-                    _velocityX = moveSpeed.speed;
                     _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
                 }
 
@@ -361,7 +357,6 @@ namespace MyGame
             
             if (moveSpeed != null)
             {
-                _velocityX = moveSpeed.speed;
                 _position.x += moveSpeed.speed * Sign * Time.fixedDeltaTime;
             }
         }
@@ -454,42 +449,52 @@ namespace MyGame
         {
             if (!IsInputForward(inputDown[0])) return false;
 
+            bool isNeutral = false;
+            
             for (int i = 1; i <= 10; i++)
             {
-                if(IsInputBackward(inputDown[i])) return false;
-
                 if (IsInputForward(inputDown[i]))
                 {
                     for (int j = 1; j < i; j++)
                     {
-                        if(!IsInputForward(inputDown[j]) && !IsInputBackward(inputDown[j])) 
-                            return true;
+                        if (IsInputNeutral(inputDown[j]))
+                        {
+                            isNeutral = true;
+                            continue;
+                        }
+                        
+                        return false;
                     }
                 }
             }
             
-            return false;
+            return isNeutral;
         }
         
         private bool CheckBackwardDash()
         {
             if (!IsInputBackward(inputDown[0])) return false;
 
+            bool isNeutral = false;
+            
             for (int i = 1; i <= 10; i++)
             {
-                if(IsInputForward(inputDown[i])) return false;
-
                 if (IsInputBackward(inputDown[i]))
                 {
                     for (int j = 1; j < i; j++)
                     {
-                        if(!IsInputForward(inputDown[j]) && !IsInputBackward(inputDown[j])) 
-                            return true;
+                        if (IsInputNeutral(inputDown[j]))
+                        {
+                            isNeutral = true;
+                            continue;
+                        }
+                        
+                        return false;
                     }
                 }
             }
             
-            return false;
+            return isNeutral;
         }
         
         private bool TryCancel(CommandType commandType)
@@ -525,8 +530,9 @@ namespace MyGame
 
         public void UpdateFacingDirection(Vector2 opponentPosition)
         {
-            if (!_fighterData.ActionDatas[CurrentActionID].isAlwayscancelable) return;
-            //if (CurrentActionID == (int)FighterState.ForwardDash) return;
+            ActionData currentAction = _fighterData.ActionDatas[CurrentActionID];
+
+            if (!currentAction.isAlwayscancelable && !IsActionEnd) return;
             
             _isFaceRight = _position.x < opponentPosition.x;
         }
@@ -543,7 +549,7 @@ namespace MyGame
 
         public void SuccessfullyAttack(Vector2 opponentPosition)
         {
-            _isFaceRight = _position.x < opponentPosition.x;
+            //_isFaceRight = _position.x < opponentPosition.x;
             _currentAttackhitCount++;
         }
         
@@ -731,6 +737,24 @@ namespace MyGame
             }
         }
         
+        private bool IsInputDown(int input)
+        {
+                return (input & (int)InputDefine.Down) > 0;
+        }
+        
+        private bool IsInputUp(int input)
+        {
+            return (input & (int)InputDefine.Up) > 0;
+        }
+        
+        private bool IsInputNeutral(int input)
+        {
+            return !IsInputForward(input) &&
+                   !IsInputBackward(input) &&
+                   !IsInputUp(input) &&
+                   !IsInputDown(input);
+        }
+        
         private bool IsInputAttack(int input)
         {
             return (input & (int)InputDefine.Attack) > 0;
@@ -865,6 +889,11 @@ namespace MyGame
         private bool Check4()
         {
             return IsInputBackward(input[0]);
+        }
+
+        private bool Check214()
+        {
+            return false;
         }
     }
 }

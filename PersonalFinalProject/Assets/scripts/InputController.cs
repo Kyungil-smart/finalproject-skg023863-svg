@@ -70,11 +70,21 @@ namespace MyGame
                 input.Input |= (int)InputDefine.Right;
             }
 
+            if (move.y < 0)
+            {
+                input.Input |= (int)InputDefine.Down;
+            }
+
+            if (move.y > 0)
+            {
+                input.Input |= (int)InputDefine.Up;
+            }
+
             if (_inputAction.PlayerAction.P1Attack.IsPressed())
             {
                 input.Input |= (int)InputDefine.Attack;
             }
-
+            
             return input;
         }
         
@@ -92,6 +102,16 @@ namespace MyGame
             if (move.x > 0)
             {
                 input.Input |= (int)InputDefine.Right;
+            }
+            
+            if (move.y < 0)
+            {
+                input.Input |= (int)InputDefine.Down;
+            }
+
+            if (move.y > 0)
+            {
+                input.Input |= (int)InputDefine.Up;
             }
 
             if (_inputAction.PlayerAction.P2Attack.IsPressed())
