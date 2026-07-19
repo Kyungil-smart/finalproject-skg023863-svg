@@ -15,9 +15,11 @@ MonoBehaviour:
   commandDatas:
   - commandType: 0
     ActionID: 100
-  - commandType: 5
+  - commandType: 4
     ActionID: 101
   - commandType: 1
     ActionID: 102
   - commandType: 2
     ActionID: 102
+  - commandType: 5
+    ActionID: 103

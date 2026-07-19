@@ -416,25 +416,25 @@ namespace MyGame
         
         private void TryCommand()
         {
-            // if (Check623())
-            // {
-            //     if (TryCancel(CommandType.Command623)) return;
-            //     if (RequestCommand(CommandType.Command623)) return;
-            // }
-            //
-            // if (Check236())
-            // {
-            //     if (TryCancel(CommandType.Command236)) return;
-            //     if (RequestCommand(CommandType.Command236)) return;
-            // }
+            if (CheckCommand(new int[] { 6, 2, 3 }, 15))
+            {
+                if (TryCancel(CommandType.Command623)) return;
+                if (RequestCommand(CommandType.Command623)) return;
+            }
+            
+            if (CheckCommand(new int[] { 2, 1, 4 }, 15))
+            {
+                if (TryCancel(CommandType.Command214)) return;
+                if (RequestCommand(CommandType.Command214)) return;
+            }
 
-            if (Check6())
+            if (CheckCommand(new int[] { 6 }, 10))
             {
                 if (TryCancel(CommandType.Command6)) return;
                 if (RequestCommand(CommandType.Command6)) return;
             }
 
-            if (Check4())
+            if (CheckCommand(new int[] { 4 }, 10))
             {
                 if (TryCancel(CommandType.Command4)) return;
                 if (RequestCommand(CommandType.Command4)) return;
@@ -755,6 +755,113 @@ namespace MyGame
                    !IsInputDown(input);
         }
         
+        // 숫자키패드를 기준으로 어느 방향의 입력을 했는지 반환해주는 함수. 예: ↙(왼쪽 아래 입력)이라면 1을 반환 
+        private int GetDirection(int inputValue) 
+        {
+            bool isUp = IsInputUp(inputValue);
+            bool isDown = IsInputDown(inputValue);
+            bool isForward = IsInputForward(inputValue);
+            bool isBackward = IsInputBackward(inputValue);
+
+            if (isDown && isBackward) return 1;
+            if (isDown && isForward) return 3;
+            if (isUp && isBackward) return 7;
+            if (isUp && isForward) return 9;
+            
+            if (isDown) return 2;
+            if (isBackward) return 4;
+            if (isForward) return 6;
+            if (isUp) return 8;
+            
+            return 5;
+        }
+
+        // 실제 입력 방향이 커맨드에서 요구하는 방향으로 인정될 수 있는지 확인.
+        // 상하좌우 방향은 해당 방향 성분을 포함하는 대각선 입력도 허용. 예:
+        // 커맨드 방향이 2(아래)라면 실제 입력 1, 2, 3을 모두 허용.
+        // private bool IsCorrectDirection(int actualDirection, int commandDirection)
+        // {
+        //     switch (commandDirection)
+        //     {
+        //         case 1 : return actualDirection == 1;
+        //         case 2 : return actualDirection == 1 || actualDirection == 2 || actualDirection == 3;
+        //         case 3 : return actualDirection == 3;
+        //         case 4 : return actualDirection == 1 || actualDirection == 4 || actualDirection == 7;
+        //         case 5 : return actualDirection == 5;
+        //         case 6 : return actualDirection == 3 || actualDirection == 6 || actualDirection == 9;
+        //         case 7 : return actualDirection == 7;
+        //         case 8 : return actualDirection == 7 || actualDirection == 8 || actualDirection == 9;
+        //         case 9 : return actualDirection == 9;
+        //         
+        //         default : return false;
+        //     }
+        // }
+        
+        // 실제 입력 방향이 커맨드에서 요구하는 방향으로 인정될 수 있는지 확인.
+        private bool IsCorrectDirection(int actualDirection, int commandDirection)
+        {
+            switch (commandDirection)
+            {
+                case 1 : return actualDirection == 1;
+                case 2 : return actualDirection == 2;
+                case 3 : return actualDirection == 3;
+                case 4 : return actualDirection == 4;
+                case 5 : return actualDirection == 5;
+                case 6 : return actualDirection == 6;
+                case 7 : return actualDirection == 7;
+                case 8 : return actualDirection == 8;
+                case 9 : return actualDirection == 9;
+                
+                default : return false;
+            }
+        }
+        
+        
+        private bool CheckCommand(int[] command, int maxFrame) // 커맨드 체크 함수
+        {
+            int commandIndex = command.Length - 1; // command의 인덱스, 맨 마지막 커맨드부터 차례대로 입력 확인
+                                                   // 214를 예로들면 4 -> 1 -> 2 순으로 확인 
+            bool isFindLastCommand = false;       // 맨 마지막 커맨드를 찾았는지
+
+            for (int frame = 0; frame < maxFrame; frame++)
+            {
+                int direction = GetDirection(input[frame]);
+
+                if (!isFindLastCommand) // 맨 마지막 커맨드를 찾을때까지 다음 if문으로 갈 수 없음
+                {
+                    if (!IsCorrectDirection(direction, command[commandIndex])) continue; // 못 찾았으면 다음 프레임 검사
+                    
+                    commandIndex--; // 맞으면 인덱스 감소. 다음 커맨드 검사
+                    
+                    isFindLastCommand = true;
+
+                    if (commandIndex < 0) return true; // 하나짜리 커맨드도 있을 수 있으니 commandIndex가 0보다 작아지면 true 반환
+
+                    continue;
+                }
+
+                if (IsCorrectDirection(direction, command[commandIndex])) // 입력 검사. 틀리면 다음 if문으로
+                {
+                    commandIndex--; // 맞으면 인덱스 감소. 다음 커맨드 검사
+                    
+                    // for문 조건 내에 commandIndex가 0보다 작아졌다면 해당 커맨드를 입력 한 것이므로 true 반환
+                    if (commandIndex < 0) return true; 
+                    
+                    continue; // 아직 검사할 인덱스가 남았다면 continue
+                }
+                
+                // // 입력 방향이 중립이거나 앞의 입력과 같다면 continue
+                // if (direction == 5 || direction == command[commandIndex + 1]) 
+                // {
+                //     continue;
+                // }
+                //
+                // return false; // 엉뚱한 방향이 들어오면 false
+            }
+            
+            return false; // for문에서 만족하는 커맨드 입력을 찾지 못 했다면 false 
+        }
+        
         private bool IsInputAttack(int input)
         {
             return (input & (int)InputDefine.Attack) > 0;
@@ -878,22 +985,6 @@ namespace MyGame
             rect.width = boxData.width;
             rect.height = boxData.height;
             return rect;
-        }
-        
-        // 커멘드 체크 함수
-        private bool Check6()
-        {
-            return IsInputForward(input[0]);
-        }
-
-        private bool Check4()
-        {
-            return IsInputBackward(input[0]);
-        }
-
-        private bool Check214()
-        {
-            return false;
         }
     }
 }
