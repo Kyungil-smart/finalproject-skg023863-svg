@@ -57,6 +57,14 @@ namespace MyGame
     {
         
     }
+
+    public class CommandArray
+    {
+        public int[] command214 = { 2, 1, 4 };
+        public int[] command623 = { 6, 2, 3 };
+        public int[] command4 = { 4 };
+        public int[] command6 = { 6 };
+    }
     
     // Fighter의 행동을 열거형으로 정리
     public enum FighterState
@@ -83,7 +91,6 @@ namespace MyGame
         Command236,
         Command214,
         Command623,
-        HoldAttackRelease,
     }
 
     // Fighter가 공격 받았을 때 어떤 상황인지 열거형으로 정리
@@ -117,7 +124,11 @@ namespace MyGame
         
         public int CurrentActionID { get; private set; } // 현재의 액션 ID를 저장
 
+        private int _executeActionID = -1;
+
         private int _bufferActionID = -1;
+
+        private int _bufferActionStartFrame = 0;
 
         private int _reserveActionID = -1;
         
@@ -158,6 +169,8 @@ namespace MyGame
         // 이 공격 이 이번 액션에서 이미 몇 번 적중했는가 확인용
         // 1히트 공격이 들어갔을 경우 1히트 보다 더 히트되면 안 되므로 비교하기 위해 사용되는 변수
         private int _currentAttackhitCount; 
+        
+        private CommandArray _commandArray = new();
         
         private List<HitBox> _hitBoxes = new();
         public  List<HitBox> HitBoxes => _hitBoxes;
@@ -263,15 +276,21 @@ namespace MyGame
             
             if (_reserveActionID != -1 && IsHitStopEnd)
             {
-                Debug.Log($"가드브레이크 아이디 {_reserveActionID}");
                 SetCurrentAction(_reserveActionID);
                 _reserveActionID = -1;
                 return;
             }
-            
+
             if (_bufferActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
+                if (CurrentActionFrame < _bufferActionStartFrame) return;
                 SetCurrentAction(_bufferActionID);
+                return;
+            }
+
+            if (_executeActionID != -1 && CanCancelAttack() && IsHitStopEnd)
+            {
+                SetCurrentAction(_executeActionID);
                 return;
             }
             
@@ -283,12 +302,8 @@ namespace MyGame
             {
                 Debug.Log($"공격 눌림{CurrentActionFrame}");
                 
-                // CommandType command = DetectCommand();
-                //
-                // if (TryCancel(command)) return;
-                //
-                // if(RequestCommand(command)) return;
                 TryCommand();
+                return;
             }
 
             if (CheckForwardDash())
@@ -399,7 +414,9 @@ namespace MyGame
             _currentAttackhitCount = 0;
             ShakeSpritePower = 0;
             HitStunFrame = 0;
+            _bufferActionStartFrame = 0;
             _bufferActionID = -1;
+            _executeActionID = -1;
             IsIgnorePushBox = _fighterData.ActionDatas[CurrentActionID].isIgnorePushBox;
         }
 
@@ -416,25 +433,25 @@ namespace MyGame
         
         private void TryCommand()
         {
-            if (CheckCommand(new int[] { 6, 2, 3 }, 15))
+            if (CheckCommand(_commandArray.command623, 15))
             {
                 if (TryCancel(CommandType.Command623)) return;
                 if (RequestCommand(CommandType.Command623)) return;
             }
             
-            if (CheckCommand(new int[] { 2, 1, 4 }, 15))
+            if (CheckCommand(_commandArray.command214, 15))
             {
                 if (TryCancel(CommandType.Command214)) return;
                 if (RequestCommand(CommandType.Command214)) return;
             }
 
-            if (CheckCommand(new int[] { 6 }, 10))
+            if (CheckCommand(_commandArray.command6, 1))
             {
                 if (TryCancel(CommandType.Command6)) return;
                 if (RequestCommand(CommandType.Command6)) return;
             }
 
-            if (CheckCommand(new int[] { 4 }, 10))
+            if (CheckCommand(_commandArray.command4, 1))
             {
                 if (TryCancel(CommandType.Command4)) return;
                 if (RequestCommand(CommandType.Command4)) return;
@@ -499,14 +516,14 @@ namespace MyGame
         
         private bool TryCancel(CommandType commandType)
         {
-            foreach(var cancelData in _fighterData.ActionDatas[CurrentActionID].GetCancelData(CurrentActionFrame))
+            foreach(CancelData cancelData in _fighterData.ActionDatas[CurrentActionID].GetCancelData(CurrentActionFrame))
             {
                 if (cancelData.commandType != commandType) continue;
                 
                 if(cancelData.execute)
                 {
                     Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
-                    _bufferActionID = cancelData.nextActionID;
+                    _executeActionID = cancelData.nextActionID;
                     return true;
                 }
 
@@ -514,6 +531,7 @@ namespace MyGame
                 {
                     Debug.Log($"버퍼 아이디는 {cancelData.nextActionID}");
                     _bufferActionID = cancelData.nextActionID;
+                    _bufferActionStartFrame = cancelData.startEndFrame.y + 1;
                     return true;
                 }
             }

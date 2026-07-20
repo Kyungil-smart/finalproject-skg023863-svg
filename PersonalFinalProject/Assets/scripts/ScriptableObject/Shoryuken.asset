@@ -25,7 +25,7 @@ MonoBehaviour:
       x: 1
       y: 2
       width: 1.2
-      height: 2
+      height: 3
     attackID: 4
   hurtboxDatas:
   - startEndFrame: {x: 6, y: 54}

@@ -19,10 +19,10 @@ MonoBehaviour:
   isLoop: 0
   loopFromFrame: 0
   hitboxDatas:
-  - startEndFrame: {x: 4, y: 5}
+  - startEndFrame: {x: 5, y: 6}
     rect:
       serializedVersion: 2
-      x: 1.85
+      x: 1.9
       y: 0
       width: 1.5
       height: 1
@@ -72,16 +72,26 @@ MonoBehaviour:
     useBaseRect: 1
   moveSpeeds: []
   cancelDatas:
-  - startEndFrame: {x: 1, y: 3}
+  - startEndFrame: {x: 1, y: 4}
     buffer: 1
     execute: 0
-    commandType: 0
+    commandType: 4
     nextActionID: 101
-  - startEndFrame: {x: 4, y: 5}
+  - startEndFrame: {x: 5, y: 6}
     buffer: 0
     execute: 1
-    commandType: 0
+    commandType: 4
     nextActionID: 101
+  - startEndFrame: {x: 1, y: 4}
+    buffer: 1
+    execute: 0
+    commandType: 5
+    nextActionID: 103
+  - startEndFrame: {x: 5, y: 6}
+    buffer: 0
+    execute: 1
+    commandType: 5
+    nextActionID: 103
   seDatas:
   - frame: 0
     audioClip: {fileID: 8300000, guid: f0c0fcfce9f7a3e408d00527408a8256, type: 3}
