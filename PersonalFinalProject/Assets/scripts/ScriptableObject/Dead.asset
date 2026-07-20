@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
+  m_Name: Dead
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
+  actionID: 10
+  actionName: Dead
+  actionType: 5
+  frameCount: 72
+  isLoop: 1
+  loopFromFrame: 70
+  hitboxDatas: []
+  hurtboxDatas: []
+  pushBoxDatas:
+  - startEndFrame: {x: 0, y: 9}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  - startEndFrame: {x: 10, y: 20}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 1.5
+      width: 5
+      height: 1.5
+    useBaseRect: 0
+  - startEndFrame: {x: 21, y: 71}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 5
+      height: 1.5
+    useBaseRect: 0
+  wallPushBoxDatas:
+  - startEndFrame: {x: 0, y: 9}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  - startEndFrame: {x: 10, y: 71}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 5
+      height: 1.5
+    useBaseRect: 0
+  moveSpeeds:
+  - startEndFrame: {x: 0, y: 19}
+    speed: -6
+  - startEndFrame: {x: 20, y: 39}
+    speed: -4
+  - startEndFrame: {x: 40, y: 49}
+    speed: -2.5
+  - startEndFrame: {x: 50, y: 50}
+    speed: 0
+  cancelDatas: []
+  seDatas:
+  - frame: 0
+    audioClip: {fileID: 8300000, guid: 4b0a261ce2a2f35499cd3d77d4cd679d, type: 3}
+  isAlwayscancelable: 0
+  isIgnorePushBox: 0

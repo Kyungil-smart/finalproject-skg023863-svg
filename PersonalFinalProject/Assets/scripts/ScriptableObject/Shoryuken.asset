@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9500e624624690c4bb2ae026a18886ea, type: 3}
+  m_Name: Shoryuken
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.ActionData
+  actionID: 103
+  actionName: Shoryuken
+  actionType: 1
+  frameCount: 55
+  isLoop: 0
+  loopFromFrame: 0
+  hitboxDatas:
+  - startEndFrame: {x: 2, y: 54}
+    rect:
+      serializedVersion: 2
+      x: 1
+      y: 2
+      width: 1.2
+      height: 3
+    attackID: 4
+  hurtboxDatas:
+  - startEndFrame: {x: 6, y: 54}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  pushBoxDatas:
+  - startEndFrame: {x: 0, y: 54}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  wallPushBoxDatas:
+  - startEndFrame: {x: 0, y: 54}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    useBaseRect: 1
+  moveSpeeds:
+  - startEndFrame: {x: 0, y: 2}
+    speed: 3
+  - startEndFrame: {x: 3, y: 10}
+    speed: 2
+  - startEndFrame: {x: 10, y: 15}
+    speed: 1
+  - startEndFrame: {x: 16, y: 16}
+    speed: 0
+  cancelDatas: []
+  seDatas:
+  - frame: 0
+    audioClip: {fileID: 8300000, guid: c88a63f7ede8c224e9b3f8b9c6c6ba05, type: 3}
+  isAlwayscancelable: 0
+  isIgnorePushBox: 0
