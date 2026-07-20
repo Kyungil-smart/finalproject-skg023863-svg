@@ -75,13 +75,23 @@ MonoBehaviour:
   - startEndFrame: {x: 1, y: 2}
     buffer: 1
     execute: 0
-    commandType: 0
+    commandType: 4
     nextActionID: 101
   - startEndFrame: {x: 3, y: 5}
     buffer: 0
     execute: 1
-    commandType: 0
+    commandType: 4
     nextActionID: 101
+  - startEndFrame: {x: 1, y: 2}
+    buffer: 1
+    execute: 0
+    commandType: 5
+    nextActionID: 103
+  - startEndFrame: {x: 3, y: 5}
+    buffer: 0
+    execute: 1
+    commandType: 5
+    nextActionID: 103
   seDatas:
   - frame: 0
     audioClip: {fileID: 8300000, guid: 15f19933973c62f408011e11283da300, type: 3}
