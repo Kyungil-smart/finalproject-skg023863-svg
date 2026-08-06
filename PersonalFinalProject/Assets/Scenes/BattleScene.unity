@@ -779,8 +779,8 @@ MonoBehaviour:
   _player2: {fileID: 194180728}
   _fighterDataList:
   - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
-  _playerUpLayer: 3
-  _playerDownLayer: 2
+  _playerUpLayer: 1
+  _playerDownLayer: 0
   maxRoundWin: 3
   _introStateTime: 3
   _koStateTime: 3
