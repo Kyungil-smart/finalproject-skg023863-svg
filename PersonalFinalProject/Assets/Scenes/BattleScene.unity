@@ -779,8 +779,8 @@ MonoBehaviour:
   _player2: {fileID: 194180728}
   _fighterDataList:
   - {fileID: 11400000, guid: ac026b57d00c5f442a467854212d37fc, type: 2}
-  _playerUpLayer: 1
-  _playerDownLayer: 0
+  _playerUpLayer: 2
+  _playerDownLayer: 1
   maxRoundWin: 3
   _introStateTime: 3
   _koStateTime: 3
@@ -1177,7 +1177,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1513429874567182084, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2173055383363894502, guid: a85cc1ab2b395bc45bc02499f29d3910, type: 3}
       propertyPath: AnimationSampleOffset
@@ -1251,6 +1251,10 @@ PrefabInstance:
     - target: {fileID: 709324285641190791, guid: 702a79629b0a5bf4cb9560a0016e0487, type: 3}
       propertyPath: m_Color.r
       value: 0.4264151
+      objectReference: {fileID: 0}
+    - target: {fileID: 709324285641190791, guid: 702a79629b0a5bf4cb9560a0016e0487, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3683953724038067469, guid: 702a79629b0a5bf4cb9560a0016e0487, type: 3}
       propertyPath: m_LocalPosition.x
