@@ -18,8 +18,11 @@ namespace MyGame
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
 
-         private float _mapMaxX;
-         private float _mapMinX;
+        private float _mapMaxX;
+        private float _mapMinX;
+
+        [SerializeField] private int _playerUpLayer;
+        [SerializeField] private int _playerDownLayer;
 
         private Fighter _fighter1;
         public Fighter Fighter1 => _fighter1;
@@ -305,13 +308,13 @@ namespace MyGame
                         
                         if (isPlayer1)
                         {
-                            _fighter1View.UpdateLayer(1);
-                            _fighter2View.UpdateLayer(0);
+                            _fighter1View.UpdateLayer(_playerUpLayer);
+                            _fighter2View.UpdateLayer(_playerDownLayer);
                         }
                         else
                         {
-                            _fighter1View.UpdateLayer(0);
-                            _fighter2View.UpdateLayer(1);
+                            _fighter1View.UpdateLayer(_playerDownLayer);
+                            _fighter2View.UpdateLayer(_playerUpLayer);
                         }
                         
                         defender.SetShakeSpritePower(shakePower);
@@ -331,15 +334,15 @@ namespace MyGame
         {
             if (_fighter1.IsIgnorePushBox)
             {
-                _fighter1View.UpdateLayer(0);
-                _fighter2View.UpdateLayer(1);
+                _fighter1View.UpdateLayer(_playerDownLayer);
+                _fighter2View.UpdateLayer(_playerUpLayer);
                 return;
             }
 
             if (_fighter2.IsIgnorePushBox)
             {
-                _fighter1View.UpdateLayer(1);
-                _fighter2View.UpdateLayer(0);
+                _fighter1View.UpdateLayer(_playerUpLayer);
+                _fighter2View.UpdateLayer(_playerDownLayer);
                 return;
             }
 
