@@ -67,7 +67,6 @@ namespace MyGame
                 _playerTwoWinMarkerImage[i].sprite = _loseSprite;
             }
         }
-        
     }
 }
 
