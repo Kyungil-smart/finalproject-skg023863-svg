@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace MyGame
 {
-    public class BattleSceneEscape : MonoBehaviour
+    public class BattleSceneOptionController: MonoBehaviour
     {
         private MyGameInputAction _inputAction;
 
@@ -16,20 +16,21 @@ namespace MyGame
         void OnEnable()
         {
             _inputAction.asset.Enable();
-            _inputAction.UI.Escape.performed += GoToTitleScene;
+            _inputAction.UI.Escape.performed += OpenOptionUI;
         }
 
         void OnDisable()
         {
-            _inputAction.UI.Escape.performed -= GoToTitleScene;
+            _inputAction.UI.Escape.performed -= OpenOptionUI;
             _inputAction.asset.Disable();
         }
-
-        void GoToTitleScene(InputAction.CallbackContext ctx)
+        
+        void OpenOptionUI(InputAction.CallbackContext ctx)
         {
-            if (!ctx.performed) return;
-
-            SceneManager.LoadScene(SceneName.TitleScene.ToString());
+            if (ctx.performed)
+            {
+                OptionManager.Instance.OpenOptionUI();
+            }
         }
     }
 }

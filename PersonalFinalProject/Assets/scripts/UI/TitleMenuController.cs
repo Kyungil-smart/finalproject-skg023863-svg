@@ -13,8 +13,15 @@ namespace MyGame
     {
         private GameObject _lastSelected;
         
-        [SerializeField] protected GameObject _optionUI;
+        [SerializeField] protected GameObject _OptionManager;
         [SerializeField] protected GameObject _firstSelectedOption;
+        
+        private OptionMenuController _optionMenuController;
+
+        void Awake()
+        {
+            _optionMenuController = _OptionManager.GetComponent<OptionMenuController>();
+        }
         
         void Update()
         { 
@@ -42,8 +49,10 @@ namespace MyGame
 
         public void OpenOptionUI()
         {
-            _optionUI.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(_firstSelectedOption);
+            // _optionUI.SetActive(true);
+            // EventSystem.current.SetSelectedGameObject(_firstSelectedOption);
+            
+            _optionMenuController.OpenOptionUI();
         }
 
         public void ExitGame()
