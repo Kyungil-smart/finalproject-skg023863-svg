@@ -17,7 +17,7 @@ namespace MyGame
         {
             _fighter = _isPlayerOne ? _battleManager.Fighter1 : _battleManager.Fighter2;
             _fighter.OnGuardBreakGaugeChanged += UpdateGuardBreakGauge;
-            _battleManager.OnResetGuardBraekGauge += SetGuardBreakGauge;
+            _battleManager.OnFightStateIntro += SetGuardBreakGauge;
 
             SetGuardBreakGauge();
         }
@@ -25,7 +25,7 @@ namespace MyGame
         void OnDestroy()
         {
             _fighter.OnGuardBreakGaugeChanged -= UpdateGuardBreakGauge;
-            _battleManager.OnResetGuardBraekGauge -= SetGuardBreakGauge;
+            _battleManager.OnFightStateIntro -= SetGuardBreakGauge;
         }
 
         void UpdateGuardBreakGauge(int gauge)
