@@ -243,50 +243,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &417692641
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 417692643}
-  - component: {fileID: 417692642}
-  m_Layer: 0
-  m_Name: BattleSceneEscape
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &417692642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417692641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 699a9ac9fcb66734084f42c966382959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BattleSceneEscape
---- !u!4 &417692643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417692641}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05264, y: 3.58154, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &456933331
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,9 +537,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6462351247630762475, guid: 02401531aebdd93499b9efc2f42056eb, type: 3}
+      propertyPath: _blinkLoop
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6462351247630762475, guid: 02401531aebdd93499b9efc2f42056eb, type: 3}
       propertyPath: _winnerText
       value: 
       objectReference: {fileID: 1120451415}
+    - target: {fileID: 6462351247630762475, guid: 02401531aebdd93499b9efc2f42056eb, type: 3}
+      propertyPath: _roundInterval
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 6462351247630762475, guid: 02401531aebdd93499b9efc2f42056eb, type: 3}
       propertyPath: _winnerInterval
       value: 3
@@ -1430,10 +1394,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 194180728}
     - target: {fileID: 7051505999728859670, guid: 47aeaa4c43b295240962d28d7096d664, type: 3}
-      propertyPath: _introStateTime
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7051505999728859670, guid: 47aeaa4c43b295240962d28d7096d664, type: 3}
       propertyPath: _inputController
       value: 
       objectReference: {fileID: 456933332}
@@ -1501,10 +1461,9 @@ SceneRoots:
   - {fileID: 3734827993726865833}
   - {fileID: 8341638621314721331}
   - {fileID: 1890826788}
+  - {fileID: 556176498}
   - {fileID: 728604936}
   - {fileID: 1224177790}
   - {fileID: 2109759034}
   - {fileID: 2046822235}
-  - {fileID: 417692643}
   - {fileID: 1518054238}
-  - {fileID: 556176498}
