@@ -30,14 +30,6 @@ namespace MyGame
         [Header("Winner 표시")] 
         [SerializeField] private TMP_Text _winnerText;
         
-        void Update()
-        {
-            if (Keyboard.current.pKey.wasPressedThisFrame)
-            {
-                PlayReady();
-            }
-        }
-
         public void PlayKO()
         {
             _kText.transform.localScale = Vector3.one * _KOStartScale;
