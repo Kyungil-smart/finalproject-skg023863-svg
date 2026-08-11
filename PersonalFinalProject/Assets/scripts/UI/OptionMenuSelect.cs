@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace MyGame
 {
+    // 옵션 메뉴에서 선택 가능한 볼륨 항목을 구분하기 위한 열거형
     public enum OptionType
     {
         None,
@@ -11,20 +12,14 @@ namespace MyGame
         SeVolume
     }
     
-    public class OptionMenuSelect : MonoBehaviour, IPointerEnterHandler, ISelectHandler
+    // 옵션 메뉴에서 현재 선택된 옵션 항목을 설정하는 기능을 담당
+    public class OptionMenuSelect : MonoBehaviour, ISelectHandler
     {
-        [SerializeField] private RectTransform _cursorPoint;
         [SerializeField] private OptionMenuController _menu;
         [SerializeField] private OptionType _optionType;
         
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            EventSystem.current.SetSelectedGameObject(gameObject);
-        }
-
         public void OnSelect(BaseEventData eventData)
         {
-            _menu.MoveCursor(_cursorPoint);
             _menu.SetCursorIndex(_optionType);
         }
     }

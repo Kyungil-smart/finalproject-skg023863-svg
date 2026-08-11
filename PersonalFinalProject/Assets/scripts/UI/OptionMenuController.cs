@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace MyGame
 {
-    public class OptionMenuController : MonoBehaviour
+    public class OptionMenuController : CursorControllor
     {
         [SerializeField] private GameObject _optionUI;
         
@@ -24,40 +24,19 @@ namespace MyGame
         private int _bgmVolume;
         private int _seVolume;
         
-        [SerializeField] private RectTransform _cursor;
         public OptionType cursorIndex;
         
         void Start()
         {
-            Debug.Log("OptionMenuController Start 실행");
-            
             _masterVolume = SoundManager.Instance.masterVolume;
             _bgmVolume =  SoundManager.Instance.bgmVolume;
             _seVolume = SoundManager.Instance.seVolume;
-            
-            Debug.Log($"초기화 Master : {_masterVolume}");
             
             _masterVolumeText.text = _masterVolume.ToString();
             _bgmVolumeText.text = _bgmVolume.ToString();
             _seVolumeText.text = _seVolume.ToString();
         }
         
-        private void RefreshVolume()
-        {
-            _masterVolume = SoundManager.Instance.masterVolume;
-            _bgmVolume = SoundManager.Instance.bgmVolume;
-            _seVolume = SoundManager.Instance.seVolume;
-
-            _masterVolumeText.text = _masterVolume.ToString();
-            _bgmVolumeText.text = _bgmVolume.ToString();
-            _seVolumeText.text = _seVolume.ToString();
-        }
-
-        public void MoveCursor(RectTransform _cursorPoint)
-        {
-            _cursor.position = _cursorPoint.position;
-        }
-
         public void SetCursorIndex(OptionType optionType)
         { 
             cursorIndex = optionType;
