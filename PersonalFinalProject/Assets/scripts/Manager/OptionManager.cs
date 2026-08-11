@@ -62,12 +62,14 @@ namespace MyGame
         {
             SetOptionUI();
             IsOptionUIOpen = true;
+            SoundManager.Instance.PauseFighterSE();
             _optionMenuController.OpenOptionUI();
         }
 
         public void CloseOptionUI()
         {
             IsOptionUIOpen = false;
+            SoundManager.Instance.ResumeFighterSE();
             _optionMenuController.CloseOptionUI();
         }
     }
