@@ -9,6 +9,8 @@ namespace MyGame
         public static OptionManager Instance { get; private set; }
         
         private OptionMenuController _optionMenuController;
+
+        public bool IsOptionUIOpen {get; private set;}
         
         [SerializeField] private Button _seVolumeButton;
         [SerializeField] private Button _titleButton;
@@ -59,11 +61,13 @@ namespace MyGame
         public void OpenOptionUI()
         {
             SetOptionUI();
+            IsOptionUIOpen = true;
             _optionMenuController.OpenOptionUI();
         }
 
         public void CloseOptionUI()
         {
+            IsOptionUIOpen = false;
             _optionMenuController.CloseOptionUI();
         }
     }
