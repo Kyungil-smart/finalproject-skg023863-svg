@@ -11,25 +11,6 @@ namespace MyGame
     }
     public class TitleMenuController : MonoBehaviour
     {
-        private GameObject _lastSelected;
-        
-        [SerializeField] protected GameObject _optionUI;
-        [SerializeField] protected GameObject _firstSelectedOption;
-        
-        void Update()
-        { 
-            GameObject current = EventSystem.current.currentSelectedGameObject;
-
-            if (current != null)
-            {
-                _lastSelected = current;
-            }
-            else if (_lastSelected != null)
-            {
-                EventSystem.current.SetSelectedGameObject(_lastSelected);
-            }
-        }
-        
         public void ChangeBattleScene()
         {
             ChangeScene(SceneName.BattleScene);
@@ -42,8 +23,7 @@ namespace MyGame
 
         public void OpenOptionUI()
         {
-            _optionUI.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(_firstSelectedOption);
+            OptionManager.Instance.OpenOptionUI();
         }
 
         public void ExitGame()

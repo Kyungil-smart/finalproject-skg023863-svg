@@ -17,6 +17,8 @@ namespace MyGame
         [SerializeField] private GameObject _player1;
         [SerializeField] private GameObject _player2;
         [SerializeField] private FighterData[] _fighterDataList;
+        [SerializeField] private GameObject _battleUIEffectGameObject;
+        [SerializeField] private GameObject _ResultUIGameObject;
 
         private float _mapMaxX;
         private float _mapMinX;
@@ -35,6 +37,10 @@ namespace MyGame
         private FighterView _fighter1View;
         private FighterView _fighter2View;
         
+        private BattleUIEffect _battleUIEffect;
+        
+        private ResultUIControllor _resultUI;
+        
         private BattleState _battleState = BattleState.Intro;
 
         public int maxRoundWin;
@@ -44,21 +50,31 @@ namespace MyGame
         private float _timer;
         private float _koTimer;
 
+        private int _roundCount;
+        private bool _isFinalRound;
+
+        private bool _isWinnerPlayerOne;
+
         [SerializeField]private float _introStateTime;
         [SerializeField]private float _koStateTime;
         [SerializeField]private float _endStateTime;
         [SerializeField]private float _waitKoTime;
 
-        public event Action OnResetGuardBraekGauge;
-        public event Action OnSetWinMarker;
-
-        public event Action OnResetBattle;
+        public event Action OnFightStateIntro; // Intro 상태가 됐을 때 실행시킬 이벤트
+        public event Action OnSetWinMarker; // 라운드에서 승리했을 시 승리 표시를 활성화하는 이벤트
+        public event Action OnResetBattle;  // 게임을 다시 리셋할 때 실행시킬 이벤트.
+                                            // BattleManager 외부에서 리셋을 진행할 때 필요한 메서드들 구독.
         
         void Awake()
         {
-        _mapMaxX = GameManager.Instance.MapMaxX;
-        _mapMinX = GameManager.Instance.MapMinX;
+            _mapMaxX = GameManager.Instance.MapMaxX;
+            _mapMinX = GameManager.Instance.MapMinX;
+
+            _roundCount = 1;
+            _isFinalRound = false;
             
+            _battleUIEffect = _battleUIEffectGameObject.GetComponent<BattleUIEffect>();
+            _resultUI = _ResultUIGameObject.GetComponent<ResultUIControllor>();
             
             _timer = _introStateTime;
             
@@ -78,6 +94,21 @@ namespace MyGame
             _fighter2View.Initialize(_fighter2); 
             _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
             _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
+        }
+
+        void Start()
+        {
+            _battleUIEffect.PlayReady(_roundCount);
+        }
+
+        void OnEnable()
+        {
+            _resultUI.OnPlayAgainClicked += ResetBattle;
+        }
+
+        void OnDisabe()
+        {
+            _resultUI.OnPlayAgainClicked -= ResetBattle;
         }
         
         private void FixedUpdate()
@@ -124,12 +155,13 @@ namespace MyGame
                     {
                         if (Fighter1RoundWinCount >= maxRoundWin || Fighter2RoundWinCount >= maxRoundWin)
                         {
-                            Fighter1RoundWinCount = 0;
-                            Fighter2RoundWinCount = 0;
-                            OnResetBattle?.Invoke();
+                            _isWinnerPlayerOne = Fighter1RoundWinCount >= maxRoundWin ?  true : false;
+                            OpenResultUI(_isWinnerPlayerOne);
                         }
-                        
-                        ChangeBattleState(BattleState.Intro);
+                        else
+                        {
+                            ChangeBattleState(BattleState.Intro);
+                        }
                     }
                     
                     break;
@@ -144,8 +176,16 @@ namespace MyGame
             switch (state)
             {
                 case BattleState.Intro:
+                    _battleUIEffect.HideWinner();
                     
-                    OnResetGuardBraekGauge?.Invoke();
+                    if (maxRoundWin - 1 == Fighter1RoundWinCount && maxRoundWin - 1 == Fighter2RoundWinCount)
+                    {
+                        _isFinalRound = true;
+                    }
+                    
+                    _battleUIEffect.PlayReady(_roundCount, _isFinalRound);
+                    
+                    OnFightStateIntro?.Invoke();
                     
                     _fighter1.BattleSetup(_fighterDataList[0], new Vector2(-2, 0), true);
                     _fighter2.BattleSetup(_fighterDataList[0], new Vector2(2, 0), false);
@@ -157,6 +197,8 @@ namespace MyGame
                     
                     break;
                 case BattleState.KO:
+                    _battleUIEffect.PlayKO();
+                    _roundCount++;
                     _timer = _koStateTime;
                     _koTimer = _waitKoTime;
                     
@@ -172,12 +214,16 @@ namespace MyGame
                     {
                         if (deadFighter[0] == _fighter1)
                         {
+                            _isWinnerPlayerOne = false;
+                            _battleUIEffect.ShowWinner(_isWinnerPlayerOne);
                             Fighter2RoundWinCount++;
                             OnSetWinMarker?.Invoke();
                             _fighter2.RequestWinAction();
                         }
                         else if (deadFighter[0] == _fighter2)
                         {
+                            _isWinnerPlayerOne = true;
+                            _battleUIEffect.ShowWinner(_isWinnerPlayerOne);
                             Fighter1RoundWinCount++;
                             OnSetWinMarker?.Invoke();
                             _fighter1.RequestWinAction();
@@ -380,6 +426,25 @@ namespace MyGame
                     f.ChangePosition(_mapMaxX - f.WallPushBox.xMax, 0);
                 }
             });
+        }
+
+        private void OpenResultUI(bool isFinalWinnerPlayerOne)
+        {
+            _ResultUIGameObject.SetActive(true);
+            _resultUI.OpenResultUI(isFinalWinnerPlayerOne);
+        }
+
+        private void ResetBattle()
+        {
+            OnResetBattle?.Invoke();
+            
+            Fighter1RoundWinCount = 0;
+            Fighter2RoundWinCount = 0;
+            _roundCount = 1;
+            _isFinalRound = false;
+            Time.timeScale = 1;
+
+            ChangeBattleState(BattleState.Intro);
         }
     }
     
