@@ -40,6 +40,8 @@ namespace MyGame
         private BattleUIEffect _battleUIEffect;
         
         private ResultUIControllor _resultUI;
+
+        private BattleSceneOptionController _battleSceneOptionController;
         
         private BattleState _battleState = BattleState.Intro;
 
@@ -54,7 +56,7 @@ namespace MyGame
         private bool _isFinalRound;
 
         private bool _isWinnerPlayerOne;
-
+        
         [SerializeField]private float _introStateTime;
         [SerializeField]private float _koStateTime;
         [SerializeField]private float _endStateTime;
@@ -75,6 +77,7 @@ namespace MyGame
             
             _battleUIEffect = _battleUIEffectGameObject.GetComponent<BattleUIEffect>();
             _resultUI = _ResultUIGameObject.GetComponent<ResultUIControllor>();
+            _battleSceneOptionController = GetComponent<BattleSceneOptionController>();
             
             _timer = _introStateTime;
             
@@ -430,6 +433,7 @@ namespace MyGame
 
         private void OpenResultUI(bool isFinalWinnerPlayerOne)
         {
+            _battleSceneOptionController.SetBattleEnd(true);
             _ResultUIGameObject.SetActive(true);
             _resultUI.OpenResultUI(isFinalWinnerPlayerOne);
         }
@@ -442,6 +446,7 @@ namespace MyGame
             Fighter2RoundWinCount = 0;
             _roundCount = 1;
             _isFinalRound = false;
+            _battleSceneOptionController.SetBattleEnd(false);
             Time.timeScale = 1;
 
             ChangeBattleState(BattleState.Intro);

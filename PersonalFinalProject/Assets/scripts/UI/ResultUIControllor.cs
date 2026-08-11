@@ -12,6 +12,8 @@ namespace MyGame
     {
         [SerializeField] private Button _playAgainButton;
         [SerializeField] private TMP_Text _winnerText;
+        
+        public bool IsBattleEnd {get; private set;}
 
         public event Action OnPlayAgainClicked; // Play Again 버튼 눌렀을 시 발동하는 이벤트
         
