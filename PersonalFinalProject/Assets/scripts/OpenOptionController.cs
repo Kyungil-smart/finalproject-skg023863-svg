@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 
 namespace MyGame
 {
-    public class BattleSceneOptionController : MonoBehaviour
+    public class OpenOptionController : MonoBehaviour
     {
         private MyGameInputAction _inputAction;
-
-        public Action<bool> OnIsBattleEnd;
-
+        
         private bool _isBattleEnd;
-
+        
+        private bool _isOptionUIOpen;
+        
         void Awake()
         {
             _inputAction = new MyGameInputAction();
@@ -21,22 +21,29 @@ namespace MyGame
         void OnEnable()
         {
             _inputAction.asset.Enable();
-            _inputAction.UI.Escape.performed += OpenOptionUI;
+            _inputAction.UI.Escape.performed += HandleOptionUI;
         }
 
         void OnDisable()
         {
-            _inputAction.UI.Escape.performed -= OpenOptionUI;
+            _inputAction.UI.Escape.performed -= HandleOptionUI;
             _inputAction.asset.Disable();
         }
-
-        void OpenOptionUI(InputAction.CallbackContext ctx)
+        
+        void HandleOptionUI(InputAction.CallbackContext ctx)
         {
             if (_isBattleEnd) return;
             
             if (ctx.performed)
             {
-                OptionManager.Instance.OpenOptionUI();
+                if (OptionManager.Instance.IsOptionUIOpen)
+                {
+                    OptionManager.Instance.CloseOptionUI();
+                }
+                else
+                {
+                    OptionManager.Instance.OpenOptionUI();
+                }
             }
         }
 
