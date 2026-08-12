@@ -1374,6 +1374,7 @@ GameObject:
   - component: {fileID: 1994759230}
   - component: {fileID: 1994759232}
   - component: {fileID: 1994759233}
+  - component: {fileID: 1994759234}
   m_Layer: 5
   m_Name: TitleMenuUI
   m_TagString: Untagged
@@ -1453,6 +1454,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a343635b3871e4e9791a65847728ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MyGame.MenuSelectionKeeper
+--- !u!114 &1994759234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994759228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699a9ac9fcb66734084f42c966382959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MyGame.OpenOptionController
 --- !u!1001 &525083426028223639
 PrefabInstance:
   m_ObjectHideFlags: 0

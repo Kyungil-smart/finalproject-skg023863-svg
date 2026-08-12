@@ -78,6 +78,17 @@ namespace MyGame
         {
             return Mathf.Clamp(positionX / GameManager.Instance.MapMaxX, -1f, 1f);
         }
+        public void PauseFighterSE()
+        {
+            _player1SESource.Pause();
+            _player2SESource.Pause();
+        }
+
+        public void ResumeFighterSE()
+        {
+            _player1SESource.UnPause();
+            _player2SESource.UnPause();
+        }
         
         public void SetMasterVolume(int volume)
         {
