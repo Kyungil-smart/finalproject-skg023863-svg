@@ -192,7 +192,7 @@ namespace MyGame
         
         public FighterData FighterData => _fighterData;
 
-        private static int inputRecordFrame = 180;
+        private static int inputRecordFrame = 15;
 
         private int[] input = new int[inputRecordFrame];
         private int[] inputDown = new int[inputRecordFrame];
