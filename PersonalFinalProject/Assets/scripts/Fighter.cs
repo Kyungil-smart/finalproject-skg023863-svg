@@ -58,12 +58,12 @@ namespace MyGame
         
     }
 
-    public class CommandArray
+    public static class CommandDataStorage
     {
-        public int[] command214 = { 2, 1, 4 };
-        public int[] command623 = { 6, 2, 3 };
-        public int[] command4 = { 4 };
-        public int[] command6 = { 6 };
+        public static readonly int[] Command214 = { 2, 1, 4 };
+        public static readonly int[] Command623 = { 6, 2, 3 };
+        public static readonly int[] Command4 = { 4 };
+        public static readonly int[] Command6 = { 6 };
     }
     
     // Fighter의 행동을 열거형으로 정리
@@ -169,8 +169,6 @@ namespace MyGame
         // 이 공격 이 이번 액션에서 이미 몇 번 적중했는가 확인용
         // 1히트 공격이 들어갔을 경우 1히트 보다 더 히트되면 안 되므로 비교하기 위해 사용되는 변수
         private int _currentAttackhitCount; 
-        
-        private CommandArray _commandArray = new();
         
         private List<HitBox> _hitBoxes = new();
         public  List<HitBox> HitBoxes => _hitBoxes;
@@ -433,25 +431,25 @@ namespace MyGame
         
         private void TryCommand()
         {
-            if (CheckCommand(_commandArray.command623, 15))
+            if (CheckCommand(CommandDataStorage.Command623, 15))
             {
                 if (TryCancel(CommandType.Command623)) return;
                 if (RequestCommand(CommandType.Command623)) return;
             }
             
-            if (CheckCommand(_commandArray.command214, 15))
+            if (CheckCommand(CommandDataStorage.Command214, 15))
             {
                 if (TryCancel(CommandType.Command214)) return;
                 if (RequestCommand(CommandType.Command214)) return;
             }
 
-            if (CheckCommand(_commandArray.command6, 1))
+            if (CheckCommand(CommandDataStorage.Command6, 1))
             {
                 if (TryCancel(CommandType.Command6)) return;
                 if (RequestCommand(CommandType.Command6)) return;
             }
 
-            if (CheckCommand(_commandArray.command4, 1))
+            if (CheckCommand(CommandDataStorage.Command4, 1))
             {
                 if (TryCancel(CommandType.Command4)) return;
                 if (RequestCommand(CommandType.Command4)) return;
