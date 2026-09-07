@@ -342,7 +342,7 @@ namespace MyGame
                     
                     if (isHit) // 히트에 성공했다면
                     {
-                        attacker.SuccessfullyAttack(defender.Position);
+                        attacker.SuccessfullyAttack();
                         
                         DamageResult damageresult = defender.DamagedAction(attacker.GetAttackData(hitAttackID), attacker.Position);
                         

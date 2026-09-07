@@ -133,7 +133,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ef3d2f51-153b-41a6-9f28-7974dd547c3c"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -155,7 +155,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Up"",
                     ""id"": ""e5db20e3-01f3-4b70-8731-abbebc174d66"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -166,7 +166,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Down"",
                     ""id"": ""b5b61007-e4e8-4930-a12f-31bbc4c04409"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -177,7 +177,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Left"",
                     ""id"": ""5a684aae-eedf-4728-a874-db69aa3198a0"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -188,7 +188,7 @@ public partial class @MyGameInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Right"",
                     ""id"": ""c9c31b4d-9a09-4b67-a82d-6e5fb7959e57"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
