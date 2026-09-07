@@ -135,12 +135,9 @@ namespace MyGame
         
         public void GoToTitle()
         {
-            Time.timeScale = 1f;
-            CloseOptionUI();
+            OptionManager.Instance.CloseOptionUI();
 
             SceneManager.LoadScene(SceneName.TitleScene.ToString());
-            
-            OptionManager.Instance.SetOptionUI();
         }
     }
 }

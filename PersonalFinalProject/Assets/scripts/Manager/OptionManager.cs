@@ -68,6 +68,7 @@ namespace MyGame
 
         public void CloseOptionUI()
         {
+            Time.timeScale = 1f;
             IsOptionUIOpen = false;
             SoundManager.Instance.ResumeFighterSE();
             _optionMenuController.CloseOptionUI();
