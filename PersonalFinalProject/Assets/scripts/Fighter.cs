@@ -282,12 +282,14 @@ namespace MyGame
             if (_bufferActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
                 if (CurrentActionFrame < _bufferActionStartFrame) return;
+                Debug.Log($"발동 프레임{CurrentActionFrame}");
                 SetCurrentAction(_bufferActionID);
                 return;
             }
 
             if (_executeActionID != -1 && CanCancelAttack() && IsHitStopEnd)
             {
+                Debug.Log($"발동 프레임{CurrentActionFrame}");
                 SetCurrentAction(_executeActionID);
                 return;
             }
@@ -298,8 +300,6 @@ namespace MyGame
             
             if(isAttack)
             {
-                Debug.Log($"공격 눌림{CurrentActionFrame}");
-                
                 TryCommand();
                 return;
             }
@@ -520,6 +520,7 @@ namespace MyGame
                 
                 if(cancelData.execute)
                 {
+                    Debug.Log($"현재 액션 프레임{CurrentActionFrame}");
                     Debug.Log($"익스큐트 아이디는 {cancelData.nextActionID}");
                     _executeActionID = cancelData.nextActionID;
                     return true;
@@ -527,6 +528,7 @@ namespace MyGame
 
                 if(cancelData.buffer)
                 {
+                    Debug.Log($"커맨드 입력 프레임{CurrentActionFrame}");
                     Debug.Log($"버퍼 아이디는 {cancelData.nextActionID}");
                     _bufferActionID = cancelData.nextActionID;
                     _bufferActionStartFrame = cancelData.startEndFrame.y + 1;
@@ -563,9 +565,8 @@ namespace MyGame
             return true;
         }
 
-        public void SuccessfullyAttack(Vector2 opponentPosition)
+        public void SuccessfullyAttack()
         {
-            //_isFaceRight = _position.x < opponentPosition.x;
             _currentAttackhitCount++;
         }
         
@@ -847,6 +848,8 @@ namespace MyGame
                 {
                     if (!IsCorrectDirection(direction, command[commandIndex])) continue; // 못 찾았으면 다음 프레임 검사
                     
+                    Debug.Log($"{direction}방향 입력됨. 확인된 인덱스 {frame}");
+                    
                     commandIndex--; // 맞으면 인덱스 감소. 다음 커맨드 검사
                     
                     isFindLastCommand = true;
@@ -858,10 +861,15 @@ namespace MyGame
 
                 if (IsCorrectDirection(direction, command[commandIndex])) // 입력 검사. 틀리면 다음 if문으로
                 {
+                    Debug.Log($"{direction}방향 입력됨. 확인된 인덱스 {frame}");
                     commandIndex--; // 맞으면 인덱스 감소. 다음 커맨드 검사
                     
                     // for문 조건 내에 commandIndex가 0보다 작아졌다면 해당 커맨드를 입력 한 것이므로 true 반환
-                    if (commandIndex < 0) return true; 
+                    if (commandIndex < 0)
+                    {
+                        Debug.Log($"command{command[0]}{command[1]}{command[2]} 확인 됨!");
+                        return true;
+                    } 
                     
                     continue; // 아직 검사할 인덱스가 남았다면 continue
                 }
